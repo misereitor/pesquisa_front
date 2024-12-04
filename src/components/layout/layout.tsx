@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import melgores from '/public/melgores-circul.png';
+import espaco from '/public/espaco.png';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex justify-around m-3 max-w-[500px] mx-auto">
           <Image
             className="-mr-10"
-            src={'/espaco.png'}
+            src={espaco}
             alt={'Logo Espaco Empresarial'}
             width={100}
             height={67.57}
@@ -15,7 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           />
           <Image
             className="-mr-5"
-            src={'/melgores-circul.png'}
+            src={melgores}
             alt={'Logo Melhores do ano'}
             width={100}
             height={67.57}

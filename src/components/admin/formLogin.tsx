@@ -33,7 +33,7 @@ export default function FormLogin() {
       setError('');
       const data = await loginUserAdmin(login);
       if (data) {
-        router.push('/admin/dashboard');
+        router.push('/admin/gestao/dashboard');
       }
     } catch (error: any) {
       setError(error.message);

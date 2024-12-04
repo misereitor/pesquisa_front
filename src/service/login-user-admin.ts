@@ -19,7 +19,7 @@ export async function loginUserAdmin(login: FormUserAdmin) {
       if (data.success) {
         const cookieStore = await cookies();
         cookieStore.set('token', data.data.token);
-        cookieStore.set('user', data.data.user);
+        cookieStore.set('user', JSON.stringify(data.data.user));
         return true;
       }
     }

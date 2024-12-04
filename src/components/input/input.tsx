@@ -3,10 +3,21 @@ import { InputHTMLAttributes, forwardRef, useId } from 'react';
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   errortext?: string;
+  sendError?: boolean;
 };
 
 const InputSimple = forwardRef<HTMLInputElement, InputProps>(
-  ({ type = 'text', name = '', label = '', errortext = '', ...props }, ref) => {
+  (
+    {
+      type = 'text',
+      name = '',
+      label = '',
+      errortext = '',
+      sendError = true,
+      ...props
+    },
+    ref
+  ) => {
     const inputId = useId();
     const hasError = errortext.length > 0;
     return (
@@ -22,11 +33,13 @@ const InputSimple = forwardRef<HTMLInputElement, InputProps>(
           {...props}
           className={`${props.className} ${hasError && 'outline-red-700 outline-none'}`}
         />
-        <div className="h-6">
-          {hasError && (
-            <span className="text-red-700 text-sm">{errortext}</span>
-          )}
-        </div>
+        {sendError && (
+          <div className="h-6">
+            {hasError && (
+              <span className="text-red-700 text-sm">{errortext}</span>
+            )}
+          </div>
+        )}
       </div>
     );
   }

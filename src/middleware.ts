@@ -11,17 +11,16 @@ export const config = {
 
 const publicRoutes = ['/', '/admin'];
 const adminRoutes = [
-  '/admin/dashboard',
-  '/admin/dashboard/print',
-  '/admin/gerencia',
-  '/admin/gerencia/categorias',
-  '/admin/gerencia/empresas',
-  '/admin/relatorios',
-  '/admin/relatorios/categorias',
-  '/admin/relatorios/cidade',
-  '/admin/relatorios/geral',
-  '/admin/relatorios/sorteio',
-  '/admin/perfil'
+  '/admin/gestao/dashboard',
+  '/admin/gestao/dashboard/print',
+  '/admin/gestao/categorias',
+  '/admin/gestao/empresas',
+  '/admin/gestao/relatorios',
+  '/admin/gestao/relatorios/categorias',
+  '/admin/gestao/relatorios/cidade',
+  '/admin/gestao/relatorios/geral',
+  '/admin/gestao/relatorios/sorteio',
+  '/admin/gestao/perfil'
 ];
 const superadminRoutes = [
   ...adminRoutes,
@@ -37,21 +36,18 @@ export async function middleware(req: NextRequest) {
   }
   const cookieStore = await cookies();
   const token = cookieStore.get('token');
-  //superadmin routes
   try {
     const user = await valideTokenUserAdminService(token?.value);
-    // Handle admin/superadmin routes
     if (user.roles.includes('superadmin')) {
-      // Verifica se a rota está no escopo permitido
       if (!superadminRoutes.includes(pathname)) {
-        return NextResponse.redirect(new URL('/admin', req.url)); // Redireciona para admin se rota não for permitida
+        return NextResponse.redirect(new URL('/admin', req.url));
       }
       return NextResponse.next();
     }
 
     if (user.roles.includes('admin')) {
       if (!adminRoutes.includes(pathname)) {
-        return NextResponse.redirect(new URL('/admin', req.url)); // Redireciona se admin tentar acessar rota de superadmin
+        return NextResponse.redirect(new URL('/admin', req.url));
       }
       return NextResponse.next();
     }
@@ -64,6 +60,9 @@ export async function middleware(req: NextRequest) {
       }
     } catch (votingError) {
       return NextResponse.redirect(new URL('/', req.url));
+    }
+    if (pathname.split('/')[1] === 'admin') {
+      return NextResponse.redirect(new URL('/admin', req.url));
     }
     return NextResponse.redirect(new URL('/', req.url));
   }

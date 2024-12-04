@@ -1,9 +1,10 @@
-import { userQuest } from '@/types/types';
+import { userVoting } from '@/model/user-voting';
+
 type Data = {
   name: string;
   uv: number;
 };
-export const dateTrasnform = (value: userQuest[], date: string) => {
+export const dateTrasnform = (value: userVoting[], date: string) => {
   const data: Data[] = [
     {
       name: '00',

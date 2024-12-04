@@ -20,10 +20,26 @@ export function regexCPF(cpf: string) {
   return t;
 }
 
+export function regexCNPJ(cnpj: string | undefined) {
+  const regex = /(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/;
+  const x = cnpj?.replace(/\D/g, '').match(regex);
+  const t = x
+    ? x[2]
+      ? x[1] +
+        '.' +
+        x[2] +
+        (x[3] ? '.' + x[3] : '') +
+        (x[4] ? '/' + x[4] : '') +
+        (x[5] ? '-' + x[5] : '')
+      : x[1]
+    : '';
+  return t;
+}
+
 export async function filterCities(ufs: Uf[], state: string) {
   let citiesForUf;
   const uf: Uf[] = ufs?.filter((uf) => {
-    return uf.nome.toLocaleLowerCase() === state.toLocaleLowerCase();
+    return uf.label.toLocaleLowerCase() === state.toLocaleLowerCase();
   });
   if (uf.length == 1) {
     citiesForUf = await getCitiesBrazil(uf[0].sigla);
