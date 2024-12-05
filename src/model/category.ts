@@ -1,7 +1,7 @@
 import { Company } from './company';
 
-export interface category {
-  id?: number;
-  category: string;
+export interface Category {
+  id: number;
+  name: string;
   companies?: Company[];
 }

@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import {
   valideTokenUserAdminService,
   valideTokenUserVotingService
-} from './service/authService';
+} from './service/auth-service';
 
 export const config = {
   matcher: '/((?!api|static|.*\\..*|_next).*)'
