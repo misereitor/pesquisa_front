@@ -4,6 +4,7 @@ import { Category } from '@/model/category';
 import { useState } from 'react';
 
 import CustomizedAccordions from './accordion-category';
+import FilterCategory from './filter-category';
 
 type Props = {
   categories: Category[];
@@ -28,6 +29,13 @@ export default function ListCategory({ categories }: Props) {
 
   return (
     <div className="w-full">
+      <FilterCategory
+        setListCategories={setListCategories}
+        categories={categories}
+        currentPage={currentPage}
+        pagination={pagination}
+        totalIndex={totalIndex}
+      />
       {listCategories.slice(startIndex, endIndex).map((category, index) => (
         <CustomizedAccordions
           loading={loading}

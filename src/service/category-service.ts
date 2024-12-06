@@ -1,5 +1,5 @@
 'use server';
-import { Category } from '@/model/category';
+import { AssociationCategoryCompany, Category } from '@/model/category';
 
 const { API_URL, X_API_KEY } = process.env;
 
@@ -15,6 +15,26 @@ export async function getAllCategories() {
     const data = await response.json();
     if (response.ok) {
       return data.data as Category[];
+    }
+    throw new Error(data.message);
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function createCategoryService(name: string) {
+  try {
+    const response = await fetch(`${API_URL}/api/category/create`, {
+      method: 'POST',
+      headers: {
+        'X-API-KEY': String(X_API_KEY),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, active: true })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return data.data as Category;
     }
     throw new Error(data.message);
   } catch (error: any) {
@@ -53,6 +73,27 @@ export async function deleteCategoryService(id_category: number) {
         }
       }
     );
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
+export async function createAssociationCategoryService(
+  association: AssociationCategoryCompany[]
+) {
+  try {
+    const response = await fetch(`${API_URL}/api/association/create-many`, {
+      method: 'POST',
+      headers: {
+        'X-API-KEY': String(X_API_KEY),
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(association)
+    });
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.message);

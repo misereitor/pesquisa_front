@@ -95,11 +95,16 @@ export default function CustomizedAccordions({
   return (
     <div>
       <Modal
+        outClick={false}
         openModal={openModalInsertCompany}
         setOpenModal={setOpenModalInsertCompany}
       >
-        {' '}
-        <ModalInsertCompanyFromCategory />
+        <ModalInsertCompanyFromCategory
+          setOpenModal={setOpenModalInsertCompany}
+          category={category}
+          categories={categories}
+          setCategoryList={setCategories}
+        />
       </Modal>
       <Modal openModal={openModalDelete} setOpenModal={setOpenModalDelete}>
         <ModalDeleteCategory
