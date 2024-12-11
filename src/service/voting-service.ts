@@ -3,14 +3,14 @@ import { cookies } from 'next/headers';
 import { valideTokenUserVotingService } from './auth-service';
 import { Vote } from '@/model/votes';
 import { UserVote } from '@/model/user-voting';
+import { tokenCookiesService } from './user-voting-service';
 
 const { API_URL, X_API_KEY } = process.env;
 
 export async function getAllVotesByUser() {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('token');
-    const openToken = await valideTokenUserVotingService(token?.value);
+    const token = await tokenCookiesService();
+    const openToken = await valideTokenUserVotingService(token);
     const response = await fetch(
       `${API_URL}/api/voting/${openToken.id}/get-all`,
       {
@@ -60,7 +60,6 @@ export async function createVoteService(
 export async function confirmVoteService(progress: number) {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get('token');
     const userCookies = cookieStore.get('user');
     if (!userCookies) throw new Error('Falha interna');
     const user: UserVote = JSON.parse(userCookies.value);

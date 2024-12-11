@@ -11,24 +11,33 @@ import LoadingButton from '../button/loading-button';
 import Modal from '../modal/modal';
 import ModalConfirmVote from './modal-confirm-vote';
 import Loading from '@/app/loading';
+import { userVoteCookiesService } from '@/service/user-voting-service';
+import { getAllVotesByUser } from '@/service/voting-service';
 
 type Props = {
   categories: Category[];
   companies: Company[];
-  userVotes: Vote[];
-  user: UserVote;
 };
-export default function ListCategoryPesquisa({
-  categories,
-  companies,
-  userVotes,
-  user
-}: Props) {
+export default function ListCategoryPesquisa({ categories, companies }: Props) {
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [pageLoading, setPagLoading] = useState(true);
+  const [pageLoadingUser, setPagLoadingUser] = useState(true);
   const [voteRow, setVoteRow] = useState<VoteRow[]>([]);
+  const [userVotes, setUserVotes] = useState<Vote[]>([]);
+  const [user, setUser] = useState<UserVote>();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const userGet = await userVoteCookiesService();
+      const userVote = await getAllVotesByUser();
+      setUserVotes(userVote);
+      setUser(userGet);
+      setPagLoadingUser(false);
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     setProgress(Math.trunc((voteRow.length * 100) / categories.length));
@@ -54,7 +63,7 @@ export default function ListCategoryPesquisa({
     setOpenModal(true);
   };
 
-  if (pageLoading) {
+  if (pageLoading && pageLoadingUser) {
     return <Loading />;
   }
 
@@ -63,7 +72,7 @@ export default function ListCategoryPesquisa({
       <div className="w-3/4 max-w-3xl mx-auto">
         <div className="mt-28">
           <p>
-            Olá, <span className="font-bold">{user.name + ' '}</span>
+            Olá, <span className="font-bold">{user?.name + ' '}</span>
             bem vindo a nossa plataforma! Aqui, juntos vamos eleger as melhores
             empresas de Santo Antônio de Jesus em 2024!
           </p>
