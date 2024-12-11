@@ -4,8 +4,31 @@ import { valideTokenUserVotingService } from './auth-service';
 import { Vote } from '@/model/votes';
 import { UserVote } from '@/model/user-voting';
 import { tokenCookiesService } from './user-voting-service';
+import { Company } from '@/model/company';
+import { Category } from '@/model/category';
 
 const { API_URL, X_API_KEY } = process.env;
+
+export async function getAllDataForVoteService(id: number) {
+  try {
+    const response = await fetch(`${API_URL}/api/voting/${id}/get-all-data`, {
+      headers: {
+        'X-API-KEY': String(X_API_KEY)
+      }
+    });
+    const data = await response.json();
+    if (response.ok)
+      return data.data as {
+        companiesData: Company[];
+        categoriesData: Category[];
+        userVotesData: Vote[];
+      };
+    throw new Error(data.message);
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+}
 
 export async function getAllVotesByUser() {
   try {

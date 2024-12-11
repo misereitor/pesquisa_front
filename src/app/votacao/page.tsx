@@ -3,9 +3,7 @@
 import { useState, useEffect } from 'react';
 import ListCategoryPesquisa from '@/components/pesquisa/list-category';
 import { UserVote } from '@/model/user-voting';
-import { getAllCategories } from '@/service/category-service';
-import { getAllCompany } from '@/service/company-service';
-import { getAllVotesByUser } from '@/service/voting-service';
+import { getAllDataForVoteService } from '@/service/voting-service';
 import Link from 'next/link';
 import { Category } from '@/model/category';
 import { Company } from '@/model/company';
@@ -19,28 +17,25 @@ export default function Votacao() {
   const [userVotes, setUserVotes] = useState<Vote[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // UseEffect para carregar dados no client-side
   useEffect(() => {
     const fetchData = async () => {
+      // Acessando os cookies diretamente no client-side
       const userCookies = document.cookie
         .split('; ')
         .find((row) => row.startsWith('user='))
         ?.split('=')[1];
 
       if (!userCookies) {
-        window.location.href = '/';
+        window.location.href = '/'; // Redireciona se o cookie não existir
         return;
       }
 
       const userData: UserVote = JSON.parse(decodeURIComponent(userCookies));
 
-      const categoriesData = await getAllCategories();
-      const userVotesData = await getAllVotesByUser();
-      const companiesData = await getAllCompany();
-
-      console.log(categoriesData);
-      console.log(companiesData);
-      console.log(userVotesData);
-      console.log(userData);
+      // Carregando os dados das categorias, empresas e votos do usuário
+      const { categoriesData, companiesData, userVotesData } =
+        await getAllDataForVoteService(userData.id);
 
       setUser(userData);
       setCategories(categoriesData);
