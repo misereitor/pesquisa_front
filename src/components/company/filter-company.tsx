@@ -5,6 +5,11 @@ import { Company } from '@/model/company';
 import Modal from '../modal/modal';
 import ModalAddCompany from './modal-add-company';
 import Loading from '@/app/loading';
+import ButtonImport from '../inport/button-import';
+import { Csvimport } from '@/util/filterImportCSV';
+import ModalListImport from '../inport/modal-list-import';
+import { ImportCSV } from '@/model/import-csv';
+import ModalProgress from '../inport/modal-progress';
 
 type Props = {
   companies: Company[];
@@ -28,6 +33,12 @@ export default function FilterCompany({
   const [view, setView] = useState('all');
   const [filterCompany, setFilterCompany] = useState('');
   const totalIndex = Math.ceil(companiesFilter.length / ITEMS_PER_PAGE);
+  const [importCSV, setImportCSV] = useState<Csvimport | null>(null);
+  const [openModalImport, setOpenModalInsert] = useState(false);
+  const [csvTransform, seCsvTransform] = useState<ImportCSV[] | null>(null);
+  const [openModalProgress, setOpenModalProgress] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
     const applyFilters = () => {
       let filtered = companies;
@@ -40,7 +51,7 @@ export default function FilterCompany({
       }
       if (filterCompany != '') {
         filtered = filtered.filter((c) =>
-          c.company_name
+          c.trade_name
             .toLocaleLowerCase()
             .includes(filterCompany.toLocaleLowerCase())
         );
@@ -64,11 +75,33 @@ export default function FilterCompany({
   return (
     <div>
       <div className="absolute z-40">
+        <Modal
+          openModal={openModalProgress}
+          setOpenModal={setOpenModalProgress}
+          outClick={false}
+          className="cursor-wait"
+        >
+          <ModalProgress progress={progress} />
+        </Modal>
         <Modal setOpenModal={setOpenModalAdd} openModal={openModalAdd}>
           <ModalAddCompany
             companies={companies}
             setCompaniesList={setCompaniesList}
             setOpenModal={setOpenModalAdd}
+          />
+        </Modal>
+        <Modal
+          setOpenModal={setOpenModalInsert}
+          outClick={false}
+          openModal={openModalImport}
+        >
+          <ModalListImport
+            setProgress={setProgress}
+            setOpenModalProgress={setOpenModalProgress}
+            setOpenModal={setOpenModalInsert}
+            importCSV={importCSV}
+            seCsvTransform={seCsvTransform}
+            csvTransform={csvTransform}
           />
         </Modal>
       </div>
@@ -80,13 +113,19 @@ export default function FilterCompany({
         <div className="bg-neutral-800 p-4 shadow-md mb-[2px]">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-[#FFDE5E] text-xl font-bold">Empresas</h1>
-            <button
-              onClick={() => setOpenModalAdd(true)}
-              className="px-4 py-2 bg-[#FFDE5E] text-black rounded-md hover:bg-yellow-600 transition flex items-center"
-            >
-              Adicionar
-              <span className="ml-2 text-sm">&#x2795;</span>{' '}
-            </button>
+            <div className="flex">
+              <ButtonImport
+                setImportCSV={setImportCSV}
+                setOpenModalInsert={setOpenModalInsert}
+              />
+              <button
+                onClick={() => setOpenModalAdd(true)}
+                className="px-4 py-2 bg-[#FFDE5E] text-black rounded-md hover:bg-yellow-600 transition flex items-center ml-3"
+              >
+                Adicionar
+                <span className="ml-2 text-sm">&#x2795;</span>{' '}
+              </button>
+            </div>
           </div>
 
           <div className="flex justify-between items-center mb-4">

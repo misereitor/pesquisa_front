@@ -27,7 +27,7 @@ const superadminRoutes = [
   '/superadmin/perfil',
   '/superadmin/perfis'
 ];
-const votingRoutes = ['/votacao', '/success'];
+const votingRoutes = ['/votacao', '/sucesso'];
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;

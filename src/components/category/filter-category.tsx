@@ -4,6 +4,11 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Category } from '@/model/category';
 import Modal from '../modal/modal';
 import ModalInsertCompany from './modal-insert-category';
+import ButtonImport from '../inport/button-import';
+import { ImportCSV } from '@/model/import-csv';
+import ModalListImport from '../inport/modal-list-import';
+import { Csvimport } from '@/util/filterImportCSV';
+import ModalProgress from '../inport/modal-progress';
 
 type Props = {
   totalIndex: number;
@@ -25,6 +30,11 @@ export default function FilterCategory({
   const [filterCompany, setFilterCompany] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
+  const [openModalImport, setOpenModalInsert] = useState(false);
+  const [importCSV, setImportCSV] = useState<Csvimport | null>(null);
+  const [csvTransform, seCsvTransform] = useState<ImportCSV[] | null>(null);
+  const [openModalProgress, setOpenModalProgress] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const filteredCategories = categories.filter((category) => {
@@ -37,7 +47,7 @@ export default function FilterCategory({
         !filterCompany || // Se o filtro de empresa estiver vazio, ignora este critério
         (category.companies &&
           category.companies.some((company) =>
-            company.company_name
+            company.trade_name
               .toLowerCase()
               .includes(filterCompany.toLowerCase())
           ));
@@ -49,7 +59,8 @@ export default function FilterCategory({
     // Atualiza a lista de categorias visível
     setListCategories(filteredCategories);
     setLoadingPage(false);
-  }, [filterCategory, filterCompany, categories, setListCategories]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterCategory, filterCompany, setListCategories]);
 
   return (
     <div>
@@ -60,40 +71,72 @@ export default function FilterCategory({
           setOpenModal={setOpenModal}
         />
       </Modal>
+      <Modal
+        setOpenModal={setOpenModalInsert}
+        outClick={false}
+        openModal={openModalImport}
+      >
+        <ModalListImport
+          setProgress={setProgress}
+          setOpenModalProgress={setOpenModalProgress}
+          setOpenModal={setOpenModalInsert}
+          importCSV={importCSV}
+          seCsvTransform={seCsvTransform}
+          csvTransform={csvTransform}
+        />
+      </Modal>
+      <Modal
+        openModal={openModalProgress}
+        setOpenModal={setOpenModalProgress}
+        outClick={false}
+        className="cursor-wait"
+      >
+        <ModalProgress progress={progress} />
+      </Modal>
       {loadingPage ? (
         <div className="fixed h-52 top-10 left-0 right-0 w-full"></div>
       ) : (
         <div className="bg-neutral-800 p-4 shadow-md mb-[2px]">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-[#FFDE5E] text-xl font-bold">Categorias</h1>
-            <button
-              onClick={() => setOpenModal(true)}
-              className="px-4 py-2 bg-[#FFDE5E] text-black rounded-md hover:bg-yellow-600 transition flex items-center"
-            >
-              Adicionar
-              <span className="ml-2 text-sm">&#x2795;</span>{' '}
-            </button>
+            <div className="flex">
+              <ButtonImport
+                setImportCSV={setImportCSV}
+                setOpenModalInsert={setOpenModalInsert}
+              />
+              <button
+                onClick={() => setOpenModal(true)}
+                className="px-4 py-2 bg-[#FFDE5E] text-black rounded-md ml-3 hover:bg-yellow-600 transition flex items-center"
+              >
+                Adicionar
+                <span className="ml-2 text-sm">&#x2795;</span>{' '}
+              </button>
+            </div>
           </div>
 
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex justify-between w-full">
-              <InputSimple
-                value={filterCategory}
-                placeholder="Buscar"
-                label="Categoria"
-                sendError={false}
-                className="w-72 h-10 rounded-md"
-                onChange={(e) => setFilterCategory(e.target.value)}
-              />
-              <InputSimple
-                value={filterCompany}
-                placeholder="Buscar"
-                label="Empresa:"
-                sendError={false}
-                className="w-72 h-10 rounded-md"
-                onChange={(e) => setFilterCompany(e.target.value)}
-              />
-            </div>
+          <div>
+            <form className="flex justify-between items-center mb-4">
+              <div className="flex justify-between w-full">
+                <InputSimple
+                  value={filterCategory}
+                  placeholder="Buscar"
+                  label="Categoria"
+                  sendError={false}
+                  className="w-72 h-10 rounded-md"
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                />
+                <InputSimple
+                  autoComplete="false"
+                  value={filterCompany}
+                  placeholder="Buscar"
+                  label="Empresa:"
+                  sendError={false}
+                  type="text"
+                  className="w-72 h-10 rounded-md"
+                  onChange={(e) => setFilterCompany(e.target.value)}
+                />
+              </div>
+            </form>
           </div>
 
           {/* Paginação */}

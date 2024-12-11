@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import LoadingButton from '../button/loading-button';
-import { userVoting } from '@/model/user-voting';
+import { UserVote } from '@/model/user-voting';
 import { checkCpfExist, confirmCode } from '@/service/login-voting';
 import { useRouter } from 'next/navigation';
 import ModalReturn from './modal-retuen';
 import Modal from '../modal/modal';
 
 type Props = {
-  user: userVoting;
+  user: UserVote;
   setStage: Dispatch<SetStateAction<number>>;
   lastPage: number;
 };

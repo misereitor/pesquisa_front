@@ -3,12 +3,12 @@ import Image from 'next/image';
 import ChackCPF from './check-cpf';
 import { useState } from 'react';
 import ConfirmCode from './confirm-code';
-import { userVoting } from '@/model/user-voting';
+import { UserVote } from '@/model/user-voting';
 import Register from './register';
 
 export default function LoginVoting() {
   const [stage, setStage] = useState(1);
-  const [user, setUser] = useState<userVoting>();
+  const [user, setUser] = useState<UserVote>();
   const [lastPage, setLastPage] = useState(1);
   return (
     <div className="mx-auto">

@@ -111,7 +111,7 @@ export default function ModalInsertCompanyFromCategory({
           loading={loading}
           options={options}
           disableCloseOnSelect
-          getOptionLabel={(option) => option.company_name}
+          getOptionLabel={(option) => option.trade_name}
           value={value}
           onChange={(event, newValue) => setValue(newValue)}
           renderOption={(props, option, { selected }) => {

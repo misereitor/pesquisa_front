@@ -76,10 +76,10 @@ export default function ListCompanyInAccordion({
               <td className="py-3 px-4">
                 <div className="flex flex-col">
                   <h2 className="text-lg font-semibold text-[#FFDE5E]">
-                    {company.company_name}
+                    {company.trade_name}
                   </h2>
                   <span className="text-sm text-[#ffdf5ed0]">
-                    Nome Fantasia: {company.trade_name}
+                    Razão Social: {company.company_name}
                   </span>
                   <span className="text-sm text-[#ffdf5ed0]">
                     CNPJ: {company.cnpj}

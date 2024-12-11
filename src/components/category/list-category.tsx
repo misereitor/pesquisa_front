@@ -11,7 +11,9 @@ type Props = {
 };
 const ITEMS_PER_PAGE = 10;
 export default function ListCategory({ categories }: Props) {
-  const [listCategories, setListCategories] = useState(categories);
+  const [listCategories, setListCategories] = useState(
+    categories.sort((a, b) => a.name.localeCompare(b.name))
+  );
   const [expanded, setExpanded] = useState<string | false>('');
   const [currentPage, setCurrentPage] = useState(1);
   const totalIndex = Math.ceil(listCategories.length / ITEMS_PER_PAGE);

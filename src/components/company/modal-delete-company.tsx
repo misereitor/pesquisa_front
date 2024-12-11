@@ -59,7 +59,7 @@ export default function ModalDeleteCompany({
   return (
     <div>
       <div>
-        <h1 className="font-bold text-2xl">{companyRemove?.company_name}</h1>
+        <h1 className="font-bold text-2xl">{companyRemove?.trade_name}</h1>
       </div>
       <div>Digite sua senha para remover a empresa!</div>
       <div className="flex justify-between mt-5">

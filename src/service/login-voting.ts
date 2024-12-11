@@ -53,7 +53,7 @@ export async function confirmCode(code: string, phone: string) {
       if (data.success) {
         const cookieStore = await cookies();
         cookieStore.set('token', data.data.token);
-        cookieStore.set('user', data.data.user);
+        cookieStore.set('user', JSON.stringify(data.data.user));
         return true;
       }
       throw new Error(data.message);

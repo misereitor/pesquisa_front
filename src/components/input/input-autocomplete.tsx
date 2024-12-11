@@ -4,60 +4,53 @@ import {
   useMemo,
   Dispatch,
   SetStateAction,
-  useCallback
+  useCallback,
+  useEffect
 } from 'react';
 import { InputHTMLAttributes, forwardRef, useId } from 'react';
 import { substitutionDictionary } from '@/util/dictionary';
+import { Company } from '@/model/company';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  label?: string;
-  errortext?: string;
-  options: Option[];
-  setValue: Dispatch<SetStateAction<string>>;
+  options: Company[];
   name: string;
+  setCompanySelected: Dispatch<SetStateAction<Company | undefined>>;
+  companySelected: Company | undefined;
+  // eslint-disable-next-line no-unused-vars
+  handleSubmit: (row: Company) => Promise<void>;
+  setValue: Dispatch<SetStateAction<string>>;
   value: string;
 };
 
-interface Option {
-  word: string;
-  synonyms: string[];
-}
-
-// Função para remover acentos de uma string
 function removeAccents(text: string) {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-// Função para realçar correspondências com a consulta do usuário
 function highlightMatch(word: string, query: string) {
   const regex = new RegExp(`(${query})`, 'gi');
   return word.replace(regex, '<mark>$1</mark>');
 }
 
-// Função para expandir o dicionário de forma bidirecional
 function buildUniversalDictionary(
   dictionary: Record<string, string[]>
 ): Record<string, string[]> {
   const universalDict: Record<string, Set<string>> = {};
 
-  // Função auxiliar para conectar todas as palavras relacionadas
   const connectWords = (word: string, synonyms: string[]) => {
     if (!universalDict[word]) {
       universalDict[word] = new Set();
     }
-    universalDict[word].add(word); // Adiciona a própria palavra
+    universalDict[word].add(word);
 
     synonyms.forEach((synonym) => {
       if (!universalDict[synonym]) {
         universalDict[synonym] = new Set();
       }
-      // Conecta as palavras e sinônimos em ambas as direções
       universalDict[synonym].add(word);
       universalDict[word].add(synonym);
     });
   };
 
-  // Processa o dicionário original
   Object.entries(dictionary).forEach(([key, values]) => {
     connectWords(key, values);
     values.forEach((value) =>
@@ -65,7 +58,6 @@ function buildUniversalDictionary(
     );
   });
 
-  // Converte os sets para arrays
   const universalDictAsArrays: Record<string, string[]> = {};
   Object.entries(universalDict).forEach(([key, values]) => {
     universalDictAsArrays[key] = Array.from(values);
@@ -74,7 +66,6 @@ function buildUniversalDictionary(
   return universalDictAsArrays;
 }
 
-// Função para expandir fragmentos de entrada com base no dicionário universal
 function expandWithUniversalDictionary(
   fragment: string,
   dictionary: Record<string, string[]>
@@ -82,29 +73,77 @@ function expandWithUniversalDictionary(
   const expandedWords = Object.keys(dictionary).flatMap((key) => {
     const cleanKey = removeAccents(key.toLowerCase());
     if (cleanKey.includes(fragment)) {
-      return dictionary[cleanKey]; // Retorna todas as palavras relacionadas
+      return dictionary[cleanKey];
     }
     return [];
   });
-  return expandedWords.length > 0 ? expandedWords : [fragment]; // Retorna o fragmento se não houver correspondências
+  return expandedWords.length > 0 ? expandedWords : [fragment];
 }
 
 const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
   (
-    { type = 'text', name, label = '', options, setValue, value, ...props },
+    {
+      type = 'text',
+      name,
+      options,
+      companySelected,
+      setCompanySelected,
+      handleSubmit,
+      setValue,
+      value,
+      ...props
+    },
     ref
   ) => {
-    const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
+    const [filteredOptions, setFilteredOptions] = useState<Company[]>([]);
+    const [notFind, setNotFind] = useState(false);
+    const [showAbove, setShowAbove] = useState(false);
     const inputId = useId();
 
-    // Cria o dicionário universal uma única vez
+    useEffect(() => {
+      const calculateDropdownPosition = () => {
+        const inputElement = document.getElementById(inputId);
+        const dropdownElement = document.getElementById(`${inputId}-dropdown`);
+
+        if (inputElement && dropdownElement) {
+          const inputRect = inputElement.getBoundingClientRect();
+          const dropdownHeight = dropdownElement.offsetHeight;
+
+          // Tamanho customizado (ex: 200px de espaço mínimo)
+          const minSpaceBelow = 100;
+
+          // Verifica se há espaço suficiente abaixo do campo
+          const isCloseToBottom =
+            window.innerHeight - inputRect.bottom <
+            dropdownHeight + minSpaceBelow;
+
+          setShowAbove(isCloseToBottom);
+        }
+      };
+      // Calcular posição inicialmente
+      calculateDropdownPosition();
+
+      // Adicionar listener de scroll e resize
+      const handleScrollOrResize = () => {
+        calculateDropdownPosition();
+      };
+
+      window.addEventListener('scroll', handleScrollOrResize);
+      window.addEventListener('resize', handleScrollOrResize);
+
+      return () => {
+        // Remover listeners ao desmontar
+        window.removeEventListener('scroll', handleScrollOrResize);
+        window.removeEventListener('resize', handleScrollOrResize);
+      };
+    }, [value, filteredOptions, inputId]);
+
     const universalDictionary = useMemo(
       () => buildUniversalDictionary(substitutionDictionary),
       []
     );
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = e.target.value;
+    const handleChange = (inputValue: string) => {
       setValue(inputValue);
 
       if (inputValue === '') {
@@ -112,64 +151,68 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
         return;
       }
 
-      // Limpa o valor de entrada e separa em palavras
       const cleanedInput = removeAccents(inputValue.toLowerCase());
-      const inputWords = cleanedInput.split(' ').filter(Boolean); // Separa o input em palavras, ignorando fragmentos vazios
+      const inputWords = cleanedInput.split(' ').filter(Boolean);
 
-      // ** Nova verificação para evitar resultados com palavras repetidas **
       const uniqueWords = new Set(inputWords);
       if (uniqueWords.size < inputWords.length) {
-        // Se o número de palavras únicas for menor do que o número total de palavras, não retorna nada.
         setFilteredOptions([]);
         return;
       }
 
-      // Filtra as opções diretamente pelas palavras completas
-      const filteredByWords = options.filter(({ word }) => {
-        const cleanWord = removeAccents(word.toLowerCase());
+      const filteredByWords = options.filter(({ trade_name }) => {
+        const cleanWord = removeAccents(trade_name.toLowerCase());
         return inputWords.every((inputFragment) =>
           cleanWord.includes(inputFragment)
         );
       });
 
-      // Se as opções filtradas pela palavra não estão vazias, exibe essas opções
       if (filteredByWords.length > 0) {
         setFilteredOptions(filteredByWords);
+
         return;
       }
+      setNotFind(true);
 
-      // Filtra as opções baseado em todas as palavras digitadas
-      const filtered = options.filter(({ word, synonyms }) => {
-        const cleanWord = removeAccents(word.toLowerCase());
+      const filtered = options.filter(({ trade_name, company_name }) => {
+        const cleanWord = removeAccents(trade_name.toLowerCase());
 
-        // Para cada opção, todas as palavras digitadas precisam encontrar correspondências
         const matchesAllInputs = inputWords.every((inputFragment) => {
-          // Expande o fragmento com o dicionário
           const expandedFragment = expandWithUniversalDictionary(
             inputFragment,
             universalDictionary
           );
 
-          // Verifica se o fragmento corresponde à palavra ou a seus sinônimos
           const matchesWord = expandedFragment.some((expInput) =>
             cleanWord.includes(expInput)
           );
-          const matchesSynonym = synonyms.some((synonym) => {
-            const cleanSynonym = removeAccents(synonym.toLowerCase());
-            return expandedFragment.some((expInput) =>
+          let matchesSynonym = false;
+          if (company_name) {
+            const cleanSynonym = removeAccents(company_name?.toLowerCase());
+            matchesSynonym = expandedFragment.some((expInput) =>
               cleanSynonym.includes(expInput)
             );
-          });
+          }
 
           return matchesWord || matchesSynonym;
         });
 
         return matchesAllInputs;
       });
-
       setFilteredOptions(filtered);
     };
 
+    const handleBlur = () => {
+      setFilteredOptions([]);
+      setNotFind(false);
+      if (!companySelected) {
+        setValue('');
+        return;
+      }
+      if (companySelected.trade_name !== value)
+        setValue(companySelected.trade_name);
+      return;
+    };
     const handleOptionClick = useCallback(
       (selectedWord: string) => {
         setValue(selectedWord);
@@ -180,44 +223,65 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
 
     const renderedOptions = useMemo(() => {
       const cleanedInput = removeAccents(value.toLowerCase());
-      return filteredOptions.map(({ word }) => {
+      return filteredOptions.map((company) => {
         const highlightedWord = highlightMatch(
-          removeAccents(word),
+          removeAccents(company.trade_name),
           cleanedInput
         );
         return (
           <li
-            key={word}
+            key={company.trade_name}
+            className="hover:bg-[#4d4d4d] cursor-pointer"
             dangerouslySetInnerHTML={{ __html: highlightedWord }}
-            onClick={() => handleOptionClick(word)}
+            onMouseDown={() => {
+              handleOptionClick(company.trade_name);
+              setCompanySelected(company);
+              setNotFind(false);
+              handleSubmit(company);
+            }}
           />
         );
       });
-    }, [filteredOptions, handleOptionClick, value]);
+    }, [
+      filteredOptions,
+      handleOptionClick,
+      handleSubmit,
+      setCompanySelected,
+      value
+    ]);
 
     return (
-      <div>
-        <div>
-          <div>
-            <label htmlFor={inputId}>{label}</label>
+      <div className="w-full">
+        <div className="w-full">
+          <div className="w-full">
             <input
               id={inputId}
               name={name}
               type={type}
+              autoComplete="off"
+              autoFocus
+              onFocusCapture={() => handleChange(value)}
+              onBlur={handleBlur}
               ref={ref}
               value={value}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e.target.value)}
               {...props}
+              className="w-5/6 rounded-md h-10"
             />
           </div>
           {value && (
-            <ul>
-              {renderedOptions.length > 0 ? (
-                renderedOptions
-              ) : (
-                <li>Não encontrado</li>
-              )}
-            </ul>
+            <div className="relative min-w-full">
+              <ul
+                id={`${inputId}-dropdown`}
+                className={`absolute max-h-52 z-40 overflow-y-auto bg-[#272727] w-5/6 rounded-md ${
+                  showAbove ? 'bottom-12' : 'top-full'
+                }`}
+              >
+                {renderedOptions.length > 0
+                  ? renderedOptions
+                  : notFind && <li>Não encontrado</li>}
+              </ul>
+            </div>
           )}
         </div>
       </div>

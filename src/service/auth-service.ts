@@ -1,5 +1,6 @@
 'use server';
 import * as jose from 'jose';
+import { cookies } from 'next/headers';
 
 const { SECRET_KEY_ADMIN, SECRET_KEY_VOTING } = process.env;
 
@@ -8,7 +9,7 @@ export async function valideTokenUserVotingService(token: string | undefined) {
     if (!token) throw new Error('Token invalid');
     const secret = new TextEncoder().encode(SECRET_KEY_VOTING);
     const { payload } = await jose.jwtVerify(token, secret);
-    return payload as OpenToken;
+    return payload as OpenTokenUserVoting;
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -24,8 +25,20 @@ export async function valideTokenUserAdminService(token: string | undefined) {
     throw new Error(error.message);
   }
 }
+
 export type OpenToken = {
   id: number;
   username: string;
   roles: string;
 };
+
+export type OpenTokenUserVoting = {
+  id: number;
+  phone: string;
+};
+
+export async function removeCookiesService() {
+  const cookieNext = await cookies();
+  cookieNext.delete('token');
+  cookieNext.delete('user');
+}

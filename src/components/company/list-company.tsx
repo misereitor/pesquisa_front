@@ -95,10 +95,10 @@ export default function ListCompany({ companies, setCompaniesList }: Props) {
                 <td className="py-3 px-4">
                   <div className="flex flex-col">
                     <h2 className="text-lg font-semibold text-[#FFDE5E]">
-                      {row.company_name}
+                      {row.trade_name}
                     </h2>
                     <span className="text-sm text-[#ffdf5ed0]">
-                      Nome Fantasia: {row.trade_name}
+                      Razão Social: {row.company_name}
                     </span>
                     <span className="text-sm text-[#ffdf5ed0]">
                       CNPJ: {row.cnpj}

@@ -9,11 +9,11 @@ import InputSimple from '../input/input';
 import { regexCPF } from '@/util/dataProcessing';
 import LoadingButton from '../button/loading-button';
 import { checkCpfExist } from '@/service/login-voting';
-import { userVoting } from '@/model/user-voting';
+import { UserVote } from '@/model/user-voting';
 
 type Props = {
   setStage: Dispatch<SetStateAction<number>>;
-  setUser: Dispatch<SetStateAction<userVoting | undefined>>;
+  setUser: Dispatch<SetStateAction<UserVote | undefined>>;
   setLastPage: Dispatch<SetStateAction<number>>;
 };
 
@@ -23,6 +23,7 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
     register,
     getValues,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<FormUserVotingCPF>({
     mode: 'all',
@@ -46,19 +47,28 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
         setStage(3);
         return;
       }
-      const user: userVoting = {
+      const user: UserVote = {
         name: '',
         phone: '',
         cpf: cpf,
         uf: '',
         city: '',
-        try_code_send: 0
+        try_code_send: 0,
+        id: 0,
+        confirmed_vote: false,
+        confirmed_phone: false,
+        date_create: new Date(),
+        date_vote: new Date(),
+        last_ip: ''
       };
       setUser(user);
       setStage(2);
       return;
     } catch (error: any) {
-      console.warn(error.message);
+      setError('cpf', {
+        type: 'validate',
+        message: error.message
+      });
     } finally {
       setLoading(false);
     }

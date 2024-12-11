@@ -1,6 +1,6 @@
 'use client';
 
-import { userVoting } from '@/model/user-voting';
+import { UserVote } from '@/model/user-voting';
 import InputSimple from '../input/input';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,9 +18,9 @@ import { registerUserVoting } from '@/service/login-voting';
 import ModalReturn from './modal-retuen';
 
 type Props = {
-  user: userVoting;
+  user: UserVote;
   setStage: Dispatch<SetStateAction<number>>;
-  setUser: Dispatch<SetStateAction<userVoting | undefined>>;
+  setUser: Dispatch<SetStateAction<UserVote | undefined>>;
   setLastPage: Dispatch<SetStateAction<number>>;
 };
 export default function Register({
@@ -77,7 +77,6 @@ export default function Register({
 
   const handleSubmitForm = async (user: FormUserVoting) => {
     try {
-      console.log(user);
       user.cpf = user.cpf.replaceAll(/\D/g, '');
       user.phone = user.phone.replaceAll(/\D/g, '');
       setLoading(true);

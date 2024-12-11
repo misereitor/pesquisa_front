@@ -50,7 +50,7 @@ export default function ModalAddCompany({
       const create = await cerateCompanyService(company);
       const updateCompany = [...companies, { ...create }];
       const sortedCompanies = updateCompany.sort((a, b) =>
-        a.company_name.localeCompare(b.company_name)
+        a.trade_name.localeCompare(b.trade_name)
       );
       setCompaniesList(sortedCompanies);
       setOpenModal(false);
@@ -64,9 +64,9 @@ export default function ModalAddCompany({
       }
       if (
         error.message ==
-        'duplicate key value violates unique constraint "company_company_name_key"'
+        'duplicate key value violates unique constraint "company_trade_name_key"'
       ) {
-        setError('Razão social já pertence a outra empresa');
+        setError('Nome Fantasia já pertence a outra empresa');
         return;
       }
       setError(error.message);
@@ -82,9 +82,9 @@ export default function ModalAddCompany({
             className="rounded-lg w-72 h-7"
             type="text"
             autoFocus
-            label="Razão social:"
-            errortext={errors.company_name?.message}
-            {...register('company_name')}
+            label="Nome Fantasia:"
+            errortext={errors.trade_name?.message}
+            {...register('trade_name')}
           />
         </div>
         <div>
@@ -92,9 +92,9 @@ export default function ModalAddCompany({
             className="rounded-lg w-72 h-7"
             type="text"
             autoFocus
-            label="Nome Fantasia:"
-            errortext={errors.trade_name?.message}
-            {...register('trade_name')}
+            label="Razão social:"
+            errortext={errors.company_name?.message}
+            {...register('company_name')}
           />
         </div>
         <div>
