@@ -33,11 +33,9 @@ export default function Votacao() {
 
       const userData: UserVote = JSON.parse(decodeURIComponent(userCookies));
 
-      const [categoriesData, companiesData, userVotesData] = await Promise.all([
-        getAllCategories(),
-        getAllCompany(),
-        getAllVotesByUser()
-      ]);
+      const categoriesData = await getAllCategories();
+      const userVotesData = await getAllVotesByUser();
+      const companiesData = await getAllCompany();
 
       console.log(categoriesData);
       console.log(companiesData);
