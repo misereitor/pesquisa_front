@@ -22,13 +22,16 @@ export async function getAllDataForVoteService() {
         }
       }
     );
+    console.log(response);
     const data = await response.json();
+    console.log(data);
     if (response.ok)
       return data.data as {
         companiesData: Company[];
         categoriesData: Category[];
         userVotesData: Vote[];
       };
+    console.log(data);
     throw new Error(data.message);
   } catch (error: any) {
     console.log(error);
