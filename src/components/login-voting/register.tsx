@@ -109,7 +109,6 @@ export default function Register({
           <InputSimple
             className="rounded-lg w-[96%] h-7 capitalize"
             type="text"
-            maxLength={14}
             label="Seu nome completo:"
             data-testid="name"
             errortext={errors.name?.message}
