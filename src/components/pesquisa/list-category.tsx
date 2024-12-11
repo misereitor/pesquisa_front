@@ -46,12 +46,14 @@ export default function ListCategoryPesquisa({ categories, companies }: Props) {
   useEffect(() => {
     const voteUser: VoteRow[] = [];
     categories.forEach((e, i) => {
-      const vote = userVotes.filter((el) => el.id_category == e.id);
-      if (vote.length === 1) {
-        voteUser.push({
-          row: i,
-          voteRow: true
-        });
+      if (userVotes.length > 0) {
+        const vote = userVotes.filter((el) => el.id_category == e.id);
+        if (vote.length === 1) {
+          voteUser.push({
+            row: i,
+            voteRow: true
+          });
+        }
       }
     });
     setVoteRow(voteUser);
