@@ -19,18 +19,24 @@ export default function Votacao() {
 
   useEffect(() => {
     (async () => {
+      console.log(1);
       try {
+        console.log(2);
         const userCookies = document.cookie
           .split('; ')
           .find((row) => row.startsWith('user='))
           ?.split('=')[1];
+        console.log(3);
 
         if (!userCookies) {
           window.location.href = '/'; // Redireciona se o cookie não existir
           return;
         }
+        console.log(4);
 
         const userData: UserVote = JSON.parse(decodeURIComponent(userCookies));
+        console.log(5);
+
         const { categoriesData, companiesData, userVotesData } =
           await getAllDataForVoteService();
 

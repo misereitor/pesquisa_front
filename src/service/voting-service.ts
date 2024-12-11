@@ -16,6 +16,7 @@ export async function getAllDataForVoteService() {
     const response = await fetch(
       `${API_URL}/api/voting/${openToken.id}/get-all-data`,
       {
+        method: 'GET',
         headers: {
           'X-API-KEY': String(X_API_KEY)
         }
