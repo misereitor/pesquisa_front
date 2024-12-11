@@ -37,7 +37,7 @@ export default function ListCategoryPesquisa({
   useEffect(() => {
     const voteUser: VoteRow[] = [];
     categories.forEach((e, i) => {
-      const vote = userVotes.filter((el) => el.id_category == e.id);
+      const vote = userVotes?.filter((el) => el.id_category == e.id);
       if (vote.length === 1) {
         voteUser.push({
           row: i,
