@@ -1,21 +1,85 @@
+'use client'; // Indicando que essa página deve ser renderizada no cliente
+
+import { useState, useEffect } from 'react';
 import ListCategoryPesquisa from '@/components/pesquisa/list-category';
+import { UserVote } from '@/model/user-voting';
 import { getAllCategories } from '@/service/category-service';
 import { getAllCompany } from '@/service/company-service';
-//import Link from 'next/link';
+import { getAllVotesByUser } from '@/service/voting-service';
+import Link from 'next/link';
+import { Category } from '@/model/category';
+import { Company } from '@/model/company';
+import { Vote } from '@/model/votes';
+import Loading from '../loading';
 
-export default async function Votacao() {
-  const categories = await getAllCategories();
-  const companies = await getAllCompany();
-  Promise.all([categories, companies]);
+export default function Votacao() {
+  const [user, setUser] = useState<UserVote | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [userVotes, setUserVotes] = useState<Vote[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // if (user.confirmed_vote) {
-  //   return (
-  //     <div className="flex flex-col items-center justify-center">
-  //       <h2>{user.name}, Você já participou da votação!</h2>
-  //       <Link href={'/'}>Clique aqui para retornar</Link>
-  //     </div>
-  //   );
-  // }
+  // UseEffect para carregar dados no client-side
+  useEffect(() => {
+    const fetchData = async () => {
+      // Acessando os cookies diretamente no client-side
+      const userCookies = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('user='))
+        ?.split('=')[1];
 
-  return <ListCategoryPesquisa categories={categories} companies={companies} />;
+      if (!userCookies) {
+        window.location.href = '/'; // Redireciona se o cookie não existir
+        return;
+      }
+
+      const userData: UserVote = JSON.parse(decodeURIComponent(userCookies));
+
+      // Carregando os dados das categorias, empresas e votos do usuário
+      const [categoriesData, companiesData, userVotesData] = await Promise.all([
+        getAllCategories(),
+        getAllCompany(),
+        getAllVotesByUser()
+      ]);
+
+      setUser(userData);
+      setCategories(categoriesData);
+      setCompanies(companiesData);
+      setUserVotes(userVotesData);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (user?.confirmed_vote) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <h2>{user.name}, Você já participou da votação!</h2>
+        <Link href="/">Clique aqui para retornar</Link>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <h2>Usuário não autenticado</h2>
+        <Link href="/">Clique aqui para retornar</Link>
+      </div>
+    );
+  }
+
+  return (
+    <ListCategoryPesquisa
+      categories={categories}
+      companies={companies}
+      userVotes={userVotes}
+      user={user}
+    />
+  );
 }
