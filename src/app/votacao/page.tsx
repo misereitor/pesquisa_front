@@ -35,7 +35,11 @@ export default function Votacao() {
 
       // Carregando os dados das categorias, empresas e votos do usuário
       const { categoriesData, companiesData, userVotesData } =
-        await getAllDataForVoteService(userData.id);
+        await getAllDataForVoteService();
+
+      console.log(categoriesData);
+      console.log(companiesData);
+      console.log(userVotesData);
 
       setUser(userData);
       setCategories(categoriesData);

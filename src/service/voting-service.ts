@@ -9,13 +9,18 @@ import { Category } from '@/model/category';
 
 const { API_URL, X_API_KEY } = process.env;
 
-export async function getAllDataForVoteService(id: number) {
+export async function getAllDataForVoteService() {
   try {
-    const response = await fetch(`${API_URL}/api/voting/${id}/get-all-data`, {
-      headers: {
-        'X-API-KEY': String(X_API_KEY)
+    const token = await tokenCookiesService();
+    const openToken = await valideTokenUserVotingService(token);
+    const response = await fetch(
+      `${API_URL}/api/voting/${openToken.id}/get-all-data`,
+      {
+        headers: {
+          'X-API-KEY': String(X_API_KEY)
+        }
       }
-    });
+    );
     const data = await response.json();
     if (response.ok)
       return data.data as {
