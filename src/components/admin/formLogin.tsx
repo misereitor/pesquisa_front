@@ -32,7 +32,6 @@ export default function FormLogin() {
       setLoading(true);
       setError('');
       const data = await loginUserAdmin(login);
-      console.log(data);
       if (data) {
         router.push('/admin/gestao/dashboard');
       }
