@@ -19,28 +19,30 @@ export default function Votacao() {
   const [userVotes, setUserVotes] = useState<Vote[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // UseEffect para carregar dados no client-side
   useEffect(() => {
     const fetchData = async () => {
-      // Acessando os cookies diretamente no client-side
       const userCookies = document.cookie
         .split('; ')
         .find((row) => row.startsWith('user='))
         ?.split('=')[1];
 
       if (!userCookies) {
-        window.location.href = '/'; // Redireciona se o cookie não existir
+        window.location.href = '/';
         return;
       }
 
       const userData: UserVote = JSON.parse(decodeURIComponent(userCookies));
 
-      // Carregando os dados das categorias, empresas e votos do usuário
       const [categoriesData, companiesData, userVotesData] = await Promise.all([
         getAllCategories(),
         getAllCompany(),
         getAllVotesByUser()
       ]);
+
+      console.log(categoriesData);
+      console.log(companiesData);
+      console.log(userVotesData);
+      console.log(userData);
 
       setUser(userData);
       setCategories(categoriesData);
