@@ -49,28 +49,24 @@ export default function ListCompanyVoting({
 
   useEffect(() => {
     userVotes.forEach((el) => {
-      if (Array.isArray(companies)) {
-        if (el.id_category === category.id) {
-          const company = companies.filter((co) => co.id == el.id_company);
-          if (company.length > 0) {
-            const companyAssociate = category.companies?.filter(
-              (e) => e.id === company[0].id
-            );
-            if (
-              companyAssociate &&
-              companyAssociate?.length > 0 &&
-              company[0].associate
-            ) {
-              setSelected(`${category.name}${company[0].id}`);
-              return;
-            }
-            setSelected('outros');
-            setValue(company[0].trade_name);
-            setCompanySelected(company[0]);
+      if (el.id_category === category.id) {
+        const company = companies.filter((co) => co.id == el.id_company);
+        if (company.length > 0) {
+          const companyAssociate = category.companies?.filter(
+            (e) => e.id === company[0].id
+          );
+          if (
+            companyAssociate &&
+            companyAssociate?.length > 0 &&
+            company[0].associate
+          ) {
+            setSelected(`${category.name}${company[0].id}`);
+            return;
           }
+          setSelected('outros');
+          setValue(company[0].trade_name);
+          setCompanySelected(company[0]);
         }
-      } else {
-        console.error('userVotes não é um array:', userVotes);
       }
     });
   }, [category, companies, userVotes]);

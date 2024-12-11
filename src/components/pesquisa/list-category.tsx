@@ -36,25 +36,17 @@ export default function ListCategoryPesquisa({
 
   useEffect(() => {
     const voteUser: VoteRow[] = [];
-
-    if (Array.isArray(userVotes)) {
-      categories.forEach((category, index) => {
-        const votes = userVotes.filter(
-          (vote) => vote.id_category === category.id
-        );
-        if (votes.length === 1) {
-          voteUser.push({
-            row: index,
-            voteRow: true
-          });
-        }
-      });
-      setVoteRow(voteUser);
-      setPagLoading(false);
-    } else {
-      console.error('userVotes não é um array:', userVotes);
-      setPagLoading(false);
-    }
+    categories.forEach((e, i) => {
+      const vote = userVotes.filter((el) => el.id_category == e.id);
+      if (vote.length === 1) {
+        voteUser.push({
+          row: i,
+          voteRow: true
+        });
+      }
+    });
+    setVoteRow(voteUser);
+    setPagLoading(false);
   }, [categories, userVotes]);
 
   const handleVote = async () => {
