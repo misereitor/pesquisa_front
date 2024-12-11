@@ -48,29 +48,27 @@ export default function ListCompanyVoting({
   };
 
   useEffect(() => {
-    if (userVotes.length > 0) {
-      userVotes.forEach((el) => {
-        if (el.id_category === category.id) {
-          const company = companies.filter((co) => co.id == el.id_company);
-          if (company.length > 0) {
-            const companyAssociate = category.companies?.filter(
-              (e) => e.id === company[0].id
-            );
-            if (
-              companyAssociate &&
-              companyAssociate?.length > 0 &&
-              company[0].associate
-            ) {
-              setSelected(`${category.name}${company[0].id}`);
-              return;
-            }
-            setSelected('outros');
-            setValue(company[0].trade_name);
-            setCompanySelected(company[0]);
+    userVotes?.forEach((el) => {
+      if (el.id_category === category.id) {
+        const company = companies.filter((co) => co.id == el.id_company);
+        if (company.length > 0) {
+          const companyAssociate = category.companies?.filter(
+            (e) => e.id === company[0].id
+          );
+          if (
+            companyAssociate &&
+            companyAssociate?.length > 0 &&
+            company[0].associate
+          ) {
+            setSelected(`${category.name}${company[0].id}`);
+            return;
           }
+          setSelected('outros');
+          setValue(company[0].trade_name);
+          setCompanySelected(company[0]);
         }
-      });
-    }
+      }
+    });
   }, [category, companies, userVotes]);
 
   const handleSubmit = async (row: Company) => {
