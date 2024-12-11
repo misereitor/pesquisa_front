@@ -31,14 +31,16 @@ const votingRoutes = ['/votacao', '/sucesso'];
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
+  console.log(pathname);
   if (publicRoutes.includes(pathname)) {
     return NextResponse.next();
   }
+  console.log(pathname);
   const cookieStore = await cookies();
   const token = cookieStore.get('token');
+  console.log(token);
   try {
     const user = await valideTokenUserAdminService(token?.value);
-    console.log(user);
     if (user.roles.includes('superadmin')) {
       if (!superadminRoutes.includes(pathname)) {
         return NextResponse.redirect(new URL('/admin', req.url));
