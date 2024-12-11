@@ -48,7 +48,7 @@ export default function ListCompanyVoting({
   };
 
   useEffect(() => {
-    userVotes?.forEach((el) => {
+    userVotes.forEach((el) => {
       if (el.id_category === category.id) {
         const company = companies.filter((co) => co.id == el.id_company);
         if (company.length > 0) {
