@@ -8,8 +8,8 @@ import {
   useEffect
 } from 'react';
 import { InputHTMLAttributes, forwardRef, useId } from 'react';
-import { substitutionDictionary } from '@/util/dictionary';
 import { Company } from '@/model/company';
+import { DictionaryEntry } from '@/model/dictionary';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   options: Company[];
@@ -20,6 +20,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   handleSubmit: (row: Company) => Promise<void>;
   setValue: Dispatch<SetStateAction<string>>;
   value: string;
+  dictionaryFromService: DictionaryEntry[];
 };
 
 function removeAccents(text: string) {
@@ -32,7 +33,7 @@ function highlightMatch(word: string, query: string) {
 }
 
 function buildUniversalDictionary(
-  dictionary: Record<string, string[]>
+  dictionary: { key_word: string; synonyms: string[] }[]
 ): Record<string, string[]> {
   const universalDict: Record<string, Set<string>> = {};
 
@@ -51,10 +52,13 @@ function buildUniversalDictionary(
     });
   };
 
-  Object.entries(dictionary).forEach(([key, values]) => {
-    connectWords(key, values);
-    values.forEach((value) =>
-      connectWords(value, [key, ...values.filter((v) => v !== value)])
+  dictionary.forEach(({ key_word, synonyms }) => {
+    connectWords(key_word, synonyms);
+    synonyms.forEach((synonym) =>
+      connectWords(synonym, [
+        key_word,
+        ...synonyms.filter((v) => v !== synonym)
+      ])
     );
   });
 
@@ -70,13 +74,15 @@ function expandWithUniversalDictionary(
   fragment: string,
   dictionary: Record<string, string[]>
 ): string[] {
-  const expandedWords = Object.keys(dictionary).flatMap((key) => {
-    const cleanKey = removeAccents(key.toLowerCase());
-    if (cleanKey.includes(fragment)) {
-      return dictionary[cleanKey];
+  const expandedWords = Object.entries(dictionary).flatMap(
+    ([key, synonyms]) => {
+      const cleanKey = removeAccents(key.toLowerCase());
+      if (cleanKey.includes(fragment)) {
+        return [key, ...synonyms];
+      }
+      return [];
     }
-    return [];
-  });
+  );
   return expandedWords.length > 0 ? expandedWords : [fragment];
 }
 
@@ -91,6 +97,7 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
       handleSubmit,
       setValue,
       value,
+      dictionaryFromService,
       ...props
     },
     ref
@@ -139,8 +146,8 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
     }, [value, filteredOptions, inputId]);
 
     const universalDictionary = useMemo(
-      () => buildUniversalDictionary(substitutionDictionary),
-      []
+      () => buildUniversalDictionary(dictionaryFromService),
+      [dictionaryFromService]
     );
 
     const handleChange = (inputValue: string) => {

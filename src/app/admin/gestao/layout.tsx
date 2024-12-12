@@ -13,7 +13,8 @@ const navigation = {
       path: '',
       submenu: [
         { title: 'Empresas', path: '/admin/gestao/empresas' },
-        { title: 'Categorias', path: '/admin/gestao/categorias' }
+        { title: 'Categorias', path: '/admin/gestao/categorias' },
+        { title: 'Dicionário', path: '/admin/gestao/dicionario' }
       ]
     },
     {

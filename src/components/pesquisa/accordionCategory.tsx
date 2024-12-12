@@ -14,6 +14,7 @@ import { FaCheck } from 'react-icons/fa';
 import ListCompanyVoting from './list-company';
 import { Company } from '@/model/company';
 import { Vote, VoteRow } from '@/model/votes';
+import { DictionaryEntry } from '@/model/dictionary';
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -63,6 +64,7 @@ type Props = {
   voteRow: VoteRow[];
   setLoading: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
+  dictionaryFromService: DictionaryEntry[];
 };
 
 export default function AccordionCategoryVote({
@@ -72,7 +74,8 @@ export default function AccordionCategoryVote({
   setVoteRow,
   voteRow,
   loading,
-  setLoading
+  setLoading,
+  dictionaryFromService
 }: Props) {
   const [expanded, setExpanded] = useState<string | false>('');
 
@@ -137,6 +140,7 @@ export default function AccordionCategoryVote({
           <AccordionDetails>
             <Typography component={'span'}>
               <ListCompanyVoting
+                dictionaryFromService={dictionaryFromService}
                 loading={loading}
                 setLoading={setLoading}
                 handleExpand={handleExpand}

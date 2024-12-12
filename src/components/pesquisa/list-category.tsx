@@ -11,18 +11,21 @@ import LoadingButton from '../button/loading-button';
 import Modal from '../modal/modal';
 import ModalConfirmVote from './modal-confirm-vote';
 import Loading from '@/app/loading';
+import { DictionaryEntry } from '@/model/dictionary';
 
 type Props = {
   categories: Category[];
   companies: Company[];
   userVotes: Vote[];
   user: UserVote;
+  dictionaryFromService: DictionaryEntry[];
 };
 export default function ListCategoryPesquisa({
   categories,
   companies,
   userVotes,
-  user
+  user,
+  dictionaryFromService
 }: Props) {
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -57,7 +60,7 @@ export default function ListCategoryPesquisa({
   if (pageLoading) {
     return <Loading />;
   }
-
+  console.log(dictionaryFromService);
   return (
     <div>
       <div className="w-3/4 max-w-3xl mx-auto">
@@ -77,6 +80,7 @@ export default function ListCategoryPesquisa({
             categories={categories}
             companies={companies}
             userVotes={userVotes}
+            dictionaryFromService={dictionaryFromService}
           />
         </div>
         <div className="mt-6 mb-36 flex justify-end">

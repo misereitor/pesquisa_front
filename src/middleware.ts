@@ -20,7 +20,8 @@ const adminRoutes = [
   '/admin/gestao/relatorios/cidade',
   '/admin/gestao/relatorios/geral',
   '/admin/gestao/relatorios/sorteio',
-  '/admin/gestao/perfil'
+  '/admin/gestao/perfil',
+  '/admin/gestao/dicionario'
 ];
 const superadminRoutes = [
   ...adminRoutes,
@@ -41,7 +42,6 @@ export async function middleware(req: NextRequest) {
   }
   try {
     const user = await valideTokenUserAdminService(token.value);
-    console.log(user);
     if (user.roles.includes('superadmin')) {
       if (!superadminRoutes.includes(pathname)) {
         return NextResponse.redirect(new URL('/admin', req.url));
@@ -57,7 +57,6 @@ export async function middleware(req: NextRequest) {
     }
     return NextResponse.redirect(new URL('/admin', req.url));
   } catch (error) {
-    console.log(error);
     try {
       if (votingRoutes.includes(pathname)) {
         await valideTokenUserVotingService(token?.value);

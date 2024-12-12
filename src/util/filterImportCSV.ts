@@ -32,7 +32,6 @@ export function filterImportCSV(csv: Csvimport) {
     if (c[4] !== '') {
       category = c[4].split('|');
     }
-    console.log(cleanText(c[2]));
     const res: ImportCSV = {
       trade_name: c[0],
       company_name: c[1],

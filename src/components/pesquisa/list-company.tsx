@@ -11,6 +11,7 @@ import {
 import InputAutocomplete from '../input/input-autocomplete';
 import { createVoteService } from '@/service/voting-service';
 import { Vote, VoteRow } from '@/model/votes';
+import { DictionaryEntry } from '@/model/dictionary';
 
 type Props = {
   companies: Company[];
@@ -22,6 +23,7 @@ type Props = {
   setLoading: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
   userVotes: Vote[];
+  dictionaryFromService: DictionaryEntry[];
   handleExpand: (
     // eslint-disable-next-line no-unused-vars
     panel: string
@@ -38,7 +40,8 @@ export default function ListCompanyVoting({
   userVotes,
   handleExpand,
   loading,
-  setLoading
+  setLoading,
+  dictionaryFromService
 }: Props) {
   const [selected, setSelected] = useState('');
   const [companySelected, setCompanySelected] = useState<Company>();
@@ -142,6 +145,7 @@ export default function ListCompanyVoting({
               options={companies}
               companySelected={companySelected}
               setCompanySelected={setCompanySelected}
+              dictionaryFromService={dictionaryFromService}
               name="outros"
             />
           )}

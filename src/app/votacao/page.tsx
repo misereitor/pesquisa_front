@@ -9,6 +9,7 @@ import { Category } from '@/model/category';
 import { Company } from '@/model/company';
 import { Vote } from '@/model/votes';
 import Loading from '../loading';
+import { DictionaryEntry } from '@/model/dictionary';
 
 export default function Votacao() {
   const [user, setUser] = useState<UserVote | null>(null);
@@ -16,6 +17,9 @@ export default function Votacao() {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [userVotes, setUserVotes] = useState<Vote[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dictionaryFromService, setDictionaryFromService] = useState<
+    DictionaryEntry[]
+  >([]);
 
   useEffect(() => {
     (async () => {
@@ -31,13 +35,14 @@ export default function Votacao() {
         }
 
         const userData: UserVote = JSON.parse(decodeURIComponent(userCookies));
-        const { categoriesData, companiesData, userVotesData } =
+        const { categoriesData, companiesData, userVotesData, dictionaryData } =
           await getAllDataForVoteService();
 
         setUser(userData);
         setCategories(categoriesData);
         setCompanies(companiesData);
         setUserVotes(userVotesData);
+        setDictionaryFromService(dictionaryData);
         setLoading(false);
       } catch (error) {
         console.error('Erro ao buscar os dados:', error);
@@ -74,6 +79,7 @@ export default function Votacao() {
       companies={companies}
       userVotes={userVotes}
       user={user}
+      dictionaryFromService={dictionaryFromService}
     />
   );
 }

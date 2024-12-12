@@ -61,6 +61,7 @@ export default function FilterCompany({
     };
     applyFilters();
   }, [companies, filterCompany, setCompaniesFilter, setLoadingPage, view]);
+
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
