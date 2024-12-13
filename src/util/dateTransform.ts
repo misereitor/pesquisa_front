@@ -1,3 +1,4 @@
+'use client';
 import { UserVote } from '@/model/user-voting';
 
 type Data = {
@@ -104,8 +105,8 @@ export const dateTrasnform = (value: UserVote[], date: string) => {
     }
   ];
   value.forEach((e) => {
-    if (e.date_vote?.toLocaleDateString() == date) {
-      data[e.date_vote.getHours()].uv++;
+    if (new Date(e.date_vote).toLocaleDateString() == date) {
+      data[new Date(e.date_vote).getHours()].uv++;
     }
   });
   return data;

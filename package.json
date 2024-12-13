@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.13.5",
     "@hookform/resolvers": "^3.9.1",
     "@mui/material": "^6.1.9",
+    "@react-input/mask": "^2.0.4",
     "cookies-next": "^5.0.2",
     "jose": "^5.9.6",
     "next": "15.0.3",
@@ -22,6 +23,7 @@
     "react-icons": "^5.3.0",
     "react-papaparse": "^4.4.0",
     "react-window": "^1.8.10",
+    "recharts": "^2.15.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

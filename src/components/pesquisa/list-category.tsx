@@ -60,7 +60,6 @@ export default function ListCategoryPesquisa({
   if (pageLoading) {
     return <Loading />;
   }
-  console.log(dictionaryFromService);
   return (
     <div>
       <div className="w-3/4 max-w-3xl mx-auto">
