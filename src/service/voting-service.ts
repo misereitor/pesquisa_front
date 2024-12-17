@@ -31,9 +31,13 @@ export async function getAllDataForVoteService() {
         userVotesData: Vote[];
         dictionaryData: DictionaryEntry[];
       };
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllDataForVoteService:', error);
+    throw error;
   }
 }
 
@@ -51,10 +55,14 @@ export async function getAllVotesByUser() {
     );
     const data = await response.json();
     if (response.ok) return data.data as Vote[];
-    throw new Error(data.message);
-  } catch (error: any) {
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    console.error('Error in getAllVotesByUser:', error);
+    throw error;
   }
 }
 
@@ -80,10 +88,16 @@ export async function createVoteService(
       body: JSON.stringify(vote)
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message);
-  } catch (error: any) {
+    if (!response.ok) {
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
+    }
+  } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    console.error('Error in createVoteService:', error);
+    throw error;
   }
 }
 
@@ -105,9 +119,15 @@ export async function confirmVoteService(progress: number) {
       body: JSON.stringify(user)
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message);
-  } catch (error: any) {
+    if (!response.ok) {
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
+    }
+  } catch (error) {
     console.log(error);
-    throw new Error(error.message);
+    console.error('Error in confirmVoteService:', error);
+    throw error;
   }
 }

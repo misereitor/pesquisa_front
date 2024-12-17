@@ -16,8 +16,8 @@ export async function getCitiesBrazil(uf: string) {
       return cities;
     }
     throw new Error('Falha na api externa do IBGE');
-  } catch (error: any) {
+  } catch (error) {
     console.error('Erro ao fazer a requisição:', error);
-    throw new Error(error.message);
+    throw error;
   }
 }

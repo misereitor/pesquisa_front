@@ -37,7 +37,7 @@ export default function ListCompany({ companies, setCompaniesList }: Props) {
       );
       setCompaniesList(updatedCompanies);
     } catch (error: any) {
-      console.error(error.message);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoading(false);
     }

@@ -25,7 +25,7 @@ export default function ModalConfirmVote({
       await confirmVoteService(progress);
       route.push('/sucesso');
     } catch (error: any) {
-      console.log(error);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoadingSubit(false);
     }

@@ -10,8 +10,9 @@ export async function valideTokenUserVotingService(token: string | undefined) {
     const secret = new TextEncoder().encode(SECRET_KEY_VOTING);
     const { payload } = await jose.jwtVerify(token, secret);
     return payload as OpenTokenUserVoting;
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in valide code:', error);
+    throw error;
   }
 }
 
@@ -21,8 +22,9 @@ export async function valideTokenUserAdminService(token: string | undefined) {
     const secret = new TextEncoder().encode(SECRET_KEY_ADMIN);
     const { payload } = await jose.jwtVerify(token, secret);
     return payload as OpenToken;
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in valide code:', error);
+    throw error;
   }
 }
 

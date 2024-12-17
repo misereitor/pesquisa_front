@@ -87,7 +87,15 @@ export default function Register({
         setStage(3);
       }
     } catch (error: any) {
-      setError(error.message);
+      console.error('Error in handleSubmitForm:', error);
+
+      if (error.name === 'Error') {
+        // Caso o backend tenha retornado uma mensagem de erro específica
+        setError(error.message);
+      } else {
+        // Erro genérico (ex.: problemas de rede)
+        setError('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+      }
     } finally {
       setLoading(false);
     }

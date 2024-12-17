@@ -17,9 +17,13 @@ export async function insertDictionaryService(dictionary: DictionaryEntry) {
     if (response.ok) {
       return data.data as DictionaryEntry;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in insertDictionaryService:', error);
+    throw error;
   }
 }
 
@@ -34,9 +38,13 @@ export async function getAllDictionaryService() {
     if (response.ok) {
       return data.data as DictionaryEntry[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllDictionaryService:', error);
+    throw error;
   }
 }
 
@@ -52,10 +60,14 @@ export async function updateDictionaryService(dictionary: DictionaryEntry) {
     });
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message);
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in updateDictionaryService:', error);
+    throw error;
   }
 }
 
@@ -74,9 +86,13 @@ export async function deleteDictionaryService(dictionary: DictionaryEntry) {
     );
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message);
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in deleteDictionaryService:', error);
+    throw error;
   }
 }

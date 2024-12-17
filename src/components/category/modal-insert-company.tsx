@@ -92,7 +92,7 @@ export default function ModalInsertCompanyFromCategory({
       setCategoryList(updateCategories);
       setOpenModal(false);
     } catch (error: any) {
-      console.error(error.message);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoadingButton(false);
     }

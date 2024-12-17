@@ -94,7 +94,7 @@ export default function ListCompanyVoting({
         }
       ]);
     } catch (error: any) {
-      console.log(error);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoading(false);
     }

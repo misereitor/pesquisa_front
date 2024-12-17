@@ -23,8 +23,12 @@ export async function loginUserAdmin(login: FormUserAdmin) {
         return true;
       }
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in loginUserAdmin:', error);
+    throw error;
   }
 }

@@ -16,9 +16,13 @@ export async function getAllCompany() {
     if (response.ok) {
       return data.data as Company[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllCompany:', error);
+    throw error;
   }
 }
 
@@ -36,9 +40,13 @@ export async function cerateCompanyService(company: FormCompanyEdit) {
     if (response.ok) {
       return data.data as Company;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in cerateCompanyService:', error);
+    throw error;
   }
 }
 
@@ -56,9 +64,13 @@ export async function updateCompanyService(company: Company) {
     if (response.ok) {
       return data.data as Company;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in updateCompanyService:', error);
+    throw error;
   }
 }
 
@@ -76,9 +88,13 @@ export async function associateCompany(id: number, associate: boolean) {
     if (response.ok) {
       return data.data as Company[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in associateCompany:', error);
+    throw error;
   }
 }
 
@@ -93,9 +109,13 @@ export async function deleteCompany(id: number) {
     });
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message);
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in deleteCompany:', error);
+    throw error;
   }
 }

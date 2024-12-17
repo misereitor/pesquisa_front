@@ -36,7 +36,16 @@ export default function FormLogin() {
         router.push('/admin/gestao/dashboard');
       }
     } catch (error: any) {
-      setError(error.message);
+      console.log(error.name);
+      console.error('Error in handleSubmitForm:', error);
+
+      if (error.message === 'Login ou senha inválidos') {
+        // Caso o backend tenha retornado uma mensagem de erro específica
+        setError(error.message);
+      } else {
+        // Erro genérico (ex.: problemas de rede)
+        setError('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+      }
     } finally {
       setLoading(false);
     }

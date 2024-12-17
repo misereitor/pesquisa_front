@@ -105,7 +105,7 @@ export default function ModalListImport({
         location.reload();
       }, 1000);
     } catch (error: any) {
-      console.error(error.message);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoading(false);
     }

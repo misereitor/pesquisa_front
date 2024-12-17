@@ -80,21 +80,29 @@ export default function ModalEditCompanyByCategory({
       setCompanyEdit(undefined);
       setOpenModal(false);
     } catch (error: any) {
-      if (
-        error.message ==
-        'duplicate key value violates unique constraint "company_cnpj_key"'
-      ) {
-        setError('CNPJ já pertence a outra empresa');
-        return;
+      console.error('Error in handleSubmitForm:', error);
+
+      if (error.name === 'Error') {
+        // Caso o backend tenha retornado uma mensagem de erro específica
+
+        if (
+          error.message ==
+          'duplicate key value violates unique constraint "company_cnpj_key"'
+        ) {
+          setError('CNPJ já pertence a outra empresa');
+          return;
+        }
+        if (
+          error.message ==
+          'duplicate key value violates unique constraint "company_trade_name_key"'
+        ) {
+          setError('Nome fantasia já pertence a outra empresa');
+          return;
+        }
+      } else {
+        // Erro genérico (ex.: problemas de rede)
+        setError('Ocorreu um erro inesperado. Tente novamente mais tarde.');
       }
-      if (
-        error.message ==
-        'duplicate key value violates unique constraint "company_trade_name_key"'
-      ) {
-        setError('Nome fantasia já pertence a outra empresa');
-        return;
-      }
-      setError(error.message);
     } finally {
       setLoading(false);
     }

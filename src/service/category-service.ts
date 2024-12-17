@@ -16,9 +16,13 @@ export async function getAllCategories() {
     if (response.ok) {
       return data.data as Category[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllCategories:', error);
+    throw error;
   }
 }
 
@@ -36,9 +40,13 @@ export async function createCategoryService(name: string) {
     if (response.ok) {
       return data.data as Category;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in createCategoryService:', error);
+    throw error;
   }
 }
 
@@ -54,10 +62,14 @@ export async function updateCategoryService(category: Category) {
     });
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message);
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in updateCategoryService:', error);
+    throw error;
   }
 }
 
@@ -75,10 +87,14 @@ export async function deleteCategoryService(id_category: number) {
     );
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message);
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in deleteCategoryService:', error);
+    throw error;
   }
 }
 
@@ -96,10 +112,14 @@ export async function createAssociationCategoryService(
     });
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message);
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in createAssociationCategoryService:', error);
+    throw error;
   }
 }
 
@@ -120,8 +140,12 @@ export async function removeCompanyFromCategory(
     if (response.ok) {
       return data.data as Category[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in removeCompanyFromCategory:', error);
+    throw error;
   }
 }

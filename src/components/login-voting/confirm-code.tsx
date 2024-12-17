@@ -56,7 +56,7 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
       await checkCpfExist(user.cpf);
       setTime(120);
     } catch (error: any) {
-      console.warn(error.message);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoading(false);
     }
@@ -69,10 +69,15 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
       const success = await confirmCode(code.join(''), user.phone);
       if (success) router.push('/votacao');
     } catch (error: any) {
-      if (error.message == 'Código incorreto')
-        setError(
-          'código incorreto, verifique o código digitado e tente novamente'
-        );
+      console.error('Error in handleSubmitForm:', error);
+
+      if (error.name === 'Error') {
+        // Caso o backend tenha retornado uma mensagem de erro específica
+        setError('código incorreto');
+      } else {
+        // Erro genérico (ex.: problemas de rede)
+        setError('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+      }
     } finally {
       setLoading(false);
     }

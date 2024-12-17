@@ -21,9 +21,13 @@ export async function createUserAdminService(userAdmin: FormAddUserAdmin) {
     if (response.ok) {
       return data.data as userAdmin;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in createUserAdminService:', error);
+    throw error;
   }
 }
 
@@ -39,9 +43,13 @@ export async function getAllUsersAdminService() {
     if (response.ok) {
       return data.data as userAdmin[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllUsersAdminService:', error);
+    throw error;
   }
 }
 
@@ -65,9 +73,13 @@ export async function updateProfileAdmin(
     if (response.ok) {
       return data.data as userAdmin;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in updateProfileAdmin:', error);
+    throw error;
   }
 }
 
@@ -88,9 +100,13 @@ export async function updateRoleAdmin(id: number, role: string) {
     if (response.ok) {
       return data.data as userAdmin;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in updateRoleAdmin:', error);
+    throw error;
   }
 }
 
@@ -111,9 +127,13 @@ export async function updatePasswordAdmin(id: number, password: string) {
     if (response.ok) {
       return data.data as userAdmin;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in updatePasswordAdmin:', error);
+    throw error;
   }
 }
 
@@ -130,8 +150,12 @@ export async function deleteUserAdminService(id: number) {
     if (response.ok) {
       return data.data as userAdmin;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in deleteUserAdminService:', error);
+    throw error;
   }
 }

@@ -39,7 +39,7 @@ export default function ListDictionary({
       setDictionary(updateDictionary);
       setEdit(false);
     } catch (error: any) {
-      console.warn(error);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ export default function ListDictionary({
       );
       setDictionary(updateDictionary);
     } catch (error: any) {
-      console.warn(error);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoading(false);
     }

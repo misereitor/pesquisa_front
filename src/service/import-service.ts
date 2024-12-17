@@ -17,9 +17,13 @@ export async function importCompanyAndCategoryService(
     });
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message);
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error) {
+    console.error('Error in importCompanyAndCategoryService:', error);
+    throw error;
   }
 }

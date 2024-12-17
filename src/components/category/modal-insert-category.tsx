@@ -29,7 +29,7 @@ export default function ModalInsertCompany({
       setListCategories(sortedCategory);
       setOpenModal(false);
     } catch (error: any) {
-      console.error(error.message);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoading(false);
     }

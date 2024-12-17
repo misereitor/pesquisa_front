@@ -12,9 +12,13 @@ export async function checkCpfExist(cpf: string) {
     });
     const data = await response.json();
     if (response.ok) return data;
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in checkCpfExist:', error);
+    throw error;
   }
 }
 
@@ -32,9 +36,13 @@ export async function registerUserVoting(user: FormUserVoting) {
     if (response.ok) {
       return data.data;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in registerUserVoting:', error);
+    throw error;
   }
 }
 
@@ -56,11 +64,17 @@ export async function confirmCode(code: string, phone: string) {
         cookieStore.set('user', JSON.stringify(data.data.user));
         return true;
       }
-      throw new Error(data.message);
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    console.log(error);
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in confirmCode:', error);
+    throw error;
   }
 }

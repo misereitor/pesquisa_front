@@ -42,7 +42,7 @@ export default function ListCompanyInAccordion({
       });
       setCategories(categoriesUpdate);
     } catch (error: any) {
-      console.log(error.message);
+      console.error('Error in handleSubmitForm:', error);
     } finally {
       setLoading(false);
     }

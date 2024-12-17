@@ -66,10 +66,21 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
       setStage(2);
       return;
     } catch (error: any) {
-      setError('cpf', {
-        type: 'validate',
-        message: error.message
-      });
+      console.error('Error in handleSubmitForm:', error);
+
+      if (error.name === 'Error') {
+        // Caso o backend tenha retornado uma mensagem de erro específica
+        setError('cpf', {
+          type: 'validate',
+          message: 'CPF já votou'
+        });
+      } else {
+        // Erro genérico (ex.: problemas de rede)
+        setError('cpf', {
+          type: 'validate',
+          message: 'Erro interno'
+        });
+      }
     } finally {
       setLoading(false);
     }

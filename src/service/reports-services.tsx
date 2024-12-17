@@ -27,9 +27,13 @@ export async function getAllDataDashboard() {
       };
       return data.data as Data;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllDataDashboard:', error);
+    throw error;
   }
 }
 
@@ -53,9 +57,13 @@ export async function getAllDataReportGeral() {
     if (response.ok) {
       return data.data as Data;
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllDataReportGeral:', error);
+    throw error;
   }
 }
 
@@ -75,9 +83,13 @@ export async function getAllDataReportCategory() {
     if (response.ok) {
       return data.data as CategoryVotes[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllDataReportCategory:', error);
+    throw error;
   }
 }
 
@@ -97,9 +109,13 @@ export async function getAllDataReportCity() {
     if (response.ok) {
       return data.data as TotalCountForCity[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllDataReportCity:', error);
+    throw error;
   }
 }
 
@@ -119,8 +135,12 @@ export async function getAllDataReportPercentagem() {
     if (response.ok) {
       return data.data as UserVote[];
     }
-    throw new Error(data.message);
-  } catch (error: any) {
-    throw new Error(error.message);
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllDataReportPercentagem:', error);
+    throw error;
   }
 }
