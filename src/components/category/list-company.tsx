@@ -1,5 +1,6 @@
 'use client';
 import { Category } from '@/model/category';
+import { Company } from '@/model/company';
 import { removeCompanyFromCategory } from '@/service/category-service';
 import { Dispatch, SetStateAction } from 'react';
 import { MdAddBusiness, MdEditNote } from 'react-icons/md';
@@ -9,9 +10,11 @@ type Props = {
   category: Category;
   setCategories: Dispatch<SetStateAction<Category[]>>;
   setOpenModalInsertCompany: Dispatch<SetStateAction<boolean>>;
+  setOpenModalEditCompany: Dispatch<SetStateAction<boolean>>;
   categories: Category[];
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  setCompanyEdit: Dispatch<SetStateAction<Company | undefined>>;
 };
 
 export default function ListCompanyInAccordion({
@@ -20,7 +23,9 @@ export default function ListCompanyInAccordion({
   setLoading,
   categories,
   setCategories,
-  setOpenModalInsertCompany
+  setOpenModalInsertCompany,
+  setCompanyEdit,
+  setOpenModalEditCompany
 }: Props) {
   const handleRemoveAssociation = async (id_company: number) => {
     try {
@@ -106,10 +111,10 @@ export default function ListCompanyInAccordion({
               <td className="py-3 px-4 text-center">
                 <button
                   type="button"
-                  // onClick={() => {
-                  //   setOpenModalUpdate(true);
-                  //   setCompanyEdit(row);
-                  // }}
+                  onClick={() => {
+                    setOpenModalEditCompany(true);
+                    setCompanyEdit(company);
+                  }}
                   disabled={loading}
                 >
                   <MdEditNote

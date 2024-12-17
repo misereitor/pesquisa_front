@@ -51,6 +51,7 @@ export default function FormLogin() {
             width={250}
             height={250}
             alt="Melhores do Ano"
+            priority
             style={{ width: 'auto', height: '100px' }}
           ></Image>
         </div>

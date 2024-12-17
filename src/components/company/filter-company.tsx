@@ -15,24 +15,25 @@ type Props = {
   companies: Company[];
   setCompaniesList: Dispatch<SetStateAction<Company[]>>;
   setCompaniesFilter: Dispatch<SetStateAction<Company[]>>;
-  companiesFilter: Company[];
   setLoadingPage: Dispatch<SetStateAction<boolean>>;
   loadingPage: boolean;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  currentPage: number;
+  totalIndex: number;
 };
-const ITEMS_PER_PAGE = 100;
 export default function FilterCompany({
   companies,
   setCompaniesList,
-  companiesFilter,
+  totalIndex,
   setCompaniesFilter,
   setLoadingPage,
-  loadingPage
+  loadingPage,
+  currentPage,
+  setCurrentPage
 }: Props) {
-  const [currentPage, setCurrentPage] = useState(1);
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [view, setView] = useState('all');
   const [filterCompany, setFilterCompany] = useState('');
-  const totalIndex = Math.ceil(companiesFilter.length / ITEMS_PER_PAGE);
   const [importCSV, setImportCSV] = useState<Csvimport | null>(null);
   const [openModalImport, setOpenModalInsert] = useState(false);
   const [csvTransform, seCsvTransform] = useState<ImportCSV[] | null>(null);

@@ -46,6 +46,7 @@ export default function ListCompanyVoting({
   const [selected, setSelected] = useState('');
   const [companySelected, setCompanySelected] = useState<Company>();
   const [value, setValue] = useState('');
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelected(event.target.value);
   };
@@ -80,8 +81,11 @@ export default function ListCompanyVoting({
       await createVoteService(category.id, row.id);
       const isVote = voteRow.find((r) => r.row === rowIndex);
       setExpanded((rowIndex + 1).toString() as any);
+      handleExpand((rowIndex + 1).toString())(
+        {} as React.SyntheticEvent, // Simula um evento vazio
+        true // Expande o Accordion
+      );
       if (isVote) return;
-      handleExpand(rowIndex.toString());
       setVoteRow([
         ...voteRow,
         {

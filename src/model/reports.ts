@@ -7,7 +7,7 @@ export interface VotesReports {
 
 export interface CategoryVotes {
   category_name: string;
-  total_votes: number;
+  total: number;
   companies: CategoryVotesCompany[];
 }
 

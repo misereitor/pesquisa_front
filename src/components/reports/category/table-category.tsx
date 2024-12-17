@@ -41,9 +41,10 @@ export default function TableCategoryReport({
   return (
     <div>
       <div className="bg-zinc-900 m-1 p-1 flex justify-between">
-        <div>
+        <div className="flex flex-col items-center justify-center">
           <h2 className="ml-4">Filtros</h2>
           <Link
+            className="ml-4"
             href={`${apiUrl}/api/reports/download/category?apikey=${xapikey}`}
             target="_blank"
           >
@@ -91,7 +92,7 @@ export default function TableCategoryReport({
                 {category.category_name}
               </td>
               <td className="border border-solid border-black p-2 text-center">
-                {category.total_votes}
+                {category.total}
               </td>
             </tr>
             {category.companies.map((company) => (

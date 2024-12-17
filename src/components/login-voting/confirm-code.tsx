@@ -92,52 +92,65 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
           Por favor, digite o código que enviamos para:
         </p>
         <p className="text-center font-semibold mt-2">{user.phone}</p>
-        <div className="flex justify-center mt-6">
-          <div className="flex gap-2">
-            {code.map((value, index) => (
-              <input
-                key={index}
-                id={`input-${index}`}
-                type="text"
-                maxLength={1}
-                value={value}
-                onChange={(e) => handleInputChange(e.target.value, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                className="w-10 h-12 text-center border-gray-300 rounded-md text-lg pl-0"
-              />
-            ))}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault(); // Previne o comportamento padrão do form
+            handleSubmitForm(); // Chama o envio
+          }}
+        >
+          <div className="flex justify-center mt-6">
+            <div className="flex gap-2">
+              {code.map((value, index) => (
+                <input
+                  key={index}
+                  id={`input-${index}`}
+                  type="text"
+                  maxLength={1}
+                  value={value}
+                  onChange={(e) => handleInputChange(e.target.value, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  className="w-10 h-12 text-center border-gray-300 rounded-md text-lg pl-0"
+                />
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="h-5 mt-2">
-          {error && <span className="text-sm text-red-700">{error}</span>}
-        </div>
-        <div>
-          <p className="text-center text-sm mt-4 mb-2">
-            Não recebeu? <br />
-          </p>
-          <div className="h-10">
-            {time != 0 && (
-              <p className="text-sm text-center">
-                Você pode solicitar um novo envio em {time} segundos
-              </p>
-            )}
+          <div className="h-5 mt-2">
+            {error && <span className="text-sm text-red-700">{error}</span>}
           </div>
-        </div>
-        <button onClick={resendMessageHandle} disabled={time != 0}>
-          Reenviar
-        </button>
-        <div className="flex justify-between mt-4 w-full">
-          <LoadingButton
-            loading={loading}
-            onClick={() => setOpenModalReturn(true)}
-            type="button"
-          >
-            Voltar
-          </LoadingButton>
-          <LoadingButton onClick={handleSubmitForm} loading={loading}>
-            Próximo
-          </LoadingButton>
-        </div>
+          <div>
+            <p className="text-center text-sm mt-4 mb-2">
+              Não recebeu? <br />
+            </p>
+            <div className="h-10">
+              {time != 0 && (
+                <p className="text-sm text-center">
+                  Você pode solicitar um novo envio em {time} segundos
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center justify-center mb-10">
+            <button
+              onClick={resendMessageHandle}
+              type="button"
+              disabled={time != 0}
+            >
+              Reenviar
+            </button>
+          </div>
+          <div className="flex justify-between mt-4 w-full">
+            <button
+              disabled={loading}
+              onClick={() => setOpenModalReturn(true)}
+              type="button"
+            >
+              Voltar
+            </button>
+            <LoadingButton type="submit" loading={loading}>
+              Próximo
+            </LoadingButton>
+          </div>
+        </form>
       </div>
     </div>
   );

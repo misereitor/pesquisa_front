@@ -16,6 +16,8 @@ import Modal from '../modal/modal';
 import ModalDeleteCategory from './modal-delete-category';
 import ModalEditCategory from './modal-edit-category';
 import ModalInsertCompanyFromCategory from './modal-insert-company';
+import ModalEditCompanyByCategory from './modal-edit-company-by-category';
+import { Company } from '@/model/company';
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -84,9 +86,10 @@ export default function CustomizedAccordions({
 }: Props) {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [openModalEditCompany, setOpenModalEditCompany] = useState(false);
   const [openModalInsertCompany, setOpenModalInsertCompany] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-
+  const [companyEdit, setCompanyEdit] = useState<Company | undefined>();
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -104,6 +107,19 @@ export default function CustomizedAccordions({
           category={category}
           categories={categories}
           setCategoryList={setCategories}
+        />
+      </Modal>
+      <Modal
+        setOpenModal={setOpenModalEditCompany}
+        openModal={openModalEditCompany}
+      >
+        <ModalEditCompanyByCategory
+          categories={categories}
+          category={category}
+          setCategories={setCategories}
+          setOpenModal={setOpenModalEditCompany}
+          companyEdit={companyEdit}
+          setCompanyEdit={setCompanyEdit}
         />
       </Modal>
       <Modal openModal={openModalDelete} setOpenModal={setOpenModalDelete}>
@@ -159,6 +175,8 @@ export default function CustomizedAccordions({
         </AccordionSummary>
         <AccordionDetails>
           <ListCompanyInAccordion
+            setCompanyEdit={setCompanyEdit}
+            setOpenModalEditCompany={setOpenModalEditCompany}
             setOpenModalInsertCompany={setOpenModalInsertCompany}
             loading={loading}
             setLoading={setLoading}

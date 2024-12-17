@@ -81,6 +81,7 @@ export default function AccordionCategoryVote({
 
   const handleExpand =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+      console.log(panel, newExpanded);
       setExpanded(newExpanded ? panel : false);
       scrollAccordion(panel, newExpanded);
     };
