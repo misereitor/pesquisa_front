@@ -16,18 +16,14 @@ const adminRoutes = [
   '/admin/gestao/categorias',
   '/admin/gestao/empresas',
   '/admin/gestao/relatorios',
-  '/admin/gestao/relatorios/categorias',
-  '/admin/gestao/relatorios/cidade',
-  '/admin/gestao/relatorios/geral',
-  '/admin/gestao/relatorios/sorteio',
+  '/admin/gestao/relatorio/categoria',
+  '/admin/gestao/relatorio/cidade',
+  '/admin/gestao/relatorio/geral',
+  '/admin/gestao/relatorio/porcentagem',
   '/admin/gestao/perfil',
   '/admin/gestao/dicionario'
 ];
-const superadminRoutes = [
-  ...adminRoutes,
-  '/superadmin/perfil',
-  '/superadmin/perfis'
-];
+const superadminRoutes = [...adminRoutes, '/admin/gestao/superadmin/perfis'];
 const votingRoutes = ['/votacao', '/sucesso'];
 
 export async function middleware(req: NextRequest) {

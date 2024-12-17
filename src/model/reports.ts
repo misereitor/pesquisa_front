@@ -1,5 +1,13 @@
+export interface VotesReports {
+  id_company: number;
+  id_category: number;
+  company_name: string;
+  category_name: string;
+}
+
 export interface CategoryVotes {
   category_name: string;
+  total_votes: number;
   companies: CategoryVotesCompany[];
 }
 
@@ -26,4 +34,10 @@ export interface DadaDashboardCOmpanyVotes {
   amt: number;
   Brancos: number;
   Validos: number;
+}
+
+export interface CategoryReports {
+  id: number;
+  name: string;
+  active: boolean;
 }

@@ -59,7 +59,8 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
         confirmed_phone: false,
         date_create: new Date(),
         date_vote: new Date(),
-        last_ip: ''
+        last_ip: '',
+        votes: []
       };
       setUser(user);
       setStage(2);

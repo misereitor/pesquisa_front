@@ -1,0 +1,134 @@
+'use client';
+
+import { userAdmin } from '@/model/user-admin';
+import {
+  FormUserAdminProfile,
+  schemaUserAdminProfile
+} from '@/schema/schemaAdminUsers';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import InputSimple from '../input/input';
+import LoadingButton from '../button/loading-button';
+import {
+  updateProfileAdmin,
+  updateRoleAdmin
+} from '@/service/user-admin-service';
+import { setCookie } from 'cookies-next/client';
+
+type Props = {
+  superAdmin: boolean;
+  userAdmin: userAdmin;
+  setAlterPassword: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function AlterProfile({
+  superAdmin,
+  setAlterPassword,
+  userAdmin
+}: Props) {
+  const [loading, setLoading] = useState(false);
+  const [sucess, setSucess] = useState<string>('');
+  const [role, setRole] = useState(userAdmin.role);
+  const [error, setError] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormUserAdminProfile>({
+    mode: 'all',
+    criteriaMode: 'all',
+    resolver: zodResolver(schemaUserAdminProfile),
+    defaultValues: {
+      username: userAdmin.username,
+      name: userAdmin.name,
+      email: userAdmin.email
+    }
+  });
+
+  const handleSubmitProfile = async (user: FormUserAdminProfile) => {
+    try {
+      setError('');
+      setSucess('');
+      setLoading(true);
+      const userUpdate = await updateProfileAdmin(userAdmin.id, user);
+      console.log(userUpdate);
+      if (userUpdate.role != role) {
+        await updateRoleAdmin(userAdmin.id, role);
+        userUpdate.role = role;
+      }
+      setCookie('user', userUpdate);
+      setSucess('Dados alterados com sucesso!');
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+
+      setTimeout(() => {
+        setSucess('');
+      }, 10000);
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center">
+      <form
+        onSubmit={handleSubmit(handleSubmitProfile)}
+        className="w-80 flex flex-col items-center justify-center p-5 rounded-lg mt-10 bg-zinc-950"
+      >
+        <div>
+          <InputSimple
+            {...register('name')}
+            className="rounded-lg w-72 h-7"
+            type="text"
+            label="Nome:"
+            errortext={errors.name?.message}
+          />
+        </div>
+        <div>
+          <InputSimple
+            {...register('username')}
+            className="rounded-lg w-72 h-7"
+            type="text"
+            label="Usuário:"
+            errortext={errors.username?.message}
+          />
+        </div>
+        <div>
+          <InputSimple
+            {...register('email')}
+            className="rounded-lg w-72 h-7"
+            type="email"
+            label="E-mail:"
+            errortext={errors.username?.message}
+          />
+        </div>
+        {superAdmin && (
+          <div>
+            <label>Role</label>
+            <select
+              name="roles"
+              id="roles"
+              className="bg-zinc-900 p-1 rounded-md"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="admin">Admin</option>
+              <option value="superadmin">Superadmin</option>
+            </select>
+          </div>
+        )}
+        <div>{sucess && <p>{sucess}</p>}</div>
+        <div>{error && <p className="text-red-800">{error}</p>}</div>
+        <div className="flex justify-between w-full mt-2">
+          <button type="button" onClick={() => setAlterPassword(true)}>
+            Alterar senha
+          </button>
+          <LoadingButton loading={loading} type="submit">
+            ALTERAR
+          </LoadingButton>
+        </div>
+      </form>
+    </div>
+  );
+}
