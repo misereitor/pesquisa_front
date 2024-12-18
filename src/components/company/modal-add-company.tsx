@@ -48,7 +48,11 @@ export default function ModalAddCompany({
       }
       setLoading(true);
       const create = await cerateCompanyService(company);
-      const updateCompany = [...companies, { ...create }];
+      if (!create.success) {
+        setError(create.message);
+        return;
+      }
+      const updateCompany = [...companies, { ...create.data }];
       const sortedCompanies = updateCompany.sort((a, b) =>
         a.trade_name.localeCompare(b.trade_name)
       );

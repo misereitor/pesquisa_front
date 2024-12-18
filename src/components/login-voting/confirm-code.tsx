@@ -5,6 +5,7 @@ import { checkCpfExist, confirmCode } from '@/service/login-voting';
 import { useRouter } from 'next/navigation';
 import ModalReturn from './modal-retuen';
 import Modal from '../modal/modal';
+import { setCookie } from 'cookies-next/client';
 
 type Props = {
   user: UserVote;
@@ -67,7 +68,15 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
       setLoading(true);
       setError('');
       const success = await confirmCode(code.join(''), user.phone);
-      if (success) router.push('/votacao');
+      if (!success.success) {
+        setError(success.message);
+        return;
+      }
+      if (success.success) {
+        setCookie('token', success.data.token);
+        setCookie('user', JSON.stringify(success.data.user));
+        router.push('/votacao');
+      }
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);
 

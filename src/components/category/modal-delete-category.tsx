@@ -37,7 +37,11 @@ export default function ModalDeleteCategory({
           username: user.username,
           password: password
         };
-        await loginUserAdmin(login);
+        const data = await loginUserAdmin(login);
+        if (!data.success) {
+          setError(data.message);
+          return;
+        }
 
         await deleteCategoryService(categoryRemove.id);
         const categoryFilter = categories.filter(

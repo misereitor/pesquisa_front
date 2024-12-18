@@ -42,7 +42,11 @@ export default function ModalInsertDictionary({
         synonyms: synonyms.split(',')
       };
       const data = await insertDictionaryService(newDictionary);
-      setDictionary([...dictionaryData, data]);
+      if (!data.success) {
+        setError(data.message);
+        return;
+      }
+      setDictionary([...dictionaryData, data.data]);
       setOpenModal(false);
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);

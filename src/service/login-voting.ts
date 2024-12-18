@@ -1,6 +1,6 @@
 'use server';
+import { ErrorBackend } from '@/model/error';
 import { FormUserVoting } from '@/schema/schemaLoginVoting';
-import { cookies } from 'next/headers';
 const { API_URL, X_API_KEY } = process.env;
 
 export async function checkCpfExist(cpf: string) {
@@ -11,7 +11,9 @@ export async function checkCpfExist(cpf: string) {
       }
     });
     const data = await response.json();
-    if (response.ok) return data;
+    if (response.ok) {
+      return data as ErrorBackend;
+    }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
     error.message = data.message;
@@ -34,7 +36,7 @@ export async function registerUserVoting(user: FormUserVoting) {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -58,16 +60,7 @@ export async function confirmCode(code: string, phone: string) {
     });
     const data = await response.json();
     if (response.ok) {
-      if (data.success) {
-        const cookieStore = await cookies();
-        cookieStore.set('token', data.data.token);
-        cookieStore.set('user', JSON.stringify(data.data.user));
-        return true;
-      }
-      const error = new Error(data.message || 'Erro desconhecido');
-      error.name = 'ApiError';
-      error.message = data.message;
-      throw error;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';

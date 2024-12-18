@@ -52,8 +52,13 @@ export default function AlterProfile({
       setSucess('');
       setLoading(true);
       const userUpdate = await updateProfileAdmin(userAdmin.id, user);
-      console.log(userUpdate);
-      if (userUpdate.role != role) {
+      if ('success' in userUpdate && !userUpdate.success) {
+        // Trata o erro
+        console.error('Erro no backend:', userUpdate.message);
+        setError(userUpdate.message);
+        return;
+      }
+      if ('role' in userUpdate && userUpdate.role !== role) {
         await updateRoleAdmin(userAdmin.id, role);
         userUpdate.role = role;
       }

@@ -4,6 +4,7 @@ import { userAdmin } from '@/model/user-admin';
 import { Avatar, Divider, Menu, MenuItem } from '@mui/material';
 import { getCookie } from 'cookies-next/client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { RxCaretDown } from 'react-icons/rx';
 
@@ -41,6 +42,7 @@ export default function LayoutAdmin({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const router = useRouter();
   const userCookies = getCookie('user');
   const [menuState, setMenuState] = useState<{
     [key: number]: HTMLElement | null;
@@ -61,6 +63,10 @@ export default function LayoutAdmin({
       ...prevState,
       [index]: event.currentTarget
     }));
+  };
+
+  const pushRouter = (url: string) => {
+    router.push(url);
   };
 
   const handleClose = (index: number) => {
@@ -115,7 +121,10 @@ export default function LayoutAdmin({
                         {menu.submenu?.map((option) => (
                           <MenuItem
                             key={option.title}
-                            onClick={() => handleClose(index)}
+                            onClick={() => {
+                              pushRouter(option.path);
+                              handleClose(index);
+                            }}
                             sx={{
                               '&:hover': {
                                 backgroundColor: '#ffde5e', // Cor de fundo no hover
@@ -123,7 +132,7 @@ export default function LayoutAdmin({
                               }
                             }}
                           >
-                            <Link href={option.path}>{option.title}</Link>
+                            {option.title}
                           </MenuItem>
                         ))}
                       </Menu>
@@ -164,19 +173,32 @@ export default function LayoutAdmin({
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
-                <MenuItem onClick={handleCloseProfile}>
-                  <Link href={'/admin/gestao/perfil'}>Perfil</Link>
+                <MenuItem
+                  onClick={() => {
+                    handleCloseProfile();
+                    pushRouter('/admin/gestao/perfil');
+                  }}
+                >
+                  Perfil
                 </MenuItem>
                 {user.role === 'superadmin' && (
-                  <MenuItem onClick={handleCloseProfile}>
-                    <Link href={'/admin/gestao/superadmin/perfis'}>
-                      Superadmin
-                    </Link>
+                  <MenuItem
+                    onClick={() => {
+                      handleCloseProfile();
+                      pushRouter('/admin/gestao/superadmin/perfis');
+                    }}
+                  >
+                    Superadmin
                   </MenuItem>
                 )}
                 <Divider />
-                <MenuItem onClick={handleCloseProfile}>
-                  <Link href={'/admin'}>Sair</Link>
+                <MenuItem
+                  onClick={() => {
+                    handleCloseProfile();
+                    pushRouter('/admin');
+                  }}
+                >
+                  Sair
                 </MenuItem>
               </Menu>
             </div>

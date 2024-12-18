@@ -1,5 +1,6 @@
 'use server';
 import { DictionaryEntry } from '@/model/dictionary';
+import { ErrorBackend } from '@/model/error';
 
 const { API_URL, X_API_KEY } = process.env;
 
@@ -15,7 +16,7 @@ export async function insertDictionaryService(dictionary: DictionaryEntry) {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as DictionaryEntry;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -36,7 +37,7 @@ export async function getAllDictionaryService() {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as DictionaryEntry[];
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';

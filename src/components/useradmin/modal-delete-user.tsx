@@ -39,7 +39,11 @@ export default function ModalDeleteUserAdmin({
           username: user.username,
           password: password
         };
-        await loginUserAdmin(login);
+        const data = await loginUserAdmin(login);
+        if (!data.success) {
+          setError(data.message);
+          return;
+        }
 
         await deleteUserAdminService(userAdmin.id);
         const userFilter = users.filter((c) => c.id != userAdmin.id);

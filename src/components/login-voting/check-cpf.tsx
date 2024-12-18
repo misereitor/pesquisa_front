@@ -41,9 +41,16 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
     try {
       setLoading(true);
       const cpf = getValues('cpf').replaceAll(/\D/g, '');
-      const { data } = await checkCpfExist(cpf);
-      if (data) {
-        setUser(data);
+      const data = await checkCpfExist(cpf);
+      if ('success' in data && !data.success) {
+        setError('cpf', {
+          type: 'validate',
+          message: 'CPF já votou'
+        });
+        return;
+      }
+      if (data.data) {
+        setUser(data.data);
         setStage(3);
         return;
       }

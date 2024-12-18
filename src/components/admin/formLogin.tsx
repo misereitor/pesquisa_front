@@ -32,11 +32,14 @@ export default function FormLogin() {
       setLoading(true);
       setError('');
       const data = await loginUserAdmin(login);
-      if (data) {
+      if (!data.success) {
+        setError(data.message);
+        return;
+      }
+      if (data.success) {
         router.push('/admin/gestao/dashboard');
       }
     } catch (error: any) {
-      console.log(error.name);
       console.error('Error in handleSubmitForm:', error);
 
       if (error.message === 'Login ou senha inválidos') {

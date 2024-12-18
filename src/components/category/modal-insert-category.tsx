@@ -22,7 +22,7 @@ export default function ModalInsertCompany({
       setLoading(true);
       const newCategory = await createCategoryService(value);
 
-      const updateCategory = [...categories, { ...newCategory }];
+      const updateCategory = [...categories, { ...newCategory.data }];
       const sortedCategory = updateCategory.sort((a, b) =>
         a.name.localeCompare(b.name)
       );

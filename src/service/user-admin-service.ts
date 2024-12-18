@@ -1,5 +1,5 @@
 'use server';
-import { userAdmin } from '@/model/user-admin';
+import { ErrorBackend } from '@/model/error';
 import {
   FormAddUserAdmin,
   FormUserAdminProfile
@@ -19,7 +19,7 @@ export async function createUserAdminService(userAdmin: FormAddUserAdmin) {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as userAdmin;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -41,7 +41,7 @@ export async function getAllUsersAdminService() {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as userAdmin[];
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -71,7 +71,7 @@ export async function updateProfileAdmin(
     );
     const data = await response.json();
     if (response.ok) {
-      return data.data as userAdmin;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -98,7 +98,7 @@ export async function updateRoleAdmin(id: number, role: string) {
     );
     const data = await response.json();
     if (response.ok) {
-      return data.data as userAdmin;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -125,7 +125,7 @@ export async function updatePasswordAdmin(id: number, password: string) {
     );
     const data = await response.json();
     if (response.ok) {
-      return data.data as userAdmin;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -147,13 +147,12 @@ export async function deleteUserAdminService(id: number) {
       }
     });
     const data = await response.json();
-    if (response.ok) {
-      return data.data as userAdmin;
+    if (!response.ok) {
+      const error = new Error(data.message || 'Erro desconhecido');
+      error.name = 'ApiError';
+      error.message = data.message;
+      throw error;
     }
-    const error = new Error(data.message || 'Erro desconhecido');
-    error.name = 'ApiError';
-    error.message = data.message;
-    throw error;
   } catch (error) {
     console.error('Error in deleteUserAdminService:', error);
     throw error;

@@ -1,5 +1,6 @@
 'use server';
 import { AssociationCategoryCompany, Category } from '@/model/category';
+import { ErrorBackend } from '@/model/error';
 
 const { API_URL, X_API_KEY } = process.env;
 
@@ -14,7 +15,7 @@ export async function getAllCategories() {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as Category[];
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -38,7 +39,7 @@ export async function createCategoryService(name: string) {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as Category;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -138,7 +139,7 @@ export async function removeCompanyFromCategory(
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as Category[];
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';

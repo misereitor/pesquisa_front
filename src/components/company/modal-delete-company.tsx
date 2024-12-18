@@ -39,7 +39,11 @@ export default function ModalDeleteCompany({
           username: user.username,
           password: password
         };
-        await loginUserAdmin(login);
+        const data = await loginUserAdmin(login);
+        if (!data.success) {
+          setError(data.message);
+          return;
+        }
 
         await deleteCompany(companyRemove.id);
         const companiesFilter = companies.filter(

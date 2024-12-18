@@ -1,4 +1,5 @@
 'use server';
+import { ErrorBackend } from '@/model/error';
 import { FormUserAdmin } from '@/schema/schemaAdminUsers';
 import { cookies } from 'next/headers';
 
@@ -20,8 +21,9 @@ export async function loginUserAdmin(login: FormUserAdmin) {
         const cookieStore = await cookies();
         cookieStore.set('token', data.data.token);
         cookieStore.set('user', JSON.stringify(data.data.user));
-        return true;
+        return data as ErrorBackend;
       }
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';

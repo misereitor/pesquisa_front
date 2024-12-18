@@ -45,8 +45,12 @@ export default function ModalCreateUser({
     try {
       setLoading(true);
       setError('');
-      const create = await createUserAdminService(user);
-      setUsers([...users, create]);
+      const data = await createUserAdminService(user);
+      if (!data.success) {
+        setError(data.message);
+        return;
+      }
+      setUsers([...users, data.data]);
       setOpenModal(false);
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);

@@ -82,16 +82,19 @@ export default function Register({
       setLoading(true);
       setError('');
       const userRegistred = await registerUserVoting(user);
-      if (userRegistred) {
-        setUser(userRegistred);
-        setStage(3);
+      if ('success' in userRegistred && !userRegistred.success) {
+        setError(userRegistred.message);
+        return;
       }
+
+      setUser(userRegistred.data);
+      setStage(3);
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);
 
       if (error.name === 'Error') {
         // Caso o backend tenha retornado uma mensagem de erro específica
-        setError(error.message);
+        setError('Telefone informado já cadastrado');
       } else {
         // Erro genérico (ex.: problemas de rede)
         setError('Ocorreu um erro inesperado. Tente novamente mais tarde.');
@@ -100,6 +103,7 @@ export default function Register({
       setLoading(false);
     }
   };
+
   return (
     <div>
       <Modal openModal={openModel} setOpenModal={setOpenModal}>

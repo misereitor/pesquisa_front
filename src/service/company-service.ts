@@ -1,6 +1,7 @@
 'use server';
 
 import { Company } from '@/model/company';
+import { ErrorBackend } from '@/model/error';
 import { FormCompanyEdit } from '@/schema/schemaCompany';
 
 const { API_URL, X_API_KEY } = process.env;
@@ -38,7 +39,7 @@ export async function cerateCompanyService(company: FormCompanyEdit) {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as Company;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -62,7 +63,7 @@ export async function updateCompanyService(company: Company) {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as Company;
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
@@ -86,7 +87,7 @@ export async function associateCompany(id: number, associate: boolean) {
     });
     const data = await response.json();
     if (response.ok) {
-      return data.data as Company[];
+      return data as ErrorBackend;
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';

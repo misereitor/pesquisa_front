@@ -10,8 +10,8 @@ export default function Dicionario() {
 
   useEffect(() => {
     const getData = async () => {
-      const dictionaryData = await getAllDictionaryService();
-      setDictionary(dictionaryData);
+      const data = await getAllDictionaryService();
+      setDictionary(data.data);
     };
     getData();
   }, []);

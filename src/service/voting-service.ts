@@ -7,6 +7,7 @@ import { tokenCookiesService } from './user-voting-service';
 import { Company } from '@/model/company';
 import { Category } from '@/model/category';
 import { DictionaryEntry } from '@/model/dictionary';
+import { ErrorBackend } from '@/model/error';
 
 const { API_URL, X_API_KEY } = process.env;
 
@@ -54,7 +55,7 @@ export async function getAllVotesByUser() {
       }
     );
     const data = await response.json();
-    if (response.ok) return data.data as Vote[];
+    if (response.ok) return data as ErrorBackend;
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';
     error.message = data.message;
