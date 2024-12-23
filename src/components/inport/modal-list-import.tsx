@@ -6,8 +6,9 @@ import {
   filterImportCSV
 } from '@/util/filterImportCSV';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import LoadingButton from '../button/loading-button';
 import { importCompanyAndCategoryService } from '@/service/import-service';
+import { LoadingButton } from '@mui/lab';
+import { CiImport } from 'react-icons/ci';
 
 type Props = {
   seCsvTransform: Dispatch<SetStateAction<ImportCSV[] | null>>;
@@ -178,8 +179,26 @@ export default function ModalListImport({
           </button>
         </div>
         <div className="mt-10 fixed bottom-10 right-10">
-          <LoadingButton loading={loading} onClick={handleSubmit}>
-            Importar
+          <LoadingButton
+            data-testid="comecar"
+            size="medium"
+            color="success"
+            type="button"
+            endIcon={<CiImport />}
+            loading={loading}
+            onClick={handleSubmit}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#ffffff',
+              backgroundColor: '#c2410c !important',
+              '&.Mui-disabled': {
+                color: '#fdba74',
+                backgroundColor: '#fdba74 !important'
+              }
+            }}
+          >
+            <span>Importar</span>
           </LoadingButton>
         </div>
       </div>

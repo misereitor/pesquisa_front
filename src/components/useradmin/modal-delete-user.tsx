@@ -1,12 +1,13 @@
 'use client';
 import { Dispatch, SetStateAction, useState } from 'react';
-import LoadingButton from '../button/loading-button';
 import InputSimple from '../input/input';
 import { userAdmin } from '@/model/user-admin';
 import { FormUserAdmin } from '@/schema/schemaAdminUsers';
 import { getCookie } from 'cookies-next/client';
 import { loginUserAdmin } from '@/service/login-user-admin';
 import { deleteUserAdminService } from '@/service/user-admin-service';
+import { FiDelete } from 'react-icons/fi';
+import { LoadingButton } from '@mui/lab';
 
 type Props = {
   userAdmin: userAdmin;
@@ -85,11 +86,25 @@ export default function ModalDeleteUserAdmin({
       </div>
       <div className="flex items-center justify-between mt-3">
         <LoadingButton
+          data-testid="comecar"
+          size="medium"
+          color="success"
+          type="button"
+          endIcon={<FiDelete />}
           loading={loading}
+          loadingPosition="end"
+          variant="contained"
           onClick={() => handleRemove()}
-          className="bg-orange-700 rounded-md text-white disabled:bg-orange-300 disabled:text-red-700"
+          sx={{
+            color: '#ffffff',
+            backgroundColor: '#c2410c !important',
+            '&.Mui-disabled': {
+              color: '#b91c1c',
+              backgroundColor: '#fdba74 !important'
+            }
+          }}
         >
-          Deletar
+          <span>Deletar</span>
         </LoadingButton>
         <button
           type="button"

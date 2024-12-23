@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { FormUserVoting, schemaUserVoting } from '@/schema/schemaLoginVoting';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { regexCPF, regexPhone } from '@/util/dataProcessing';
-import LoadingButton from '../button/loading-button';
 import { ufs } from '@/util/ufs';
 import { Autocomplete } from '@mui/material';
 import { City } from '@/model/city';
@@ -16,6 +15,8 @@ import Modal from '../modal/modal';
 import Termos from './termos';
 import { registerUserVoting } from '@/service/login-voting';
 import ModalReturn from './modal-retuen';
+import { IoPlayCircleOutline } from 'react-icons/io5';
+import { LoadingButton } from '@mui/lab';
 
 type Props = {
   user: UserVote;
@@ -243,16 +244,34 @@ export default function Register({
           {error && <span className="text-red-700">{error}</span>}
         </div>
         <div className="mt-5 flex justify-between">
-          <LoadingButton
-            loading={loading}
+          <button
+            disabled={loading}
             onClick={() => setOpenModalReturn(true)}
             type="button"
           >
             Voltar
-          </LoadingButton>
+          </button>
+          MdKeyboardBackspace
           {checked && citySelected && (
-            <LoadingButton loading={loading} type="submit">
-              Próximo
+            <LoadingButton
+              data-testid="comecar"
+              size="medium"
+              color="success"
+              type="submit"
+              endIcon={<IoPlayCircleOutline />}
+              loading={loading}
+              loadingPosition="end"
+              variant="contained"
+              sx={{
+                color: '#7f5d00',
+                backgroundColor: '#ffe45f !important',
+                '&.Mui-disabled': {
+                  color: '#7f5d00',
+                  backgroundColor: '#fdf6d0 !important'
+                }
+              }}
+            >
+              <span>Próximo</span>
             </LoadingButton>
           )}
         </div>

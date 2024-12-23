@@ -9,9 +9,10 @@ import {
 } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
-import LoadingButton from '../button/loading-button';
 import { createAssociationCategoryService } from '@/service/category-service';
 import { AssociationCategoryCompany, Category } from '@/model/category';
+import { CiCirclePlus } from 'react-icons/ci';
+import { LoadingButton } from '@mui/lab';
 
 const icon = <MdCheckBoxOutlineBlank size={16} />;
 const checkedIcon = <MdCheckBox size={16} />;
@@ -159,8 +160,26 @@ export default function ModalInsertCompanyFromCategory({
         <button onClick={() => setOpenModal(false)} type="button">
           Cancelar
         </button>
-        <LoadingButton onClick={handleSubmit} loading={loadingButton}>
-          Alterar
+        <LoadingButton
+          data-testid="comecar"
+          size="medium"
+          color="success"
+          type="button"
+          endIcon={<CiCirclePlus />}
+          loading={loadingButton}
+          onClick={handleSubmit}
+          loadingPosition="end"
+          variant="contained"
+          sx={{
+            color: '#7f5d00',
+            backgroundColor: '#ffe45f !important',
+            '&.Mui-disabled': {
+              color: '#7f5d00',
+              backgroundColor: '#fdf6d0 !important'
+            }
+          }}
+        >
+          <span>Criar</span>
         </LoadingButton>
       </div>
     </div>

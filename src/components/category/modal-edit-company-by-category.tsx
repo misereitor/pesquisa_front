@@ -4,10 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import InputSimple from '../input/input';
-import LoadingButton from '../button/loading-button';
 import { regexCNPJ } from '@/util/dataProcessing';
 import { updateCompanyService } from '@/service/company-service';
 import { Category } from '@/model/category';
+import { LoadingButton } from '@mui/lab';
+import { RxUpdate } from 'react-icons/rx';
 
 type Props = {
   setCategories: Dispatch<SetStateAction<Category[]>>;
@@ -163,8 +164,25 @@ export default function ModalEditCompanyByCategory({
           >
             Cancelar
           </button>
-          <LoadingButton type="submit" loading={loading}>
-            Alterar
+          <LoadingButton
+            data-testid="comecar"
+            size="medium"
+            color="success"
+            type="submit"
+            endIcon={<RxUpdate />}
+            loading={loading}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#7f5d00',
+              backgroundColor: '#ffe45f !important',
+              '&.Mui-disabled': {
+                color: '#7f5d00',
+                backgroundColor: '#fdf6d0 !important'
+              }
+            }}
+          >
+            <span>Alterar</span>
           </LoadingButton>
         </div>
       </form>

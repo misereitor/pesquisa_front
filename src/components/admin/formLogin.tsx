@@ -7,8 +7,9 @@ import { useForm } from 'react-hook-form';
 import InputSimple from '@/components/input/input';
 import { FormUserAdmin, schemaUserAdmin } from '@/schema/schemaAdminUsers';
 import { loginUserAdmin } from '@/service/login-user-admin';
-import LoadingButton from '../button/loading-button';
 import { useRouter } from 'next/navigation';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { IoPlayCircleOutline } from 'react-icons/io5';
 export default function FormLogin() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
@@ -96,8 +97,25 @@ export default function FormLogin() {
           </div>
 
           <div className="flex justify-end z-0 relative mt-4">
-            <LoadingButton type="submit" loading={loading}>
-              Login
+            <LoadingButton
+              data-testid="comecar"
+              size="medium"
+              color="success"
+              type="submit"
+              endIcon={<IoPlayCircleOutline />}
+              loading={loading}
+              loadingPosition="end"
+              variant="contained"
+              sx={{
+                color: '#7f5d00',
+                backgroundColor: '#ffe45f !important',
+                '&.Mui-disabled': {
+                  color: '#7f5d00',
+                  backgroundColor: '#fdf6d0 !important'
+                }
+              }}
+            >
+              <span>Login</span>
             </LoadingButton>
           </div>
         </form>

@@ -7,9 +7,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import InputSimple from '../input/input';
 import { regexCPF } from '@/util/dataProcessing';
-import LoadingButton from '../button/loading-button';
 import { checkCpfExist } from '@/service/login-voting';
 import { UserVote } from '@/model/user-voting';
+import { IoPlayCircleOutline } from 'react-icons/io5';
+import { LoadingButton } from '@mui/lab';
 
 type Props = {
   setStage: Dispatch<SetStateAction<number>>;
@@ -113,8 +114,25 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
           />
         </div>
         <div className="flex justify-end mr-2">
-          <LoadingButton type="submit" loading={loading}>
-            Próximo
+          <LoadingButton
+            data-testid="comecar"
+            size="medium"
+            color="success"
+            type="submit"
+            endIcon={<IoPlayCircleOutline />}
+            loading={loading}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#7f5d00',
+              backgroundColor: '#ffe45f !important',
+              '&.Mui-disabled': {
+                color: '#7f5d00',
+                backgroundColor: '#fdf6d0 !important'
+              }
+            }}
+          >
+            <span>Próximo</span>
           </LoadingButton>
         </div>
       </form>

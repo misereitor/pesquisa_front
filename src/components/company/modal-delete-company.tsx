@@ -5,8 +5,9 @@ import { Company } from '@/model/company';
 import { getCookie } from 'cookies-next/client';
 import { loginUserAdmin } from '@/service/login-user-admin';
 import { FormUserAdmin } from '@/schema/schemaAdminUsers';
-import LoadingButton from '../button/loading-button';
 import { deleteCompany } from '@/service/company-service';
+import { LoadingButton } from '@mui/lab';
+import { FiDelete } from 'react-icons/fi';
 
 type Props = {
   setOpenModal: Dispatch<SetStateAction<boolean>>;
@@ -87,11 +88,25 @@ export default function ModalDeleteCompany({
       </div>
       <div className="flex items-center justify-between mt-3">
         <LoadingButton
+          data-testid="comecar"
+          size="medium"
+          color="success"
+          type="button"
+          endIcon={<FiDelete />}
           loading={loading}
           onClick={() => handleRemove()}
-          className="bg-orange-700 rounded-md text-white disabled:bg-orange-300 disabled:text-red-700"
+          loadingPosition="end"
+          variant="contained"
+          sx={{
+            color: '#ffffff',
+            backgroundColor: '#c2410c !important',
+            '&.Mui-disabled': {
+              color: '#fdba74',
+              backgroundColor: '#fdba74 !important'
+            }
+          }}
         >
-          Deletar
+          <span>Remover</span>
         </LoadingButton>
         <button
           type="button"

@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import LoadingButton from '../button/loading-button';
 import InputSimple from '../input/input';
 import { Category } from '@/model/category';
 import { createCategoryService } from '@/service/category-service';
+import { LoadingButton } from '@mui/lab';
+import { CiCirclePlus } from 'react-icons/ci';
 
 type Props = {
   setOpenModal: Dispatch<SetStateAction<boolean>>;
@@ -49,8 +50,26 @@ export default function ModalInsertCompany({
       </div>
       <div className="flex justify-between">
         <button onClick={() => setOpenModal(false)}>Cancelar</button>
-        <LoadingButton onClick={handleSubmit} loading={loading}>
-          Criar
+        <LoadingButton
+          data-testid="comecar"
+          size="medium"
+          color="success"
+          type="button"
+          endIcon={<CiCirclePlus />}
+          loading={loading}
+          onClick={handleSubmit}
+          loadingPosition="end"
+          variant="contained"
+          sx={{
+            color: '#7f5d00',
+            backgroundColor: '#ffe45f !important',
+            '&.Mui-disabled': {
+              color: '#7f5d00',
+              backgroundColor: '#fdf6d0 !important'
+            }
+          }}
+        >
+          <span>Criar</span>
         </LoadingButton>
       </div>
     </div>

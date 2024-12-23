@@ -6,7 +6,8 @@ import { regexCNPJ } from '@/util/dataProcessing';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { cerateCompanyService } from '@/service/company-service';
 import { Company } from '@/model/company';
-import LoadingButton from '../button/loading-button';
+import { LoadingButton } from '@mui/lab';
+import { CiCirclePlus } from 'react-icons/ci';
 
 type Props = {
   companies: Company[];
@@ -141,8 +142,25 @@ export default function ModalAddCompany({
           >
             Cancelar
           </button>
-          <LoadingButton type="submit" loading={loading}>
-            Adicionar
+          <LoadingButton
+            data-testid="comecar"
+            size="medium"
+            color="success"
+            type="submit"
+            endIcon={<CiCirclePlus />}
+            loading={loading}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#7f5d00',
+              backgroundColor: '#ffe45f !important',
+              '&.Mui-disabled': {
+                color: '#7f5d00',
+                backgroundColor: '#fdf6d0 !important'
+              }
+            }}
+          >
+            <span>Adicionar</span>
           </LoadingButton>
         </div>
       </form>

@@ -4,9 +4,10 @@ import InputSimple from '../input/input';
 import { getCookie } from 'cookies-next/client';
 import { loginUserAdmin } from '@/service/login-user-admin';
 import { FormUserAdmin } from '@/schema/schemaAdminUsers';
-import LoadingButton from '../button/loading-button';
 import { Category } from '@/model/category';
 import { deleteCategoryService } from '@/service/category-service';
+import { FiDelete } from 'react-icons/fi';
+import { LoadingButton } from '@mui/lab';
 
 type Props = {
   setOpenModal: Dispatch<SetStateAction<boolean>>;
@@ -84,12 +85,27 @@ export default function ModalDeleteCategory({
       </div>
       <div className="flex items-center justify-between mt-3">
         <LoadingButton
+          data-testid="comecar"
+          size="medium"
+          color="success"
+          type="button"
+          endIcon={<FiDelete />}
           loading={loading}
           onClick={() => handleRemove()}
-          className="bg-orange-700 rounded-md text-white disabled:bg-orange-300 disabled:text-red-700"
+          loadingPosition="end"
+          variant="contained"
+          sx={{
+            color: '#ffffff',
+            backgroundColor: '#c2410c !important',
+            '&.Mui-disabled': {
+              color: '#b91c1c',
+              backgroundColor: '#fdba74 !important'
+            }
+          }}
         >
-          Deletar
+          <span>Deletar</span>
         </LoadingButton>
+
         <button
           type="button"
           className="bg-yellow-500  w-24 h-10 rounded-md text-yellow-950"

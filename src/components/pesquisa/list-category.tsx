@@ -7,11 +7,12 @@ import AccordionCategoryVote from './accordionCategory';
 import FooterVoting from './layout.footer';
 import ProgressQuest from './progress-voting';
 import { useEffect, useState } from 'react';
-import LoadingButton from '../button/loading-button';
 import Modal from '../modal/modal';
 import ModalConfirmVote from './modal-confirm-vote';
 import Loading from '@/app/loading';
 import { DictionaryEntry } from '@/model/dictionary';
+import { IoPlayCircleOutline } from 'react-icons/io5';
+import { LoadingButton } from '@mui/lab';
 
 type Props = {
   categories: Category[];
@@ -83,8 +84,26 @@ export default function ListCategoryPesquisa({
           />
         </div>
         <div className="mt-6 mb-36 flex justify-end">
-          <LoadingButton onClick={handleVote} loading={loading}>
-            VOTAR
+          <LoadingButton
+            data-testid="comecar"
+            size="medium"
+            color="success"
+            type="button"
+            endIcon={<IoPlayCircleOutline />}
+            loading={loading}
+            onClick={handleVote}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#7f5d00',
+              backgroundColor: '#ffe45f !important',
+              '&.Mui-disabled': {
+                color: '#7f5d00',
+                backgroundColor: '#fdf6d0 !important'
+              }
+            }}
+          >
+            <span>Votar</span>
           </LoadingButton>
         </div>
         <div className="bottom-14 fixed w-3/4 max-w-3xl bg-black">

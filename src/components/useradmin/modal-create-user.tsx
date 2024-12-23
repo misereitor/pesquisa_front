@@ -9,7 +9,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import InputSimple from '../input/input';
-import LoadingButton from '../button/loading-button';
+import { IoCreate } from 'react-icons/io5';
+import { LoadingButton } from '@mui/lab';
 
 type Props = {
   setOpenModal: Dispatch<SetStateAction<boolean>>;
@@ -133,8 +134,25 @@ export default function ModalCreateUser({
           <button type="button" onClick={() => setOpenModal(false)}>
             Cancelar
           </button>
-          <LoadingButton type="submit" loading={loading}>
-            Criar
+          <LoadingButton
+            data-testid="comecar"
+            size="medium"
+            color="success"
+            type="submit"
+            endIcon={<IoCreate />}
+            loading={loading}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#7f5d00',
+              backgroundColor: '#ffe45f !important',
+              '&.Mui-disabled': {
+                color: '#7f5d00',
+                backgroundColor: '#fdf6d0 !important'
+              }
+            }}
+          >
+            <span>Criar</span>
           </LoadingButton>
         </div>
       </form>

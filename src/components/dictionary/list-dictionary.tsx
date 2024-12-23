@@ -1,11 +1,12 @@
 import { DictionaryEntry } from '@/model/dictionary';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { RxTrash } from 'react-icons/rx';
-import LoadingButton from '../button/loading-button';
 import {
   deleteDictionaryService,
   updateDictionaryService
 } from '@/service/dictionary';
+import { LoadingButton } from '@mui/lab';
+import { MdSaveAs } from 'react-icons/md';
 
 type Props = {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -77,11 +78,25 @@ export default function ListDictionary({
                 onChange={(e) => setTextArea(e.target.value)}
               />
               <LoadingButton
+                data-testid="comecar"
+                size="medium"
+                color="success"
+                type="button"
+                endIcon={<MdSaveAs />}
                 onClick={handleSubmit}
-                className="ml-4"
                 loading={loading}
+                loadingPosition="end"
+                variant="contained"
+                sx={{
+                  color: '#7f5d00',
+                  backgroundColor: '#ffe45f !important',
+                  '&.Mui-disabled': {
+                    color: '#7f5d00',
+                    backgroundColor: '#fdf6d0 !important'
+                  }
+                }}
               >
-                Salvar
+                <span>Salvar</span>
               </LoadingButton>
             </div>
           ) : (

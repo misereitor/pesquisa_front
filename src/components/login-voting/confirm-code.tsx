@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import LoadingButton from '../button/loading-button';
 import { UserVote } from '@/model/user-voting';
 import { checkCpfExist, confirmCode } from '@/service/login-voting';
 import { useRouter } from 'next/navigation';
 import ModalReturn from './modal-retuen';
 import Modal from '../modal/modal';
 import { setCookie } from 'cookies-next/client';
+import { LoadingButton } from '@mui/lab';
+import { IoPlayCircleOutline } from 'react-icons/io5';
 
 type Props = {
   user: UserVote;
@@ -160,8 +161,25 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
             >
               Voltar
             </button>
-            <LoadingButton type="submit" loading={loading}>
-              Próximo
+            <LoadingButton
+              data-testid="comecar"
+              size="medium"
+              color="success"
+              type="submit"
+              endIcon={<IoPlayCircleOutline />}
+              loading={loading}
+              loadingPosition="end"
+              variant="contained"
+              sx={{
+                color: '#7f5d00',
+                backgroundColor: '#ffe45f !important',
+                '&.Mui-disabled': {
+                  color: '#7f5d00',
+                  backgroundColor: '#fdf6d0 !important'
+                }
+              }}
+            >
+              <span>Próximo</span>
             </LoadingButton>
           </div>
         </form>

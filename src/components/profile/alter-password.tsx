@@ -2,7 +2,6 @@
 
 import { userAdmin } from '@/model/user-admin';
 import { Dispatch, SetStateAction, useState } from 'react';
-import LoadingButton from '../button/loading-button';
 import InputSimple from '../input/input';
 import {
   FormAlterPassword,
@@ -11,6 +10,8 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { updatePasswordAdmin } from '@/service/user-admin-service';
+import { LoadingButton } from '@mui/lab';
+import { RxUpdate } from 'react-icons/rx';
 
 type Props = {
   userAdmin: userAdmin;
@@ -88,9 +89,21 @@ export default function AlterPassword({ setAlterPassword, userAdmin }: Props) {
           <button onClick={() => setAlterPassword(false)}>Cancelar</button>
           <LoadingButton
             data-testid="comecar"
+            size="medium"
             color="success"
             type="submit"
+            endIcon={<RxUpdate />}
             loading={loading}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#7f5d00',
+              backgroundColor: '#ffe45f !important',
+              '&.Mui-disabled': {
+                color: '#7f5d00',
+                backgroundColor: '#fdf6d0 !important'
+              }
+            }}
           >
             <span>Alterar</span>
           </LoadingButton>

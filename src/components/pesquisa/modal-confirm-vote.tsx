@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import LoadingButton from '../button/loading-button';
 import { VoteRow } from '@/model/votes';
 import { confirmVoteService } from '@/service/voting-service';
 import { useRouter } from 'next/navigation';
+import { LoadingButton } from '@mui/lab';
+import { IoPlayCircleOutline } from 'react-icons/io5';
 
 type Props = {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -71,8 +72,26 @@ export default function ModalConfirmVote({
           Revisar
         </button>
         {voteRow.length > 0 && (
-          <LoadingButton onClick={handleSubmit} loading={loadinSubmit}>
-            Confirmar
+          <LoadingButton
+            data-testid="comecar"
+            size="medium"
+            color="success"
+            type="button"
+            onClick={handleSubmit}
+            endIcon={<IoPlayCircleOutline />}
+            loading={loadinSubmit}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#7f5d00',
+              backgroundColor: '#ffe45f !important',
+              '&.Mui-disabled': {
+                color: '#7f5d00',
+                backgroundColor: '#fdf6d0 !important'
+              }
+            }}
+          >
+            <span>Confirmar</span>
           </LoadingButton>
         )}
       </div>

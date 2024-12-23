@@ -1,8 +1,9 @@
 import { Category } from '@/model/category';
 import { Dispatch, SetStateAction, useState } from 'react';
 import InputSimple from '../input/input';
-import LoadingButton from '../button/loading-button';
 import { updateCategoryService } from '@/service/category-service';
+import { RxUpdate } from 'react-icons/rx';
+import { LoadingButton } from '@mui/lab';
 
 type Props = {
   category: Category;
@@ -64,8 +65,26 @@ export default function ModalEditCategory({
       </div>
       <div className="flex justify-between items-center mt-2">
         <button onClick={() => setOpenModalEdit(false)}>Cancelar</button>
-        <LoadingButton loading={loading} onClick={handleEditCategory}>
-          Alterar
+        <LoadingButton
+          data-testid="comecar"
+          size="medium"
+          color="success"
+          type="button"
+          endIcon={<RxUpdate />}
+          loading={loading}
+          loadingPosition="end"
+          onClick={handleEditCategory}
+          variant="contained"
+          sx={{
+            color: '#7f5d00',
+            backgroundColor: '#ffe45f !important',
+            '&.Mui-disabled': {
+              color: '#7f5d00',
+              backgroundColor: '#fdf6d0 !important'
+            }
+          }}
+        >
+          <span>Alterar</span>
         </LoadingButton>
       </div>
     </div>

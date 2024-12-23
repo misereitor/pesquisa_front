@@ -1,8 +1,9 @@
 import { DictionaryEntry } from '@/model/dictionary';
 import { Dispatch, SetStateAction, useState } from 'react';
-import LoadingButton from '../button/loading-button';
 import InputSimple from '../input/input';
 import { insertDictionaryService } from '@/service/dictionary';
+import { LoadingButton } from '@mui/lab';
+import { CiCirclePlus } from 'react-icons/ci';
 
 type Props = {
   dictionaryData: DictionaryEntry[];
@@ -88,8 +89,26 @@ export default function ModalInsertDictionary({
         <button type="button" onClick={() => setOpenModal(false)}>
           Cancelar
         </button>
-        <LoadingButton loading={loading} onClick={handleSubmit}>
-          Adicionar
+        <LoadingButton
+          data-testid="comecar"
+          size="medium"
+          color="success"
+          type="button"
+          endIcon={<CiCirclePlus />}
+          loading={loading}
+          onClick={handleSubmit}
+          loadingPosition="end"
+          variant="contained"
+          sx={{
+            color: '#7f5d00',
+            backgroundColor: '#ffe45f !important',
+            '&.Mui-disabled': {
+              color: '#7f5d00',
+              backgroundColor: '#fdf6d0 !important'
+            }
+          }}
+        >
+          <span>Adicionar</span>
         </LoadingButton>
       </div>
     </div>
