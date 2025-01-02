@@ -61,7 +61,6 @@ export async function getAllVotesByUser() {
     error.message = data.message;
     throw error;
   } catch (error) {
-    console.log(error);
     console.error('Error in getAllVotesByUser:', error);
     throw error;
   }
@@ -96,7 +95,6 @@ export async function createVoteService(
       throw error;
     }
   } catch (error) {
-    console.log(error);
     console.error('Error in createVoteService:', error);
     throw error;
   }
@@ -127,7 +125,6 @@ export async function confirmVoteService(progress: number) {
       throw error;
     }
   } catch (error) {
-    console.log(error);
     console.error('Error in confirmVoteService:', error);
     throw error;
   }

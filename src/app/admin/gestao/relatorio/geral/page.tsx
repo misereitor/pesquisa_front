@@ -4,7 +4,6 @@ import { getAllDataReportGeral } from '@/service/reports-services';
 const { API_URL, X_API_KEY } = process.env;
 
 export default async function RelatorioGeral() {
-  console.log(API_URL);
   const { categories, usersVote } = await getAllDataReportGeral();
   return (
     <TablePaginationReportGeral
