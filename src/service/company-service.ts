@@ -3,10 +3,11 @@
 import { Company } from '@/model/company';
 import { ErrorBackend } from '@/model/error';
 import { FormCompanyEdit } from '@/schema/schemaCompany';
-
+import { unstable_noStore as noStore } from 'next/cache';
 const { API_URL, X_API_KEY } = process.env;
 
 export async function getAllCompany() {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/company/get-all`, {
       headers: {
@@ -28,6 +29,7 @@ export async function getAllCompany() {
 }
 
 export async function cerateCompanyService(company: FormCompanyEdit) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/company/create`, {
       method: 'POST',
@@ -52,6 +54,7 @@ export async function cerateCompanyService(company: FormCompanyEdit) {
 }
 
 export async function updateCompanyService(company: Company) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/company/update`, {
       method: 'PUT',
@@ -76,6 +79,7 @@ export async function updateCompanyService(company: Company) {
 }
 
 export async function associateCompany(id: number, associate: boolean) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/company/association`, {
       method: 'PUT',
@@ -100,6 +104,7 @@ export async function associateCompany(id: number, associate: boolean) {
 }
 
 export async function deleteCompany(id: number) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/company/disable/${id}`, {
       method: 'PUT',

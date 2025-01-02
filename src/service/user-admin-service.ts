@@ -4,10 +4,12 @@ import {
   FormAddUserAdmin,
   FormUserAdminProfile
 } from '@/schema/schemaAdminUsers';
+import { unstable_noStore as noStore } from 'next/cache';
 
 const { API_URL, X_API_KEY } = process.env;
 
 export async function createUserAdminService(userAdmin: FormAddUserAdmin) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/admin/auth/registre`, {
       method: 'POST',
@@ -32,6 +34,7 @@ export async function createUserAdminService(userAdmin: FormAddUserAdmin) {
 }
 
 export async function getAllUsersAdminService() {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/admin/user/get-all`, {
       method: 'GET',
@@ -57,6 +60,7 @@ export async function updateProfileAdmin(
   id: number,
   user: FormUserAdminProfile
 ) {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/admin/user/update/${id}/profile`,
@@ -84,6 +88,7 @@ export async function updateProfileAdmin(
 }
 
 export async function updateRoleAdmin(id: number, role: string) {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/admin/user/update/${id}/role`,
@@ -111,6 +116,7 @@ export async function updateRoleAdmin(id: number, role: string) {
 }
 
 export async function updatePasswordAdmin(id: number, password: string) {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/admin/user/update/${id}/password`,
@@ -138,6 +144,7 @@ export async function updatePasswordAdmin(id: number, password: string) {
 }
 
 export async function deleteUserAdminService(id: number) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/admin/user/delete/${id}`, {
       method: 'PUT',

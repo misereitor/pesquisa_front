@@ -1,10 +1,11 @@
 'use server';
 import { AssociationCategoryCompany, Category } from '@/model/category';
 import { ErrorBackend } from '@/model/error';
-
+import { unstable_noStore as noStore } from 'next/cache';
 const { API_URL, X_API_KEY } = process.env;
 
 export async function getAllCategories() {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/category/get-all`, {
       method: 'GET',
@@ -28,6 +29,7 @@ export async function getAllCategories() {
 }
 
 export async function createCategoryService(name: string) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/category/create`, {
       method: 'POST',
@@ -52,6 +54,7 @@ export async function createCategoryService(name: string) {
 }
 
 export async function updateCategoryService(category: Category) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/category/update`, {
       method: 'PUT',
@@ -75,6 +78,7 @@ export async function updateCategoryService(category: Category) {
 }
 
 export async function deleteCategoryService(id_category: number) {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/category/disable/${id_category}`,
@@ -102,6 +106,7 @@ export async function deleteCategoryService(id_category: number) {
 export async function createAssociationCategoryService(
   association: AssociationCategoryCompany[]
 ) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/association/create-many`, {
       method: 'POST',
@@ -128,6 +133,7 @@ export async function removeCompanyFromCategory(
   id_category: number,
   id_company: number
 ) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/association/delete`, {
       method: 'DELETE',

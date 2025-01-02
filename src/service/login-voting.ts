@@ -1,9 +1,11 @@
 'use server';
 import { ErrorBackend } from '@/model/error';
 import { FormUserVoting } from '@/schema/schemaLoginVoting';
+import { unstable_noStore as noStore } from 'next/cache';
 const { API_URL, X_API_KEY } = process.env;
 
 export async function checkCpfExist(cpf: string) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/voting/auth/${cpf}`, {
       headers: {
@@ -25,6 +27,7 @@ export async function checkCpfExist(cpf: string) {
 }
 
 export async function registerUserVoting(user: FormUserVoting) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/voting/auth`, {
       method: 'POST',
@@ -49,6 +52,7 @@ export async function registerUserVoting(user: FormUserVoting) {
 }
 
 export async function confirmCode(code: string, phone: string) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/voting/auth/confirm`, {
       method: 'POST',

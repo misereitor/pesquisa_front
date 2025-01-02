@@ -1,10 +1,11 @@
 'use server';
 import { DictionaryEntry } from '@/model/dictionary';
 import { ErrorBackend } from '@/model/error';
-
+import { unstable_noStore as noStore } from 'next/cache';
 const { API_URL, X_API_KEY } = process.env;
 
 export async function insertDictionaryService(dictionary: DictionaryEntry) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/dictionary/create`, {
       method: 'POST',
@@ -29,6 +30,7 @@ export async function insertDictionaryService(dictionary: DictionaryEntry) {
 }
 
 export async function getAllDictionaryService() {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/dictionary/get-all`, {
       headers: {
@@ -50,6 +52,7 @@ export async function getAllDictionaryService() {
 }
 
 export async function updateDictionaryService(dictionary: DictionaryEntry) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/dictionary/update`, {
       method: 'PUT',
@@ -73,6 +76,7 @@ export async function updateDictionaryService(dictionary: DictionaryEntry) {
 }
 
 export async function deleteDictionaryService(dictionary: DictionaryEntry) {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/dictionary/delete/${dictionary.key_word}`,

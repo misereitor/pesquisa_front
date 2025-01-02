@@ -5,10 +5,12 @@ import {
   TotalCountForUser
 } from '@/model/reports';
 import { UserVote } from '@/model/user-voting';
+import { unstable_noStore as noStore } from 'next/cache';
 
 const { API_URL, X_API_KEY } = process.env;
 
 export async function getAllDataDashboard() {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/reports/dashboard`, {
       method: 'GET',
@@ -38,6 +40,7 @@ export async function getAllDataDashboard() {
 }
 
 export async function getAllDataReportGeral() {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/reports/get-all-data-report-geral`,
@@ -68,6 +71,7 @@ export async function getAllDataReportGeral() {
 }
 
 export async function getAllDataReportCategory() {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/reports/get-all-data-report-category`,
@@ -94,6 +98,7 @@ export async function getAllDataReportCategory() {
 }
 
 export async function getAllDataReportCity() {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/reports/get-all-data-report-city`,
@@ -120,6 +125,7 @@ export async function getAllDataReportCity() {
 }
 
 export async function getAllDataReportPercentagem() {
+  noStore();
   try {
     const response = await fetch(
       `${API_URL}/api/reports/get-all-data-report-percentagem`,

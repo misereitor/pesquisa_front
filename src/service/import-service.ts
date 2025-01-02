@@ -1,11 +1,12 @@
 'use server';
 import { ImportCSV } from '@/model/import-csv';
-
+import { unstable_noStore as noStore } from 'next/cache';
 const { API_URL, X_API_KEY } = process.env;
 
 export async function importCompanyAndCategoryService(
   association: ImportCSV[]
 ) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/import/create-many`, {
       method: 'POST',

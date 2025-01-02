@@ -8,10 +8,12 @@ import { Company } from '@/model/company';
 import { Category } from '@/model/category';
 import { DictionaryEntry } from '@/model/dictionary';
 import { ErrorBackend } from '@/model/error';
+import { unstable_noStore as noStore } from 'next/cache';
 
 const { API_URL, X_API_KEY } = process.env;
 
 export async function getAllDataForVoteService() {
+  noStore();
   try {
     const token = await tokenCookiesService();
     const openToken = await valideTokenUserVotingService(token);
@@ -43,6 +45,7 @@ export async function getAllDataForVoteService() {
 }
 
 export async function getAllVotesByUser() {
+  noStore();
   try {
     const token = await tokenCookiesService();
     const openToken = await valideTokenUserVotingService(token);
@@ -70,6 +73,7 @@ export async function createVoteService(
   id_category: number,
   id_company: number
 ) {
+  noStore();
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token');
@@ -101,6 +105,7 @@ export async function createVoteService(
 }
 
 export async function confirmVoteService(progress: number) {
+  noStore();
   try {
     const cookieStore = await cookies();
     const userCookies = cookieStore.get('user');

@@ -2,10 +2,12 @@
 import { ErrorBackend } from '@/model/error';
 import { FormUserAdmin } from '@/schema/schemaAdminUsers';
 import { cookies } from 'next/headers';
+import { unstable_noStore as noStore } from 'next/cache';
 
 const { API_URL, X_API_KEY } = process.env;
 
 export async function loginUserAdmin(login: FormUserAdmin) {
+  noStore();
   try {
     const response = await fetch(`${API_URL}/api/admin/auth/login`, {
       method: 'POST',
