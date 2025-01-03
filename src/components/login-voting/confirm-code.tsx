@@ -102,12 +102,13 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
           setStage={setStage}
         />
       </Modal>
-      <div className="flex flex-col items-center justify-center w-4/5 mx-auto">
+      <div className="flex flex-col items-center max-w-[95%] w-[500px] justify-center mx-auto">
         <p className="text-center font-medium">
           Por favor, digite o código que enviamos para:
         </p>
         <p className="text-center font-semibold mt-2">{user.phone}</p>
         <form
+          className="max-w-[95%] w-[500px]"
           onSubmit={(e) => {
             e.preventDefault(); // Previne o comportamento padrão do form
             handleSubmitForm(); // Chama o envio
@@ -119,18 +120,22 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
                 <input
                   key={index}
                   id={`input-${index}`}
-                  type="text"
+                  type="number"
                   maxLength={1}
                   value={value}
                   onChange={(e) => handleInputChange(e.target.value, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  className="w-10 h-12 text-center border-gray-300 rounded-md text-lg pl-0"
+                  className="w-10 h-12 text-center border-gray-300 rounded-md text-lg pl-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
               ))}
             </div>
           </div>
           <div className="h-5 mt-2">
-            {error && <span className="text-sm text-red-700">{error}</span>}
+            {error && (
+              <span className="text-sm text-red-700 flex items-center justify-center">
+                {error}
+              </span>
+            )}
           </div>
           <div>
             <p className="text-center text-sm mt-4 mb-2">

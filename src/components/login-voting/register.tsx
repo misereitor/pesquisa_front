@@ -117,7 +117,10 @@ export default function Register({
           setStage={setStage}
         />
       </Modal>
-      <form onSubmit={handleSubmit(handleSubmitForm)} className="w-4/5 mx-auto">
+      <form
+        onSubmit={handleSubmit(handleSubmitForm)}
+        className="max-w-[95%] w-[500px] mx-auto"
+      >
         <div>
           <InputSimple
             className="rounded-lg w-[96%] h-7 capitalize"
@@ -243,7 +246,7 @@ export default function Register({
         <div className="mt-3">
           {error && <span className="text-red-700">{error}</span>}
         </div>
-        <div className="mt-5 flex justify-between">
+        <div className="my-8 flex justify-between">
           <button
             disabled={loading}
             onClick={() => setOpenModalReturn(true)}
@@ -251,7 +254,7 @@ export default function Register({
           >
             Voltar
           </button>
-          MdKeyboardBackspace
+
           {checked && citySelected && (
             <LoadingButton
               data-testid="comecar"

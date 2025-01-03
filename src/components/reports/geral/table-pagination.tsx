@@ -25,7 +25,6 @@ export default function TablePaginationReportGeral({
   const pagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
-
   return (
     <div>
       <div className=" bg-zinc-900 m-1 p-1 flex items-center justify-around">
@@ -161,7 +160,7 @@ export default function TablePaginationReportGeral({
                 >
                   {user.votes.map((vote) => (
                     <p key={vote.id_category}>
-                      {category.id === vote.id_category && vote.company_name}
+                      {category.id === vote.id_category && vote.trade_name}
                     </p>
                   ))}
                 </td>

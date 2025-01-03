@@ -95,7 +95,7 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
   };
 
   return (
-    <div className="w-4/5 mx-auto">
+    <div className="max-w-[95%] w-[500px] mx-auto">
       <div className="my-5">
         <span>Para começar, primeiro digite o seu CPF</span>
       </div>

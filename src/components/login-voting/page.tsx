@@ -22,7 +22,7 @@ export default function LoginVoting() {
             style={{ width: 'auto', height: '100px' }}
           />
         </div>
-        <div className=" mt-10 w-4/5 mx-auto">
+        <div className=" mt-10 max-w-[95%] w-[500px] mx-auto">
           <span>
             Bem vindo a votação do premio{' '}
             <span className="font-bold">MELHORES DO ANO 2024</span> de Santo

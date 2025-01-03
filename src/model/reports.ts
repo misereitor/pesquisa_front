@@ -1,7 +1,7 @@
 export interface VotesReports {
   id_company: number;
   id_category: number;
-  company_name: string;
+  trade_name: string;
   category_name: string;
 }
 

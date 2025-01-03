@@ -122,10 +122,10 @@ export default function AccordionCategoryVote({
             id="panel1d-header"
           >
             <Typography
-              id={row.name.replaceAll('/', '').toLocaleLowerCase()}
+              id={row.name.replaceAll('/', '').toUpperCase()}
               className={rowIndex.toString()}
             >
-              {row.name.replaceAll('/', '/ ').toLocaleLowerCase()}
+              {row.name.replaceAll('/', '/ ').toUpperCase()}
             </Typography>
             {voteRow?.map((r, rIndex) =>
               r.row == rowIndex && r.voteRow ? (

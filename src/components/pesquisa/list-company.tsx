@@ -121,7 +121,7 @@ export default function ListCompanyVoting({
                   }}
                 />
                 <label htmlFor={`${category.name}${row.id}`}>
-                  {row.trade_name}
+                  {row.trade_name.toUpperCase()}
                 </label>
               </div>
             )}

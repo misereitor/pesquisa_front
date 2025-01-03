@@ -63,7 +63,7 @@ export default function ListCategoryPesquisa({
   }
   return (
     <div>
-      <div className="w-3/4 max-w-3xl mx-auto">
+      <div className="max-w-[90%] w-[500px] mx-auto">
         <div className="mt-28">
           <p>
             Olá, <span className="font-bold">{user.name + ' '}</span>
@@ -106,7 +106,7 @@ export default function ListCategoryPesquisa({
             <span>Votar</span>
           </LoadingButton>
         </div>
-        <div className="bottom-14 fixed w-3/4 max-w-3xl bg-black">
+        <div className="bottom-14 fixed w-[500px] max-w-[90%] bg-black">
           {progress < 70 ? (
             <span className="text-sm">
               Você ainda não está concorrendo ao sorteio
@@ -116,7 +116,7 @@ export default function ListCategoryPesquisa({
           )}
           <ProgressQuest progress={progress} />
         </div>
-        <div className="fixed bottom-0 w-3/4 max-w-3xl bg-black pb-2 mx-auto">
+        <div className="fixed bottom-0 w-[500px] max-w-[90%] bg-black pb-2 mx-auto">
           <FooterVoting />
         </div>
       </div>
