@@ -129,7 +129,7 @@ export default function ModalInsertCompanyFromCategory({
                   style={{ marginRight: 8 }}
                   checked={selected}
                 />
-                {option.company_name}
+                {option.trade_name}
               </li>
             );
           }}
@@ -179,7 +179,7 @@ export default function ModalInsertCompanyFromCategory({
             }
           }}
         >
-          <span>Criar</span>
+          <span>Atualizar</span>
         </LoadingButton>
       </div>
     </div>

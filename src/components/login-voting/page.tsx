@@ -11,7 +11,7 @@ export default function LoginVoting() {
   const [user, setUser] = useState<UserVote>();
   const [lastPage, setLastPage] = useState(1);
   return (
-    <div className="mx-auto">
+    <div className="mx-auto mt-52">
       <div>
         <div className="flex justify-center mb-7 w-4/5 mx-auto">
           <Image
@@ -22,13 +22,12 @@ export default function LoginVoting() {
             style={{ width: 'auto', height: '100px' }}
           />
         </div>
-        <div className=" mt-10 max-w-[95%] w-[500px] mx-auto">
-          <span>
-            Bem vindo a votação do premio{' '}
-            <span className="font-bold">MELHORES DO ANO 2024</span> de Santo
-            Antonio de Jesus
-          </span>
+        <div className="w-full flex justify-center -mt-5">
+          <h2 className="font-bold text-center">
+            Prêmio oficial do Comércio mais barato da Bahia
+          </h2>
         </div>
+
         <div className="mt-3">
           {stage == 1 && (
             <ChackCPF

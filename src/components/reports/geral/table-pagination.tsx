@@ -158,7 +158,7 @@ export default function TablePaginationReportGeral({
                   className="border border-solid border-black p-2 text-center"
                   key={category.id}
                 >
-                  {user.votes.map((vote) => (
+                  {user?.votes?.map((vote) => (
                     <p key={vote.id_category}>
                       {category.id === vote.id_category && vote.trade_name}
                     </p>

@@ -119,7 +119,7 @@ export default function Register({
       </Modal>
       <form
         onSubmit={handleSubmit(handleSubmitForm)}
-        className="max-w-[95%] w-[500px] mx-auto"
+        className="max-w-[95%] w-[500px] mx-auto mt-16"
       >
         <div>
           <InputSimple

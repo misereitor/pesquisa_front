@@ -96,8 +96,15 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
 
   return (
     <div className="max-w-[95%] w-[500px] mx-auto">
+      <div className="mt-20 mx-auto">
+        <h2>
+          Bem-vindo a votação do prêmio{' '}
+          <span className="font-bold">MELHORES DO ANO 2024</span> de Santo
+          Antônio de Jesus
+        </h2>
+      </div>
       <div className="my-5">
-        <span>Para começar, primeiro digite o seu CPF</span>
+        <span>Para começar, digite o seu CPF</span>
       </div>
       <form onSubmit={handleSubmit(handleSubmitForm)}>
         <div>
@@ -113,6 +120,7 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
             })}
           />
         </div>
+
         <div className="flex justify-end mr-2">
           <LoadingButton
             data-testid="comecar"
@@ -136,6 +144,10 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
           </LoadingButton>
         </div>
       </form>
+      <div className="mt-16">
+        Vote acima de 70% das categorias e concorra a uma TV de 50&quot;
+        <h2></h2>
+      </div>
     </div>
   );
 }

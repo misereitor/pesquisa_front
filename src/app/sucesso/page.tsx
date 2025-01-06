@@ -14,20 +14,16 @@ export default async function Sucesso() {
   return (
     <div className="flex justify-center text-center">
       <div>
-        <div className="mt-10 max-w-[500px]">
+        <div className="mt-40 max-w-[500px]">
           <h2>
-            Parabéns <b className="capitalize">{user?.name}</b>, obrigado por
-            contribuir com a votação para{' '}
-            <b>ELEGER AS MELHORES EMPRESAS DE 2024.</b>
+            Obrigado por contribuir com a votação para eleger as <br />{' '}
+            <b>MELHORES EMPRESAS DE 2024.</b>
           </h2>
         </div>
-        <div className="mt-10 max-w-[500px] w-4/5 mx-auto">
-          {Number(user.percentage_vote) >= 70 && (
-            <h2>
-              <b>Importante!</b> Você está concorrendo à uma Smart TV 50{'" '}
-              por ter respondido mais de 70% da pesquisa.
-            </h2>
-          )}
+        <div className="w-full flex justify-center mt-14">
+          <h2 className="font-bold text-center">
+            Prêmio oficial do Comércio mais barato da Bahia
+          </h2>
         </div>
         <div className="mt-10">
           <div>
@@ -60,7 +56,7 @@ export default async function Sucesso() {
             </div>
           </div>
         </div>
-        <div className="mt-8">
+        <div className="mt-40">
           <Layout2 />
         </div>
         <div className="flex justify-center">

@@ -13,6 +13,7 @@ import Loading from '@/app/loading';
 import { DictionaryEntry } from '@/model/dictionary';
 import { IoPlayCircleOutline } from 'react-icons/io5';
 import { LoadingButton } from '@mui/lab';
+import ModalPercentage from './modal-percentage';
 
 type Props = {
   categories: Category[];
@@ -33,7 +34,7 @@ export default function ListCategoryPesquisa({
   const [openModal, setOpenModal] = useState(false);
   const [pageLoading, setPagLoading] = useState(true);
   const [voteRow, setVoteRow] = useState<VoteRow[]>([]);
-
+  const [openModalPercentagem, setOpenModalPercentagem] = useState(true);
   useEffect(() => {
     setProgress(Math.trunc((voteRow.length * 100) / categories.length));
   }, [categories, setProgress, voteRow]);
@@ -57,18 +58,26 @@ export default function ListCategoryPesquisa({
     setLoading(true);
     setOpenModal(true);
   };
-
+  console.log(progress);
   if (pageLoading) {
     return <Loading />;
   }
   return (
     <div>
+      <Modal
+        className="w-[80%]"
+        openModal={openModalPercentagem}
+        setOpenModal={setOpenModalPercentagem}
+      >
+        <ModalPercentage setOpenModalPercentagem={setOpenModalPercentagem} />
+      </Modal>
       <div className="max-w-[90%] w-[500px] mx-auto">
         <div className="mt-28">
           <p>
-            Olá, <span className="font-bold">{user.name + ' '}</span>
-            bem vindo a nossa plataforma! Aqui, juntos vamos eleger as melhores
-            empresas de Santo Antônio de Jesus em 2024!
+            Olá <span className="font-bold">{user.name + '! '}</span>
+            <br />
+            Bem-vindo a nossa plataforma. Juntos vamos eleger as melhores
+            empresas de Santo Antônio de Jesus em 2024.
           </p>
         </div>
         <div className="mt-8">
@@ -109,10 +118,12 @@ export default function ListCategoryPesquisa({
         <div className="bottom-14 fixed w-[500px] max-w-[90%] bg-black">
           {progress < 70 ? (
             <span className="text-sm">
-              Você ainda não está concorrendo ao sorteio
+              Você ainda não está concorrendo ao sorteio.
             </span>
           ) : (
-            <span className="text-sm">Você já está concorrendo ao sorteio</span>
+            <span className="text-sm">
+              Parabéns, você já está concorrendo ao sorteio!
+            </span>
           )}
           <ProgressQuest progress={progress} />
         </div>

@@ -233,7 +233,7 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
       filteredOptions.sort((a, b) => a.trade_name.localeCompare(b.trade_name));
       return filteredOptions.slice(0, 1000).map((company) => {
         const highlightedWord = highlightMatch(
-          removeAccents(company.trade_name),
+          company.trade_name,
           cleanedInput
         );
         return (
