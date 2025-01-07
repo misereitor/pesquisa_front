@@ -46,7 +46,9 @@ export default function ListCompanyVoting({
   const [selected, setSelected] = useState('');
   const [companySelected, setCompanySelected] = useState<Company>();
   const [value, setValue] = useState('');
-
+  category.companies = category.companies?.sort((a, b) =>
+    a.trade_name.localeCompare(b.trade_name)
+  );
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelected(event.target.value);
   };

@@ -39,7 +39,7 @@ export default function ModalConfirmVote({
         {progress >= 70 && progress < 100 && (
           <div className="mt-8">
             <div className="mb-3">
-              <p>Você alcançou {progress}% da pesquisa.</p>
+              <p>Você alcançou {progress.toFixed(1)}% da pesquisa.</p>
             </div>
             <p className="text-justify">
               Você está próximo dos 100%! <br />
@@ -48,10 +48,10 @@ export default function ModalConfirmVote({
             </p>
           </div>
         )}
-        {progress < 70 && progress >= 0 && (
+        {progress < 70 && progress > 0 && (
           <div className="mt-8">
             <div className="mb-3">
-              <p>Você alcançou {progress}% da pesquisa.</p>
+              <p>Você alcançou {progress.toFixed(1)}% da pesquisa.</p>
             </div>
             <p className="text-justify">
               Seus votos não alcançaram os 70% para participar do sorteio.{' '}

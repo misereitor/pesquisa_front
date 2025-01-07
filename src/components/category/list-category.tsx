@@ -5,12 +5,14 @@ import { useState } from 'react';
 
 import CustomizedAccordions from './accordion-category';
 import FilterCategory from './filter-category';
+import { Company } from '@/model/company';
 
 type Props = {
   categories: Category[];
+  company: Company[];
 };
 const ITEMS_PER_PAGE = 10;
-export default function ListCategory({ categories }: Props) {
+export default function ListCategory({ categories, company }: Props) {
   const [listCategories, setListCategories] = useState(
     categories.sort((a, b) => a.name.localeCompare(b.name))
   );
@@ -40,6 +42,7 @@ export default function ListCategory({ categories }: Props) {
       />
       {listCategories.slice(startIndex, endIndex).map((category, index) => (
         <CustomizedAccordions
+          company={company}
           loading={loading}
           setLoading={setLoading}
           key={index}

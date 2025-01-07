@@ -60,6 +60,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 type Props = {
   category: Category;
   expanded: string | false;
+  company: Company[];
   startIndex: number;
   index: number;
   categories: Category[];
@@ -82,7 +83,8 @@ export default function CustomizedAccordions({
   categories,
   setCategories,
   loading,
-  setLoading
+  setLoading,
+  company
 }: Props) {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -103,6 +105,7 @@ export default function CustomizedAccordions({
         setOpenModal={setOpenModalInsertCompany}
       >
         <ModalInsertCompanyFromCategory
+          company={company}
           setOpenModal={setOpenModalInsertCompany}
           category={category}
           categories={categories}

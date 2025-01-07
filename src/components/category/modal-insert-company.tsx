@@ -1,21 +1,11 @@
 'use client';
 import { Company } from '@/model/company';
-import { getAllCompany } from '@/service/company-service';
-import {
-  Autocomplete,
-  CircularProgress,
-  Checkbox,
-  TextField
-} from '@mui/material';
-import { Fragment, useState } from 'react';
-import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
+import { Autocomplete, TextField } from '@mui/material';
+import { useState } from 'react';
 import { createAssociationCategoryService } from '@/service/category-service';
 import { AssociationCategoryCompany, Category } from '@/model/category';
 import { CiCirclePlus } from 'react-icons/ci';
 import { LoadingButton } from '@mui/lab';
-
-const icon = <MdCheckBoxOutlineBlank size={16} />;
-const checkedIcon = <MdCheckBox size={16} />;
 
 const autoCOmpleteSX = {
   width: 400,
@@ -48,34 +38,21 @@ type Props = {
   category: Category;
   setCategoryList: React.Dispatch<React.SetStateAction<Category[]>>;
   categories: Category[];
+  company: Company[];
 };
 
 export default function ModalInsertCompanyFromCategory({
   setOpenModal,
   category,
   categories,
-  setCategoryList
+  setCategoryList,
+  company
 }: Props) {
   const [value, setValue] = useState<Company[]>(
     category.companies ? category.companies : []
   );
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState<readonly Company[]>([]);
   const [loadingButton, setLoadingButton] = useState(false);
-
-  const handleOpen = async () => {
-    setOpen(true);
-    setLoading(true);
-    const companies = await getAllCompany();
-    setLoading(false);
-    setOptions(companies);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setOptions([]);
-  };
 
   const handleSubmit = async () => {
     try {
@@ -103,56 +80,45 @@ export default function ModalInsertCompanyFromCategory({
     <div>
       <div className="w-[400px]">
         <Autocomplete
-          multiple
-          sx={autoCOmpleteSX}
-          open={open}
-          onOpen={handleOpen}
-          onClose={handleClose}
-          id="checkboxes-tags-demo"
-          loading={loading}
-          options={options}
-          disableCloseOnSelect
-          getOptionLabel={(option) => option.trade_name}
           value={value}
+          multiple
+          id="asynchronous-demo"
+          autoFocus
           onChange={(event, newValue) => setValue(newValue)}
-          renderOption={(props, option, { selected }) => {
-            const { key, ...optionProps } = props;
-            return (
-              <li
-                key={key}
-                {...optionProps}
-                className="text-[#FFEF5E] bg-[#333]"
-              >
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option.trade_name}
-              </li>
-            );
+          sx={autoCOmpleteSX}
+          selectOnFocus
+          open={open}
+          onOpen={() => {
+            setOpen(true);
           }}
+          onClose={() => {
+            setOpen(false);
+          }}
+          isOptionEqualToValue={(option, value) =>
+            option.trade_name === value.trade_name
+          }
+          getOptionLabel={(option) => option.trade_name}
+          options={company}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Selecione as empresas"
-              placeholder="Empresas"
+              autoFocus
+              name={category.name}
               sx={{ color: '#FFEF5E', backgroundColor: '#333' }}
-              slotProps={{
-                input: {
-                  ...params.InputProps,
-                  endAdornment: (
-                    <Fragment>
-                      {loading ? (
-                        <CircularProgress sx={{ color: '#FFEF5E' }} size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </Fragment>
-                  )
-                }
-              }}
             />
+          )}
+          renderOption={(props, option) => (
+            <li
+              {...props}
+              hidden
+              key={option.id}
+              style={{
+                backgroundColor: 'rgb(25, 25, 25)',
+                color: 'rgb(255, 222, 94)'
+              }}
+            >
+              {option.trade_name}
+            </li>
           )}
         />
       </div>

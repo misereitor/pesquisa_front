@@ -4,8 +4,7 @@ import {
   useMemo,
   Dispatch,
   SetStateAction,
-  useCallback,
-  useEffect
+  useCallback
 } from 'react';
 import { InputHTMLAttributes, forwardRef, useId } from 'react';
 import { Company } from '@/model/company';
@@ -27,8 +26,13 @@ function removeAccents(text: string) {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
+function escapeRegExp(text: string) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapa caracteres especiais
+}
+
 function highlightMatch(word: string, query: string) {
-  const regex = new RegExp(`(${query})`, 'gi');
+  const escapedQuery = escapeRegExp(query); // Escapa os caracteres especiais
+  const regex = new RegExp(`(${escapedQuery})`, 'gi');
   return word.replace(regex, '<mark>$1</mark>');
 }
 
@@ -80,9 +84,20 @@ function expandWithUniversalDictionary(
       if (cleanKey.includes(fragment)) {
         return [key, ...synonyms];
       }
+
+      // Também busca por fragmentos dentro dos sinônimos
+      const matchingSynonyms = synonyms.filter((synonym) =>
+        removeAccents(synonym.toLowerCase()).includes(fragment)
+      );
+      if (matchingSynonyms.length > 0) {
+        return [key, ...matchingSynonyms];
+      }
+
       return [];
     }
   );
+
+  // Se nada foi encontrado no dicionário, retorna o fragmento original
   return expandedWords.length > 0 ? expandedWords : [fragment];
 }
 
@@ -104,46 +119,7 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const [filteredOptions, setFilteredOptions] = useState<Company[]>([]);
     const [notFind, setNotFind] = useState(false);
-    const [showAbove, setShowAbove] = useState(false);
     const inputId = useId();
-
-    useEffect(() => {
-      const calculateDropdownPosition = () => {
-        const inputElement = document.getElementById(inputId);
-        const dropdownElement = document.getElementById(`${inputId}-dropdown`);
-
-        if (inputElement && dropdownElement) {
-          const inputRect = inputElement.getBoundingClientRect();
-          const dropdownHeight = dropdownElement.offsetHeight;
-
-          // Tamanho customizado (ex: 200px de espaço mínimo)
-          const minSpaceBelow = 100;
-
-          // Verifica se há espaço suficiente abaixo do campo
-          const isCloseToBottom =
-            window.innerHeight - inputRect.bottom <
-            dropdownHeight + minSpaceBelow;
-
-          setShowAbove(isCloseToBottom);
-        }
-      };
-      // Calcular posição inicialmente
-      calculateDropdownPosition();
-
-      // Adicionar listener de scroll e resize
-      const handleScrollOrResize = () => {
-        calculateDropdownPosition();
-      };
-
-      window.addEventListener('scroll', handleScrollOrResize);
-      window.addEventListener('resize', handleScrollOrResize);
-
-      return () => {
-        // Remover listeners ao desmontar
-        window.removeEventListener('scroll', handleScrollOrResize);
-        window.removeEventListener('resize', handleScrollOrResize);
-      };
-    }, [value, filteredOptions, inputId]);
 
     const universalDictionary = useMemo(
       () => buildUniversalDictionary(dictionaryFromService),
@@ -161,52 +137,32 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
       const cleanedInput = removeAccents(inputValue.toLowerCase());
       const inputWords = cleanedInput.split(' ').filter(Boolean);
 
-      const uniqueWords = new Set(inputWords);
-      if (uniqueWords.size < inputWords.length) {
-        setFilteredOptions([]);
-        return;
-      }
-
-      const filteredByWords = options.filter(({ trade_name }) => {
-        const cleanWord = removeAccents(trade_name.toLowerCase());
-        return inputWords.every((inputFragment) =>
-          cleanWord.includes(inputFragment)
-        );
-      });
-
-      if (filteredByWords.length > 0) {
-        setFilteredOptions(filteredByWords);
-
-        return;
-      }
-      setNotFind(true);
-
       const filtered = options.filter(({ trade_name, company_name }) => {
-        const cleanWord = removeAccents(trade_name.toLowerCase());
+        const cleanTradeName = removeAccents(trade_name.toLowerCase());
+        const cleanCompanyName = removeAccents(
+          (company_name || '').toLowerCase()
+        );
 
+        // Verifica se todos os fragmentos têm correspondências parciais
         const matchesAllInputs = inputWords.every((inputFragment) => {
           const expandedFragment = expandWithUniversalDictionary(
             inputFragment,
             universalDictionary
           );
 
-          const matchesWord = expandedFragment.some((expInput) =>
-            cleanWord.includes(expInput)
-          );
-          let matchesSynonym = false;
-          if (company_name) {
-            const cleanSynonym = removeAccents(company_name?.toLowerCase());
-            matchesSynonym = expandedFragment.some((expInput) =>
-              cleanSynonym.includes(expInput)
+          return expandedFragment.some((expInput) => {
+            return (
+              cleanTradeName.includes(expInput) ||
+              cleanCompanyName.includes(expInput)
             );
-          }
-
-          return matchesWord || matchesSynonym;
+          });
         });
 
         return matchesAllInputs;
       });
+
       setFilteredOptions(filtered);
+      setNotFind(filtered.length === 0);
     };
 
     const handleBlur = () => {
@@ -220,6 +176,7 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
         setValue(companySelected.trade_name);
       return;
     };
+
     const handleOptionClick = useCallback(
       (selectedWord: string) => {
         setValue(selectedWord);
@@ -281,9 +238,7 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
             <div className="relative min-w-full">
               <ul
                 id={`${inputId}-dropdown`}
-                className={`absolute max-h-52 z-40 overflow-y-auto bg-[#272727] w-5/6 rounded-md ${
-                  showAbove ? 'bottom-12' : 'top-full'
-                }`}
+                className={`absolute max-h-52 z-40 overflow-y-auto bg-[#272727] w-5/6 rounded-md top-full`}
               >
                 {renderedOptions.length > 0
                   ? renderedOptions

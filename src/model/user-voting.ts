@@ -14,5 +14,5 @@ export interface UserVote {
   date_vote: Date;
   percentage_vote?: number;
   last_ip: string;
-  votes: VotesReports[];
+  votes?: VotesReports[];
 }

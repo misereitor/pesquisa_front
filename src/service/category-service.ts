@@ -108,7 +108,7 @@ export async function createAssociationCategoryService(
 ) {
   noStore();
   try {
-    const response = await fetch(`${API_URL}/api/import/create-many`, {
+    const response = await fetch(`${API_URL}/api/association/create-many`, {
       method: 'POST',
       headers: {
         'X-API-KEY': String(X_API_KEY),

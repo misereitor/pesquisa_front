@@ -36,7 +36,7 @@ export default function ListCategoryPesquisa({
   const [voteRow, setVoteRow] = useState<VoteRow[]>([]);
   const [openModalPercentagem, setOpenModalPercentagem] = useState(true);
   useEffect(() => {
-    setProgress(Math.trunc((voteRow.length * 100) / categories.length));
+    setProgress((voteRow.length * 100) / categories.length);
   }, [categories, setProgress, voteRow]);
 
   useEffect(() => {
@@ -58,7 +58,6 @@ export default function ListCategoryPesquisa({
     setLoading(true);
     setOpenModal(true);
   };
-  console.log(progress);
   if (pageLoading) {
     return <Loading />;
   }

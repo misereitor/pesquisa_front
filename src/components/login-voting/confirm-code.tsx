@@ -35,11 +35,46 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
       newCode[index] = value;
       setCode(newCode);
 
+      // Focar no próximo input, se existir
       if (value && index < code.length - 1) {
         const nextInput = document.getElementById(`input-${index + 1}`);
         nextInput?.focus();
       }
     }
+  };
+
+  const handlePaste = (
+    e: React.ClipboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    // Impede o comportamento padrão do "colar"
+    e.preventDefault();
+
+    // Pega o conteúdo colado
+    const pastedValue = e.clipboardData.getData('Text');
+
+    // Filtra apenas os números do valor colado
+    const filteredValue = pastedValue.replace(/\D/g, '');
+
+    // Cria um novo código com os valores filtrados
+    const newCode = [...code];
+
+    // Preenche os campos com os valores colados
+    for (let i = 0; i < filteredValue.length; i++) {
+      if (i + index < newCode.length) {
+        newCode[i + index] = filteredValue[i];
+      }
+    }
+
+    setCode(newCode);
+
+    // Foca no último campo preenchido
+    const lastFilledIndex = Math.min(
+      index + filteredValue.length,
+      code.length - 1
+    );
+    const lastInput = document.getElementById(`input-${lastFilledIndex}`);
+    lastInput?.focus();
   };
 
   const handleKeyDown = (
@@ -122,6 +157,7 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
                   id={`input-${index}`}
                   type="number"
                   maxLength={1}
+                  onPaste={(e) => handlePaste(e, index)}
                   value={value}
                   onChange={(e) => handleInputChange(e.target.value, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
