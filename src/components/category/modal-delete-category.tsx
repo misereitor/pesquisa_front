@@ -1,9 +1,7 @@
 'use client';
 import { Dispatch, SetStateAction, useState } from 'react';
 import InputSimple from '../input/input';
-import { getCookie } from 'cookies-next/client';
-import { loginUserAdmin } from '@/service/login-user-admin';
-import { FormUserAdmin } from '@/schema/schemaAdminUsers';
+import { checkMasterPassword } from '@/service/login-user-admin';
 import { Category } from '@/model/category';
 import { deleteCategoryService } from '@/service/category-service';
 import { FiDelete } from 'react-icons/fi';
@@ -31,26 +29,19 @@ export default function ModalDeleteCategory({
       setError('');
       if (password.length === 0) return;
       if (!categoryRemove) return;
-      const userCookies = getCookie('user');
-      if (userCookies) {
-        const user = JSON.parse(userCookies);
-        const login: FormUserAdmin = {
-          username: user.username,
-          password: password
-        };
-        const data = await loginUserAdmin(login);
-        if (!data.success) {
-          setError(data.message);
-          return;
-        }
 
-        await deleteCategoryService(categoryRemove.id);
-        const categoryFilter = categories.filter(
-          (c) => c.id != categoryRemove.id
-        );
-        setCategoryList(categoryFilter);
-        setOpenModal(false);
+      const data = await checkMasterPassword(password);
+      if (!data.data) {
+        setError('Senha invalida!');
+        return;
       }
+
+      await deleteCategoryService(categoryRemove.id);
+      const categoryFilter = categories.filter(
+        (c) => c.id != categoryRemove.id
+      );
+      setCategoryList(categoryFilter);
+      setOpenModal(false);
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);
 

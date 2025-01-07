@@ -1,47 +1,62 @@
 'use client';
 import { Dispatch, SetStateAction, useState } from 'react';
 import InputSimple from '../input/input';
-import { Company } from '@/model/company';
 import { checkMasterPassword } from '@/service/login-user-admin';
-import { deleteCompany } from '@/service/company-service';
-import { LoadingButton } from '@mui/lab';
+import { Category } from '@/model/category';
+import { removeCompanyFromCategory } from '@/service/category-service';
 import { FiDelete } from 'react-icons/fi';
+import { LoadingButton } from '@mui/lab';
 
 type Props = {
+  category: Category;
+  setCategories: Dispatch<SetStateAction<Category[]>>;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
-  companyRemove: Company | null;
-  setCompanyRemove: Dispatch<SetStateAction<Company | null>>;
-  setCompaniesList: Dispatch<SetStateAction<Company[]>>;
-  companies: Company[];
+  categories: Category[];
+  id_company: number | null;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setId_company: Dispatch<SetStateAction<number | null>>;
+  loading: boolean;
 };
 
-export default function ModalDeleteCompany({
+export default function ModalRemoveCompanyAssociation({
   setOpenModal,
-  companyRemove,
-  setCompanyRemove,
-  setCompaniesList,
-  companies
+  category,
+  setCategories,
+  categories,
+  id_company,
+  setLoading,
+  setId_company,
+  loading
 }: Props) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const handleRemove = async () => {
     try {
       setLoading(true);
       setError('');
       if (password.length === 0) return;
-      if (!companyRemove) return;
+      if (!id_company) return;
+
       const data = await checkMasterPassword(password);
       if (!data.data) {
         setError('Senha invalida!');
         return;
       }
 
-      await deleteCompany(companyRemove.id);
-      const companiesFilter = companies.filter((c) => c.id != companyRemove.id);
-      setCompaniesList(companiesFilter);
+      setLoading(true);
+      await removeCompanyFromCategory(category.id, id_company);
+      const categoriesUpdate = categories.map((ca) => {
+        if (ca.id === category.id) {
+          return {
+            ...ca,
+            companies: ca.companies?.filter((co) => co.id !== id_company)
+          };
+        }
+        return ca;
+      });
+      setCategories(categoriesUpdate);
+      setId_company(null);
       setOpenModal(false);
-      setCompanyRemove(null);
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);
 
@@ -59,10 +74,7 @@ export default function ModalDeleteCompany({
 
   return (
     <div>
-      <div>
-        <h1 className="font-bold text-2xl">{companyRemove?.trade_name}</h1>
-      </div>
-      <div>Digite sua senha para remover a empresa!</div>
+      <div>Digite sua senha para remover a categoria!</div>
       <div className="flex justify-between mt-5">
         <InputSimple
           type="password"
@@ -89,18 +101,18 @@ export default function ModalDeleteCompany({
             color: '#ffffff',
             backgroundColor: '#c2410c !important',
             '&.Mui-disabled': {
-              color: '#fdba74',
+              color: '#b91c1c',
               backgroundColor: '#fdba74 !important'
             }
           }}
         >
-          <span>Remover</span>
+          <span>Deletar</span>
         </LoadingButton>
+
         <button
           type="button"
           className="bg-yellow-500  w-24 h-10 rounded-md text-yellow-950"
           onClick={() => {
-            setCompanyRemove(null);
             setOpenModal(false);
           }}
         >

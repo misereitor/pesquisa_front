@@ -36,3 +36,28 @@ export async function loginUserAdmin(login: FormUserAdmin) {
     throw error;
   }
 }
+
+export async function checkMasterPassword(password: string) {
+  noStore();
+  try {
+    const response = await fetch(`${API_URL}/api/admin/auth/master-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': String(X_API_KEY)
+      },
+      body: JSON.stringify({ password: password })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      return data as ErrorBackend;
+    }
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in loginUserAdmin:', error);
+    throw error;
+  }
+}
