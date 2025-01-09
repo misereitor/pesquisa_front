@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import melgores from '/public/melgores-circul.png';
+import melgores from '/public/melhoresdoano.png';
 import espaco from '/public/espaco.png';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
