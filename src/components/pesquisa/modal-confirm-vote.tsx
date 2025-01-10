@@ -42,7 +42,7 @@ export default function ModalConfirmVote({
               <p>Você alcançou {progress.toFixed(1)}% da pesquisa.</p>
             </div>
             <p className="text-justify">
-              Você está próximo dos 100%! <br />
+              Você alcançou 70% da pesquisa. Já está concorrendo a TV! <br />
               Continue votando para eleger as{' '}
               <span className="font-bold">Melhores do Ano 2024.</span>
             </p>
@@ -55,7 +55,7 @@ export default function ModalConfirmVote({
             </div>
             <p className="text-justify">
               Seus votos não alcançaram os 70% para participar do sorteio.{' '}
-              <br /> Não desanime! Você ainda pode participar, revise e complete
+              <br /> Não desanime, Você ainda pode participar! revise e complete
               sua votação.
             </p>
           </div>
