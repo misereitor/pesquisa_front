@@ -96,7 +96,7 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
 
   return (
     <div className="max-w-[95%] w-[500px] mx-auto">
-      <div className="mt-20 mx-auto">
+      <div className="mt-10 mx-auto">
         <h2>
           Bem-vindo a votação do prêmio{' '}
           <span className="font-bold">MELHORES DO ANO 2024</span> de Santo

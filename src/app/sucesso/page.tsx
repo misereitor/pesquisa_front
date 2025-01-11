@@ -14,7 +14,7 @@ export default async function Sucesso() {
   return (
     <div className="flex justify-center text-center">
       <div>
-        <div className="mt-40 max-w-[500px]">
+        <div className="mt-20 max-w-[500px]">
           <h2>
             Obrigado por contribuir com a votação para eleger as <br />{' '}
             <b>MELHORES EMPRESAS DE 2024.</b>
@@ -56,7 +56,7 @@ export default async function Sucesso() {
             </div>
           </div>
         </div>
-        <div className="mt-40">
+        <div className="mt-28">
           <Layout2 />
         </div>
         <div className="flex justify-center">

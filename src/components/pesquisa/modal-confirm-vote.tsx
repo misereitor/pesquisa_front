@@ -1,7 +1,9 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { VoteRow } from '@/model/votes';
 import { confirmVoteService } from '@/service/voting-service';
 import { useRouter } from 'next/navigation';
+import { LoadingButton } from '@mui/lab';
+import { IoPlayCircleOutline } from 'react-icons/io5';
 
 type Props = {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -15,13 +17,17 @@ export default function ModalConfirmVote({
   setOpenModal,
   voteRow
 }: Props) {
+  const [loadinSubmit, setLoadinSubmit] = useState(false);
   const route = useRouter();
   const handleSubmit = async () => {
+    setLoadinSubmit(true);
     try {
       await confirmVoteService(progress);
       route.push('/sucesso');
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);
+    } finally {
+      setLoadinSubmit(false);
     }
   };
   return (
@@ -36,7 +42,7 @@ export default function ModalConfirmVote({
             </p>
           </div>
         )}
-        {progress >= 70 && progress < 100 && (
+        {progress >= 70 && progress <= 100 && (
           <div className="mt-8">
             <div className="mb-3">
               <p>Você alcançou {progress.toFixed(1)}% da pesquisa.</p>
@@ -62,42 +68,38 @@ export default function ModalConfirmVote({
         )}
       </div>
       <div className="flex justify-between mt-10">
-        {voteRow.length > 0 && (
-          // <LoadingButton
-          //   data-testid="comecar"
-          //   size="medium"
-          //   color="success"
-          //   type="button"
-          //   onClick={handleSubmit}
-          //   endIcon={<IoPlayCircleOutline />}
-          //   loading={loadinSubmit}
-          //   loadingPosition="end"
-          //   variant="contained"
-          //   sx={{
-          //     color: '#7f5d00',
-          //     backgroundColor: '#ffe45f !important',
-          //     '&.Mui-disabled': {
-          //       color: '#7f5d00',
-          //       backgroundColor: '#fdf6d0 !important'
-          //     }
-          //   }}
-          // >
-          //   <span>Confirmar</span>
-          // </LoadingButton>
-          <button type="button" onClick={handleSubmit}>
-            CONFIRMAR
-          </button>
-        )}
         <button
           type="button"
-          className="w-20 h-10 rounded-md bg-[#ffe45f] text-[#7f5d00]"
           onClick={() => {
             setOpenModal(false);
             setLoading(false);
           }}
         >
-          REVISAR
+          Revisar
         </button>
+        {voteRow.length > 0 && (
+          <LoadingButton
+            data-testid="comecar"
+            size="medium"
+            color="success"
+            type="button"
+            onClick={handleSubmit}
+            endIcon={<IoPlayCircleOutline />}
+            loading={loadinSubmit}
+            loadingPosition="end"
+            variant="contained"
+            sx={{
+              color: '#7f5d00',
+              backgroundColor: '#ffe45f !important',
+              '&.Mui-disabled': {
+                color: '#7f5d00',
+                backgroundColor: '#fdf6d0 !important'
+              }
+            }}
+          >
+            <span>Confirmar</span>
+          </LoadingButton>
+        )}
       </div>
     </div>
   );

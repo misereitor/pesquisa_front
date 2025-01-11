@@ -11,7 +11,7 @@ export default function LoginVoting() {
   const [user, setUser] = useState<UserVote>();
   const [lastPage, setLastPage] = useState(1);
   return (
-    <div className="mx-auto mt-52">
+    <div className="mx-auto mt-40">
       <div>
         <div className="flex justify-center mb-7 w-4/5 mx-auto">
           <Image
