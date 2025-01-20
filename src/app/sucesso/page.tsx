@@ -56,11 +56,11 @@ export default async function Sucesso() {
             </div>
           </div>
         </div>
-        <div className="mt-28">
+        <div className="mt-20">
           <Layout2 />
         </div>
         <div className="flex justify-center">
-          <footer className="absolute bottom-8 w-4/5">
+          <footer className="bottom-8 mt-20 b-0 w-[95%] relative">
             {Number(user?.percentage_vote) >= 70 ? (
               <span>Você está concorrendo ao sorteio!</span>
             ) : (
