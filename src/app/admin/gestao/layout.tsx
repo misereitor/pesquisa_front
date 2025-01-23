@@ -17,8 +17,8 @@ const navigation = {
       path: '',
       submenu: [
         { title: 'Empresas', path: '/admin/gestao/empresas' },
-        { title: 'Categorias', path: '/admin/gestao/categorias' },
-        { title: 'Dicionário', path: '/admin/gestao/dicionario' }
+        { title: 'Categorias', path: '/admin/gestao/categorias' }
+        //{ title: 'Dicionário', path: '/admin/gestao/dicionario' }
       ]
     },
     {
