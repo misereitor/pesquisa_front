@@ -11,6 +11,7 @@ import { checkCpfExist } from '@/service/login-voting';
 import { UserVote } from '@/model/user-voting';
 import { IoPlayCircleOutline } from 'react-icons/io5';
 import { LoadingButton } from '@mui/lab';
+import Link from 'next/link';
 
 type Props = {
   setStage: Dispatch<SetStateAction<number>>;
@@ -120,7 +121,16 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
             })}
           />
         </div>
-
+        <div className="w-full mb-4 flex justify-end pr-2">
+          <Link
+            href={
+              'https://wa.me/5575981976540?text=Ol%C3%A1%2C%20estou%20com%20problemas%20no%20sistema%20Melhores%20do%20Ano%202024'
+            }
+            target="_blank"
+          >
+            Precisa de ajuda? Clique aqui!
+          </Link>
+        </div>
         <div className="flex justify-end mr-2">
           <LoadingButton
             data-testid="comecar"

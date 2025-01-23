@@ -14,6 +14,7 @@ import { DictionaryEntry } from '@/model/dictionary';
 import { IoPlayCircleOutline } from 'react-icons/io5';
 import { LoadingButton } from '@mui/lab';
 import ModalPercentage from './modal-percentage';
+import Link from 'next/link';
 
 type Props = {
   categories: Category[];
@@ -90,6 +91,16 @@ export default function ListCategoryPesquisa({
             userVotes={userVotes}
             dictionaryFromService={dictionaryFromService}
           />
+        </div>
+        <div className="w-full mb-4 flex justify-end pr-2 mt-2">
+          <Link
+            href={
+              'https://wa.me/5575981976540?text=Ol%C3%A1%2C%20estou%20com%20problemas%20no%20sistema%20Melhores%20do%20Ano%202024'
+            }
+            target="_blank"
+          >
+            Precisa de ajuda? Clique aqui!
+          </Link>
         </div>
         <div className="mt-6 mb-36 flex justify-end">
           <LoadingButton

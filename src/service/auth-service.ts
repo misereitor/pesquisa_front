@@ -17,15 +17,10 @@ export async function valideTokenUserVotingService(token: string | undefined) {
 }
 
 export async function valideTokenUserAdminService(token: string | undefined) {
-  try {
-    if (!token) throw new Error('Token invalid');
-    const secret = new TextEncoder().encode(SECRET_KEY_ADMIN);
-    const { payload } = await jose.jwtVerify(token, secret);
-    return payload as OpenToken;
-  } catch (error) {
-    console.error('Error in valide code:', error);
-    throw error;
-  }
+  if (!token) throw new Error('Token invalid');
+  const secret = new TextEncoder().encode(SECRET_KEY_ADMIN);
+  const { payload } = await jose.jwtVerify(token, secret);
+  return payload as OpenToken;
 }
 
 export type OpenToken = {

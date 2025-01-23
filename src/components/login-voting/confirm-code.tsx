@@ -7,6 +7,7 @@ import Modal from '../modal/modal';
 import { setCookie } from 'cookies-next/client';
 import { LoadingButton } from '@mui/lab';
 import { IoPlayCircleOutline } from 'react-icons/io5';
+import Link from 'next/link';
 
 type Props = {
   user: UserVote;
@@ -193,6 +194,16 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
             >
               Reenviar
             </button>
+          </div>
+          <div className="w-full mb-4 flex justify-center pr-2">
+            <Link
+              href={
+                'https://wa.me/5575981976540?text=Ol%C3%A1%2C%20estou%20com%20problemas%20no%20sistema%20Melhores%20do%20Ano%202024'
+              }
+              target="_blank"
+            >
+              Precisa de ajuda? Clique aqui!
+            </Link>
           </div>
           <div className="flex justify-between mt-4 w-full">
             <button
