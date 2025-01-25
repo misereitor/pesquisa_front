@@ -7,13 +7,13 @@ import { useForm } from 'react-hook-form';
 import InputSimple from '@/components/input/input';
 import { FormUserAdmin, schemaUserAdmin } from '@/schema/schemaAdminUsers';
 import { loginUserAdmin } from '@/service/login-user-admin';
-//import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { IoPlayCircleOutline } from 'react-icons/io5';
 export default function FormLogin() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
-  //const router = useRouter();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -38,9 +38,9 @@ export default function FormLogin() {
         setLoading(false);
         return;
       }
-      // if (data.success) {
-      //   router.push('/admin/gestao/dashboard');
-      // }
+      if (data.success) {
+        router.push('/admin/gestao/dashboard');
+      }
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);
 

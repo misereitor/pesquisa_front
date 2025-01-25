@@ -3,7 +3,6 @@ import { ErrorBackend } from '@/model/error';
 import { FormUserAdmin } from '@/schema/schemaAdminUsers';
 import { cookies } from 'next/headers';
 import { unstable_noStore as noStore } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 const { API_URL, X_API_KEY } = process.env;
 
@@ -24,7 +23,6 @@ export async function loginUserAdmin(login: FormUserAdmin) {
         const cookieStore = await cookies();
         cookieStore.set('token', data.data.token);
         cookieStore.set('user', JSON.stringify(data.data.user));
-        redirect('/admin/gestao/dashboard');
         return data as ErrorBackend;
       }
       return data as ErrorBackend;
