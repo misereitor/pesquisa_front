@@ -86,6 +86,7 @@ export default function Register({
       const userRegistred = await registerUserVoting(user);
       if ('success' in userRegistred && !userRegistred.success) {
         setError(userRegistred.message);
+        setLoading(false);
         return;
       }
 
@@ -97,12 +98,12 @@ export default function Register({
       if (error.name === 'Error') {
         // Caso o backend tenha retornado uma mensagem de erro específica
         setError('Telefone informado já cadastrado');
+        setLoading(false);
       } else {
         // Erro genérico (ex.: problemas de rede)
         setError('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
   };
 

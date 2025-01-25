@@ -49,11 +49,13 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
           type: 'validate',
           message: 'CPF já votou'
         });
+        setLoading(false);
         return;
       }
       if (data.data) {
         setUser(data.data);
         setStage(3);
+        setLoading(false);
         return;
       }
       const user: UserVote = {
@@ -73,6 +75,7 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
       };
       setUser(user);
       setStage(2);
+      setLoading(false);
       return;
     } catch (error: any) {
       console.error('Error in handleSubmitForm:', error);
@@ -83,15 +86,15 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
           type: 'validate',
           message: 'CPF já votou'
         });
+        setLoading(false);
       } else {
         // Erro genérico (ex.: problemas de rede)
         setError('cpf', {
           type: 'validate',
           message: 'Erro interno'
         });
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
   };
 

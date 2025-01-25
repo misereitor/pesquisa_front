@@ -1,6 +1,7 @@
 import {
   CategoryReports,
   CategoryVotes,
+  GraphReport,
   TotalCountForCity,
   TotalCountForUser
 } from '@/model/reports';
@@ -26,6 +27,7 @@ export async function getAllDataDashboard() {
         countVotes: TotalCountForUser;
         usersVote: UserVote[];
         totalCity: TotalCountForCity[];
+        graphReport: GraphReport[];
       };
       return data.data as Data;
     }

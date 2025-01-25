@@ -1,5 +1,5 @@
 'use client';
-import { CategoryVotes } from '@/model/reports';
+import { GraphReport } from '@/model/reports';
 import { PieChart, Pie, Cell, Tooltip, Legend, LegendProps } from 'recharts';
 import { Payload } from 'recharts/types/component/DefaultLegendContent';
 
@@ -54,38 +54,13 @@ const CustomLegend = ({ payload }: CustomLegendProps) => (
 );
 
 type Props = {
-  votesCategory: CategoryVotes[];
+  graphReport: GraphReport[];
 };
 
-export default function LineFiveDashboard({ votesCategory }: Props) {
-  const data = votesCategory.map((e) => {
-    const companies = e.companies.sort((a, b) => b.value - a.value);
-    const filterCompany = companies.slice(0, 3);
-    const outerCompany = companies.slice(3);
-    const data = filterCompany.map((e) => {
-      const dataFilter = {
-        name: e.name,
-        value: e.value
-      };
-      return dataFilter;
-    });
-
-    const outer = {
-      name: 'Outros',
-      value: 0
-    };
-    outerCompany.forEach((e) => (outer.value += e.value));
-    data.push(outer);
-    const res = {
-      category_name: e.category_name,
-      companies: data
-    };
-    return res;
-  });
-  console.log(data);
+export default function LineFiveDashboard({ graphReport }: Props) {
   return (
     <section className="flex my-4 px-4 flex-wrap">
-      {data.map((graphic) => (
+      {graphReport.map((graphic) => (
         <div
           key={graphic.category_name}
           className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 px-1 mb-1"

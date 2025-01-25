@@ -107,6 +107,7 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
       const success = await confirmCode(code.join(''), user.phone);
       if (!success.success) {
         setError(success.message);
+        setLoading(false);
         return;
       }
       if (success.success) {
@@ -120,12 +121,12 @@ export default function ConfirmCode({ user, setStage, lastPage }: Props) {
       if (error.name === 'Error') {
         // Caso o backend tenha retornado uma mensagem de erro específica
         setError('código incorreto');
+        setLoading(false);
       } else {
         // Erro genérico (ex.: problemas de rede)
         setError('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
   };
 

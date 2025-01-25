@@ -41,3 +41,11 @@ export interface CategoryReports {
   name: string;
   active: boolean;
 }
+
+export interface GraphReport {
+  category_name: string;
+  companies: {
+    name: string;
+    value: number;
+  }[];
+}

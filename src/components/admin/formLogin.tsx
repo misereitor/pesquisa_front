@@ -35,6 +35,7 @@ export default function FormLogin() {
       const data = await loginUserAdmin(login);
       if (!data.success) {
         setError(data.message);
+        setLoading(false);
         return;
       }
       if (data.success) {
@@ -46,12 +47,12 @@ export default function FormLogin() {
       if (error.message === 'Login ou senha inválidos') {
         // Caso o backend tenha retornado uma mensagem de erro específica
         setError(error.message);
+        setLoading(false);
       } else {
         // Erro genérico (ex.: problemas de rede)
         setError('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
