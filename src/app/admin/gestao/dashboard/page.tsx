@@ -1,4 +1,4 @@
-import LineFiveDashboard from '@/components/dashboard/line-five';
+// import LineFiveDashboard from '@/components/dashboard/line-five';
 import LineFourDashboard from '@/components/dashboard/line-four';
 import LineOneDashboard from '@/components/dashboard/line-one';
 import LineThreeDashboard from '@/components/dashboard/line-three';
@@ -14,7 +14,7 @@ export default async function Dashboard() {
       <LineTwoDashboard votesCategory={votesCategory} />
       <LineThreeDashboard usersVote={usersVote} />
       <LineFourDashboard totalCity={totalCity} />
-      <LineFiveDashboard votesCategory={votesCategory} />
+      {/* <LineFiveDashboard votesCategory={votesCategory} /> */}
     </div>
   );
 }
