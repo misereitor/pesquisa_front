@@ -1,3 +1,4 @@
+'use server';
 import {
   CategoryReports,
   CategoryVotes,
@@ -30,6 +31,33 @@ export async function getAllDataDashboard() {
         graphReport: GraphReport[];
       };
       return data.data as Data;
+    }
+    const error = new Error(data.message || 'Erro desconhecido');
+    error.name = 'ApiError';
+    error.message = data.message;
+    throw error;
+  } catch (error) {
+    console.error('Error in getAllDataDashboard:', error);
+    throw error;
+  }
+}
+
+export async function getAllDataGraph() {
+  noStore();
+  try {
+    const response = await fetch(
+      `${API_URL}/api/reports/dashboard/graph-report`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': String(X_API_KEY)
+        }
+      }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      return data.data as GraphReport[];
     }
     const error = new Error(data.message || 'Erro desconhecido');
     error.name = 'ApiError';

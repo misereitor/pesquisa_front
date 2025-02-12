@@ -78,7 +78,7 @@ export default function LayoutAdmin({
 
   return (
     <div>
-      <div className="w-full">
+      <div className="w-full layout-page">
         <div className="h-12 border-b-2 border-collapse border-slate-800">
           <div className="w-full flex items-center justify-between">
             <div className="w-full flex items-center justify-start">

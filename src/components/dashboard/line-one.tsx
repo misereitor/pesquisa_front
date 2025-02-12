@@ -1,6 +1,9 @@
 'use client';
 import { TotalCountForUser } from '@/model/reports';
+import { Box, Fab } from '@mui/material';
+import Link from 'next/link';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import PrintIcon from '@mui/icons-material/Print';
 
 type Props = {
   countVotes: TotalCountForUser;
@@ -58,6 +61,20 @@ export default function LineOneDashboard({ countVotes }: Props) {
   ];
   return (
     <section id="1">
+      <Box
+        sx={{
+          position: 'fixed',
+          bottom: 25,
+          right: 25,
+          zIndex: 10
+        }}
+      >
+        <Fab size="medium" color="secondary" aria-label="add">
+          <Link href={'/admin/gestao/dashboard/print'} target="_blank">
+            <PrintIcon />
+          </Link>
+        </Fab>
+      </Box>
       <div className="flex m-4 gap-2">
         <div className="flex-1 px-2 justify-center bg-gray-700 shadow rounded">
           <div className="">

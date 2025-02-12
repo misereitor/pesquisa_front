@@ -1,0 +1,18 @@
+.print {
+  overflow: auto;
+  border: 2px solid black;
+  padding: 0;
+  margin: 0;
+}
+.print text {
+  font-size: 11.5px;
+}
+.print ul li {
+  font-size: 11.5px;
+}
+.layout-page {
+  display: none;
+}
+.layout-page-children {
+  margin-top: 0;
+}
