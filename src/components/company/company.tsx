@@ -6,7 +6,7 @@ import { useState } from 'react';
 type Props = {
   companies: Company[];
 };
-export default function Compan({ companies }: Props) {
+export default function ListCompan({ companies }: Props) {
   const [companiesList, setCompaniesList] = useState<Company[]>(companies);
   return (
     <div>

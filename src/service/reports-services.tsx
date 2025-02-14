@@ -69,11 +69,11 @@ export async function getAllDataGraph() {
   }
 }
 
-export async function getAllDataReportGeral() {
+export async function getAllDataReportGeral(limit: number, offset: number) {
   noStore();
   try {
     const response = await fetch(
-      `${API_URL}/api/reports/get-all-data-report-geral`,
+      `${API_URL}/api/reports/get-all-data-report-geral?limit=${limit}&offset=${offset}`,
       {
         method: 'GET',
         headers: {
@@ -86,6 +86,7 @@ export async function getAllDataReportGeral() {
     type Data = {
       categories: CategoryReports[];
       usersVote: UserVote[];
+      total: number;
     };
     if (response.ok) {
       return data.data as Data;
