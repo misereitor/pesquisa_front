@@ -6,8 +6,6 @@ import { UserVote } from '@/model/user-voting.js';
 import { getAllDataReportGeral } from '@/service/reports-services';
 import { useEffect, useState } from 'react';
 
-const { API_URL, X_API_KEY } = process.env;
-
 export default function RelatorioGeral() {
   const [categories, setCategories] = useState<CategoryReports[]>([]);
   const [usersVote, setUsersVote] = useState<UserVote[]>([]);
@@ -15,6 +13,8 @@ export default function RelatorioGeral() {
   const [limit, setLimit] = useState(50);
   const [offset, setOffset] = useState(1);
   const [loading, setLoading] = useState(true);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const X_API_KEY = process.env.NEXT_PUBLIC_X_API_KEY;
 
   useEffect(() => {
     const getData = async () => {
