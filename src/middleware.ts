@@ -15,6 +15,7 @@ const adminRoutes = [
   '/admin/gestao/dashboard/print',
   '/admin/gestao/categorias',
   '/admin/gestao/empresas',
+  '/admin/gestao/alterar-numero',
   '/admin/gestao/relatorios',
   '/admin/gestao/relatorio/categoria',
   '/admin/gestao/relatorio/cidade',

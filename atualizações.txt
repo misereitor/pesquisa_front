@@ -1,0 +1,6 @@
+adiciolar mais roles para admin, superadmin, mastar, vote
+configurar conta superadmin para ter a senha master
+melhorar middleware
+adicionar qr code whatsapp na tela de configuração
+colocar mais países para votar
+verificar erro ao alterar nome de empresa com o mesmo nome

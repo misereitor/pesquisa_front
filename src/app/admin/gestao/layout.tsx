@@ -17,7 +17,8 @@ const navigation = {
       path: '',
       submenu: [
         { title: 'Empresas', path: '/admin/gestao/empresas' },
-        { title: 'Categorias', path: '/admin/gestao/categorias' }
+        { title: 'Categorias', path: '/admin/gestao/categorias' },
+        { title: 'Alterar Número', path: '/admin/gestao/alterar-numero' }
         //{ title: 'Dicionário', path: '/admin/gestao/dicionario' }
       ]
     },
@@ -111,7 +112,7 @@ export default function LayoutAdmin({
                           paper: {
                             style: {
                               maxHeight: ITEM_HEIGHT * 4,
-                              width: '12ch',
+                              width: '14ch',
                               backgroundColor: '#181818',
                               color: '#ffde5e'
                             }
