@@ -4,6 +4,7 @@ import { confirmVoteService } from '@/service/voting-service';
 import { useRouter } from 'next/navigation';
 import { LoadingButton } from '@mui/lab';
 import { IoPlayCircleOutline } from 'react-icons/io5';
+import Final from '../final/final';
 
 type Props = {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -30,6 +31,7 @@ export default function ModalConfirmVote({
       setLoadinSubmit(false);
     }
   };
+  return <Final />;
   return (
     <div className="w-[300px]">
       <div>
