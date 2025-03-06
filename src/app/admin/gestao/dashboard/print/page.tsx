@@ -27,7 +27,8 @@ const renderCustomizedLabel = ({
   cy,
   midAngle,
   outerRadius,
-  percent
+  percent,
+  index
 }: Render) => {
   const labelPosition = {
     x: cx + (outerRadius + 25) * Math.cos(-midAngle * RADIAN),
@@ -38,7 +39,7 @@ const renderCustomizedLabel = ({
     <text
       x={labelPosition.x}
       y={labelPosition.y}
-      fill="white"
+      fill={COLORS[index % COLORS.length]}
       textAnchor={labelPosition.x > cx ? 'start' : 'end'}
       dominantBaseline="central"
     >
@@ -74,7 +75,7 @@ export default function Print() {
           <div key={graphic.category_name} className=" w-full px-1 mb-1">
             <div className="h-[340px] bg-gray-700 rounded text-sm flex justify-center my-1 first:mt-5">
               <div className="print">
-                <div className="h-1 w-full text-center mb-7 mt-2">
+                <div className="h-1 w-full text-center mb-3">
                   <p className="text-yellow-500 font-bold max-w-[400px] mx-auto">
                     {graphic.category_name}
                   </p>
@@ -86,9 +87,11 @@ export default function Print() {
                     cy={100}
                     outerRadius={70}
                     isAnimationActive={false}
-                    fill="#8884d8"
+                    fill="#8884d"
                     dataKey="value"
-                    label={renderCustomizedLabel}
+                    label={(props) =>
+                      renderCustomizedLabel({ ...props, index: props.index })
+                    }
                   >
                     {graphic.companies.map((entry, index) => (
                       <Cell
