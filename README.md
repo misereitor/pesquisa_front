@@ -1,37 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pesquisa Front
 
-## Getting Started
+`pesquisa_front` é o frontend da aplicação de pesquisa desenvolvida para a associação comercial, permitindo que os participantes votem nos melhores do ano. Este projeto foi criado com [Next.js](https://nextjs.org/) e utiliza [Tailwind CSS](https://tailwindcss.com/) para estilização.
 
-First, run the development server:
+## 🚀 Demonstração
+Acesse a aplicação em produção: [pesquisa-front-omega.vercel.app](https://pesquisa-front-omega.vercel.app
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Funcionalidades
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-Interface amigável para votação nas categorias disponíveis
+-Integração com a API backend para autenticação e registro de votos
+-Design responsivo para dispositivos móveis e desktops
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Tecnologias Utilizadas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+-[Next.js](https://nextjs.org/) – Framework React para aplicações web
+-[Tailwind CSS](https://tailwindcss.com/) – Framework CSS utilitário
+-[TypeScript](https://www.typescriptlang.org/) – Superset do JavaScript
 
-## Learn More
+## 🛠️ Instalação e Execução
 
-To learn more about Next.js, take a look at the following resources:
+1 Clone o repositóri:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone https://github.com/misereitor/pesquisa_front.git
+   cd pesquisa_front
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+2 Instale as dependência:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm install
+   # ou
+   yarn install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# pesquisa_front
+
+3 Inicie o servidor de desenvolviment:
+
+   ```bash
+   npm run dev
+   # ou
+   yarn dev
+   ```
+
+
+4 Abra [http://localhost:3000](http://localhost:3000) no seu navegador para visualizar a aplicaçã.
+
+## 📁 Estrutura do Projeto
+- `/public` – Arquivos estáticos e images.- `/src` – Código-fonte da aplicaço.
+ - `/app` – Componentes e páginas da aplicaço.
+ - `/styles` – Arquivos de estilizaço.- `next.config.ts` – Configurações do Next.s.- `tailwind.config.ts` – Configurações do Tailwind CS.
+
+## 📄 Licena
+
+Este projeto está licenciado sob a [MIT License](LICENE).
+
