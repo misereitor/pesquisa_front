@@ -9,15 +9,29 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "next": "16.0.3",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@hookform/resolvers": "^5.2.2",
+    "@mui/icons-material": "^7.3.5",
+    "@mui/lab": "^7.0.1-beta.19",
+    "@mui/material": "^7.3.5",
+    "@react-input/mask": "^2.0.4",
+    "cookies-next": "^6.1.1",
+    "jose": "^6.1.2",
+    "next": "^16.1.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "react-icons": "^5.5.0",
+    "react-papaparse": "^4.4.0",
+    "react-phone-input-2": "^2.15.1",
+    "recharts": "^3.4.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "baseline-browser-mapping": "^2.9.11",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4",
