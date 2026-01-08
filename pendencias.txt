@@ -1,4 +1,2 @@
-Empressas não fica em cima (Passo a passo).
-aumentar o tamanho da caixa das empresas quando busca
 Otimizar as empresas na hora de votar
 Na hora de escolher as empresas, está travando

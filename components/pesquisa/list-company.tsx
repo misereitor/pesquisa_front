@@ -38,9 +38,7 @@ export default function ListCompanyVoting({
 }: Props) {
   const [companySelected, setCompanySelected] = useState<Company>();
   const [value, setValue] = useState('');
-  category.companies = category.companies?.sort((a, b) =>
-    a.trade_name.localeCompare(b.trade_name)
-  );
+  /* category.companies sort removed as it was a side effect and seemingly unused */
 
   useEffect(() => {
     userVotes.forEach((el) => {

@@ -1,59 +1,12 @@
 'use client';
 
-import { styled } from '@mui/material/styles';
-import MuiAccordionSummary, {
-  AccordionSummaryProps
-} from '@mui/material/AccordionSummary';
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import { RxChevronRight } from 'react-icons/rx';
 import { Category } from '@/src/model/category';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { FaCheck } from 'react-icons/fa';
-import ListCompanyVoting from './list-company';
+import { Dispatch, SetStateAction, useState, useCallback } from 'react';
 import { Company } from '@/src/model/company';
 import { Vote, VoteRow } from '@/src/model/votes';
+import CategoryAccordionItem from './category-accordion-item';
 
-const Accordion = styled((props: AccordionProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(() => ({
-  borderBottom: '1px solid rgb(203, 213, 225)',
-  ':last-child': {
-    borderBottom: '0px'
-  },
-  color: 'rgb(255, 222, 94)',
-
-  '&::before': {
-    display: 'none'
-  }
-}));
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    expandIcon={<RxChevronRight className="text-[#FFDE5E]" size={24} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, .05)'
-      : 'rgba(8, 8, 8)',
-  flexDirection: 'row-reverse',
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'rotate(90deg)'
-  },
-  '& .MuiAccordionSummary-content': {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginLeft: theme.spacing(1)
-  }
-}));
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  backgroundColor: 'rgba(0, 0, 0, .96)'
-}));
+// Styled components moved to category-accordion-item.tsx
 
 type Props = {
   categories: Category[];
@@ -102,58 +55,21 @@ export default function AccordionCategoryVote({
   return (
     <div className="px-6 py-2 bg-[rgb(8,8,8)] border rounded-md border-slate-300 shadow-white w-full">
       {categories.map((row, rowIndex) => (
-        <Accordion
+        <CategoryAccordionItem
           key={rowIndex}
-          id={rowIndex.toString()}
-          data-testid={rowIndex.toString()}
-          className="accordion"
-          expanded={expanded === rowIndex.toString()}
-          onChange={handleExpand(rowIndex.toString())}
-          onBlur={() => handleExpand(rowIndex.toString())}
-        >
-          <AccordionSummary
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              textTransform: 'capitalize'
-            }}
-            aria-controls="panel1d-content"
-            id="panel1d-header"
-          >
-            <Typography
-              id={row.name.replaceAll('/', '').toUpperCase()}
-              className={rowIndex.toString()}
-            >
-              {row.name.replaceAll('/', '/ ').toUpperCase()}
-            </Typography>
-            {voteRow?.map((r, rIndex) =>
-              r.row == rowIndex && r.voteRow ? (
-                <div key={rIndex} className="flex items-center">
-                  <FaCheck />
-                </div>
-              ) : (
-                ''
-              )
-            )}
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography component={'span'}>
-              <ListCompanyVoting
-                universalDictionary={universalDictionary}
-                loading={loading}
-                setLoading={setLoading}
-                handleExpand={handleExpand}
-                userVotes={userVotes}
-                setVoteRow={setVoteRow}
-                voteRow={voteRow}
-                companies={companies}
-                category={row}
-                setExpanded={setExpanded}
-                rowIndex={rowIndex}
-              />
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+          companies={companies}
+          userVotes={userVotes}
+          setVoteRow={setVoteRow}
+          voteRow={voteRow}
+          loading={loading}
+          setLoading={setLoading}
+          universalDictionary={universalDictionary}
+          category={row}
+          expanded={expanded}
+          handleChange={handleExpand}
+          setExpanded={setExpanded}
+          rowIndex={rowIndex}
+        />
       ))}
     </div>
   );

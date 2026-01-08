@@ -62,6 +62,12 @@ function expandWithUniversalDictionary(
   return expandedWords.length > 0 ? expandedWords : [fragment];
 }
 
+function normalizeForSearch(text: string) {
+  return removeAccents(text)
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .toLowerCase();
+}
+
 const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -91,6 +97,7 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
       }
 
       const cleanedInput = removeAccents(inputValue.toLowerCase());
+      const normalizedInput = normalizeForSearch(inputValue);
       const inputWords = cleanedInput.split(' ').filter(Boolean);
 
       const filtered = options.filter(({ trade_name, company_name }) => {
@@ -99,7 +106,21 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
           (company_name || '').toLowerCase()
         );
 
-        // Verifica se todos os fragmentos têm correspondências parciais
+        const normalizedTradeName = normalizeForSearch(trade_name);
+        const normalizedCompanyName = normalizeForSearch(company_name || '');
+
+        // Match 1: Correspondência "Fuzzy" (sem pontuação/espaços)
+        // Ex: "jnet" matches "J. Net"
+        if (
+          (normalizedTradeName.includes(normalizedInput) &&
+            normalizedInput.length > 2) ||
+          (normalizedCompanyName.includes(normalizedInput) &&
+            normalizedInput.length > 2)
+        ) {
+          return true;
+        }
+
+        // Match 2: Lógica original (palavra por palavra, com dicionário expandido)
         const matchesAllInputs = inputWords.every((inputFragment) => {
           const expandedFragment = expandWithUniversalDictionary(
             inputFragment,
