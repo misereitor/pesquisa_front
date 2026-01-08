@@ -1,2 +1,4 @@
 Empressas não fica em cima (Passo a passo).
-Revisar as empresas na busca para ver se está correto.
+aumentar o tamanho da caixa das empresas quando busca
+Otimizar as empresas na hora de votar
+Na hora de escolher as empresas, está travando

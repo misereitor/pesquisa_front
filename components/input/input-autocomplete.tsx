@@ -152,7 +152,7 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
         return (
           <li
             key={company.trade_name}
-            className="hover:bg-[#4d4d4d] cursor-pointer"
+            className="hover:bg-[#4d4d4d] cursor-pointer p-2"
             dangerouslySetInnerHTML={{ __html: highlightedWord }}
             onMouseDown={() => {
               handleOptionClick(company.trade_name);
@@ -194,11 +194,11 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
             <div className="relative min-w-full">
               <ul
                 id={`${inputId}-dropdown`}
-                className={`absolute max-h-52 z-40 overflow-y-auto bg-[#272727] w-5/6 rounded-md top-full`}
+                className={`absolute max-h-52 z-40 overflow-y-auto bg-[#272727] w-5/6 rounded-md top-full mt-2`}
               >
                 {renderedOptions.length > 0
                   ? renderedOptions
-                  : notFind && <li>Não encontrado</li>}
+                  : notFind && <li className="p-2">Não encontrado</li>}
               </ul>
             </div>
           )}
