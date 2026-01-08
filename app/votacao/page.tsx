@@ -15,14 +15,14 @@ export default async function Votacao() {
 
   const user: UserVote = JSON.parse(userCookie.value);
 
-  if (user?.confirmed_vote) {
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <h2>{user.name}, Você já participou da votação!</h2>
-        <Link href="/">Clique aqui para retornar</Link>
-      </div>
-    );
-  }
+  // if (user?.confirmed_vote) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center">
+  //       <h2>{user.name}, Você já participou da votação!</h2>
+  //       <Link href="/">Clique aqui para retornar</Link>
+  //     </div>
+  //   );
+  // }
 
   try {
     const { categoriesData, companiesData, userVotesData, dictionaryData } =
