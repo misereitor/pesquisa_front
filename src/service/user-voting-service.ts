@@ -8,9 +8,12 @@ import { UserVote } from '../../src/model/user-voting';
 export const getUserVoteByCpf = async (cpf: string) => {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/admin/user-vote/${cpf}`, {
       headers: {
-        'X-API-KEY': String(X_API_KEY)
+        'X-API-KEY': String(X_API_KEY),
+        Authorization: `Bearer ${token}`
       }
     });
     const data = await response.json();
@@ -30,11 +33,14 @@ export const getUserVoteByCpf = async (cpf: string) => {
 export const updatePhoneByUserIdService = async (phone: string, id: number) => {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/admin/alter-phone`, {
       method: 'post',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
         phone,

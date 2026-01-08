@@ -1,5 +1,6 @@
 'use server';
 import { unstable_noStore as noStore } from 'next/cache';
+import { cookies } from 'next/headers';
 import { ImportCSV } from '../../src/model/import-csv';
 const { API_URL, X_API_KEY } = process.env;
 
@@ -8,11 +9,14 @@ export async function importCompanyAndCategoryService(
 ) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/import/create-many`, {
       method: 'POST',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(association)
     });

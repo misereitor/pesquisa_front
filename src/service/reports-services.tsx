@@ -1,6 +1,13 @@
 'use server';
 import { unstable_noStore as noStore } from 'next/cache';
-import { CategoryVotes, TotalCountForUser, TotalCountForCity, GraphReport, CategoryReports } from '../../src/model/reports';
+import { cookies } from 'next/headers';
+import {
+  CategoryVotes,
+  TotalCountForUser,
+  TotalCountForCity,
+  GraphReport,
+  CategoryReports
+} from '../../src/model/reports';
 import { UserVote } from '../../src/model/user-voting';
 
 const { API_URL, X_API_KEY } = process.env;
@@ -8,11 +15,14 @@ const { API_URL, X_API_KEY } = process.env;
 export async function getAllDataDashboard() {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/reports/dashboard`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-KEY': String(X_API_KEY)
+        'X-API-KEY': String(X_API_KEY),
+        Authorization: `Bearer ${token}`
       }
     });
     const data = await response.json();
@@ -39,13 +49,16 @@ export async function getAllDataDashboard() {
 export async function getAllDataGraph() {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/reports/dashboard/graph-report`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': String(X_API_KEY)
+          'X-API-KEY': String(X_API_KEY),
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -66,13 +79,16 @@ export async function getAllDataGraph() {
 export async function getAllDataReportGeral(limit: number, offset: number) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/reports/get-all-data-report-geral?limit=${limit}&offset=${offset}`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': String(X_API_KEY)
+          'X-API-KEY': String(X_API_KEY),
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -98,13 +114,16 @@ export async function getAllDataReportGeral(limit: number, offset: number) {
 export async function getAllDataReportCategory() {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/reports/get-all-data-report-category`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': String(X_API_KEY)
+          'X-API-KEY': String(X_API_KEY),
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -125,13 +144,16 @@ export async function getAllDataReportCategory() {
 export async function getAllDataReportCity() {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/reports/get-all-data-report-city`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': String(X_API_KEY)
+          'X-API-KEY': String(X_API_KEY),
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -152,13 +174,16 @@ export async function getAllDataReportCity() {
 export async function getAllDataReportPercentagem() {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/reports/get-all-data-report-percentagem`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': String(X_API_KEY)
+          'X-API-KEY': String(X_API_KEY),
+          Authorization: `Bearer ${token}`
         }
       }
     );

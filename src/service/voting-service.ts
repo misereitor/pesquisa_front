@@ -22,7 +22,8 @@ export async function getAllDataForVoteService() {
       {
         method: 'GET',
         headers: {
-          'X-API-KEY': String(X_API_KEY)
+          'X-API-KEY': String(X_API_KEY),
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -53,7 +54,8 @@ export async function getAllVotesByUser() {
       `${API_URL}/api/voting/${openToken.id}/get-all`,
       {
         headers: {
-          'X-API-KEY': String(X_API_KEY)
+          'X-API-KEY': String(X_API_KEY),
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -87,7 +89,8 @@ export async function createVoteService(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-KEY': String(X_API_KEY)
+        'X-API-KEY': String(X_API_KEY),
+        Authorization: `Bearer ${token?.value}`
       },
       body: JSON.stringify(vote)
     });
@@ -114,11 +117,13 @@ export async function confirmVoteService(progress: number) {
     user.percentage_vote = progress;
     user.confirmed_vote = true;
     cookieStore.set('user', JSON.stringify(user));
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/voting/confirm-vote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-KEY': String(X_API_KEY)
+        'X-API-KEY': String(X_API_KEY),
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(user)
     });

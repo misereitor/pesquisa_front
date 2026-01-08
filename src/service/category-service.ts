@@ -1,5 +1,6 @@
 'use server';
 import { unstable_noStore as noStore } from 'next/cache';
+import { cookies } from 'next/headers';
 import { Category, AssociationCategoryCompany } from '../../src/model/category';
 import { ErrorBackend } from '../../src/model/error';
 const { API_URL, X_API_KEY } = process.env;
@@ -7,11 +8,14 @@ const { API_URL, X_API_KEY } = process.env;
 export async function getAllCategories() {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/category/get-all`, {
       method: 'GET',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       }
     });
     const data = await response.json();
@@ -31,11 +35,14 @@ export async function getAllCategories() {
 export async function createCategoryService(name: string) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/category/create`, {
       method: 'POST',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({ name, active: true })
     });
@@ -56,11 +63,14 @@ export async function createCategoryService(name: string) {
 export async function updateCategoryService(category: Category) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/category/update`, {
       method: 'PUT',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(category)
     });
@@ -80,13 +90,16 @@ export async function updateCategoryService(category: Category) {
 export async function deleteCategoryService(id_category: number) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/category/disable/${id_category}`,
       {
         method: 'PUT',
         headers: {
           'X-API-KEY': String(X_API_KEY),
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -108,11 +121,14 @@ export async function createAssociationCategoryService(
 ) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/association/create-many`, {
       method: 'POST',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(association)
     });
@@ -135,11 +151,14 @@ export async function removeCompanyFromCategory(
 ) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/association/delete`, {
       method: 'DELETE',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({ id_category, id_company })
     });

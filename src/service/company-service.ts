@@ -1,6 +1,7 @@
 'use server';
 
 import { unstable_noStore as noStore } from 'next/cache';
+import { cookies } from 'next/headers';
 import { Company } from '../../src/model/company';
 import { ErrorBackend } from '../../src/model/error';
 import { FormCompanyEdit } from '../schema/schemaCompany';
@@ -9,9 +10,12 @@ const { API_URL, X_API_KEY } = process.env;
 export async function getAllCompany() {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/company/get-all`, {
       headers: {
-        'X-API-KEY': String(X_API_KEY)
+        'X-API-KEY': String(X_API_KEY),
+        Authorization: `Bearer ${token}`
       }
     });
     const data = await response.json();
@@ -31,11 +35,14 @@ export async function getAllCompany() {
 export async function cerateCompanyService(company: FormCompanyEdit) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/company/create`, {
       method: 'POST',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(company)
     });
@@ -56,11 +63,14 @@ export async function cerateCompanyService(company: FormCompanyEdit) {
 export async function updateCompanyService(company: Company) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/company/update`, {
       method: 'PUT',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(company)
     });
@@ -81,11 +91,14 @@ export async function updateCompanyService(company: Company) {
 export async function associateCompany(id: number, associate: boolean) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/company/association`, {
       method: 'PUT',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({ id, associate })
     });
@@ -106,11 +119,14 @@ export async function associateCompany(id: number, associate: boolean) {
 export async function deleteCompany(id: number) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/company/disable/${id}`, {
       method: 'PUT',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       }
     });
     const data = await response.json();

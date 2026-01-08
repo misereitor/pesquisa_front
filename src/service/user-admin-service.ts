@@ -1,18 +1,25 @@
 'use server';
 import { unstable_noStore as noStore } from 'next/cache';
+import { cookies } from 'next/headers';
 import { ErrorBackend } from '../../src/model/error';
-import { FormAddUserAdmin, FormUserAdminProfile } from '../schema/schemaAdminUsers';
+import {
+  FormAddUserAdmin,
+  FormUserAdminProfile
+} from '../schema/schemaAdminUsers';
 
 const { API_URL, X_API_KEY } = process.env;
 
 export async function createUserAdminService(userAdmin: FormAddUserAdmin) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/admin/auth/registre`, {
       method: 'POST',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({ ...userAdmin })
     });
@@ -33,10 +40,13 @@ export async function createUserAdminService(userAdmin: FormAddUserAdmin) {
 export async function getAllUsersAdminService() {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/admin/user/get-all`, {
       method: 'GET',
       headers: {
-        'X-API-KEY': String(X_API_KEY)
+        'X-API-KEY': String(X_API_KEY),
+        Authorization: `Bearer ${token}`
       }
     });
     const data = await response.json();
@@ -59,13 +69,16 @@ export async function updateProfileAdmin(
 ) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/admin/user/update/${id}/profile`,
       {
         method: 'PUT',
         headers: {
           'X-API-KEY': String(X_API_KEY),
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(user)
       }
@@ -87,13 +100,16 @@ export async function updateProfileAdmin(
 export async function updateRoleAdmin(id: number, role: string) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/admin/user/update/${id}/role`,
       {
         method: 'PUT',
         headers: {
           'X-API-KEY': String(X_API_KEY),
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ role: role })
       }
@@ -115,13 +131,16 @@ export async function updateRoleAdmin(id: number, role: string) {
 export async function updatePasswordAdmin(id: number, password: string) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(
       `${API_URL}/api/admin/user/update/${id}/password`,
       {
         method: 'PUT',
         headers: {
           'X-API-KEY': String(X_API_KEY),
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ password: password })
       }
@@ -143,11 +162,14 @@ export async function updatePasswordAdmin(id: number, password: string) {
 export async function deleteUserAdminService(id: number) {
   noStore();
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
     const response = await fetch(`${API_URL}/api/admin/user/delete/${id}`, {
       method: 'PUT',
       headers: {
         'X-API-KEY': String(X_API_KEY),
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       }
     });
     const data = await response.json();
