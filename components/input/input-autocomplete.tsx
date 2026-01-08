@@ -143,8 +143,24 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(
 
     const renderedOptions = useMemo(() => {
       const cleanedInput = removeAccents(value.toLowerCase());
-      filteredOptions.sort((a, b) => a.trade_name.localeCompare(b.trade_name));
-      return filteredOptions.slice(0, 1000).map((company) => {
+
+      const sortedOptions = [...filteredOptions].sort((a, b) => {
+        const cleanA = removeAccents(a.trade_name.toLowerCase());
+        const cleanB = removeAccents(b.trade_name.toLowerCase());
+
+        if (cleanA === cleanedInput && cleanB !== cleanedInput) return -1;
+        if (cleanB === cleanedInput && cleanA !== cleanedInput) return 1;
+
+        const aStart = cleanA.startsWith(cleanedInput);
+        const bStart = cleanB.startsWith(cleanedInput);
+
+        if (aStart && !bStart) return -1;
+        if (!aStart && bStart) return 1;
+
+        return a.trade_name.localeCompare(b.trade_name);
+      });
+
+      return sortedOptions.slice(0, 1000).map((company) => {
         const highlightedWord = highlightMatch(
           company.trade_name,
           cleanedInput
