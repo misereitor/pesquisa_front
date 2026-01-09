@@ -70,6 +70,7 @@ type Props = {
   // eslint-disable-next-line no-unused-vars
   setExpanded: Dispatch<SetStateAction<string | false>>;
   rowIndex: number;
+  setLocalUserVotes: Dispatch<SetStateAction<Vote[]>>;
 };
 
 const CategoryAccordionItem = memo(function CategoryAccordionItem({
@@ -84,7 +85,8 @@ const CategoryAccordionItem = memo(function CategoryAccordionItem({
   expanded,
   handleChange,
   setExpanded,
-  rowIndex
+  rowIndex,
+  setLocalUserVotes
 }: Props) {
   const isExpanded = expanded === rowIndex.toString();
   const hasVoted = voteRow?.some((r) => r.row == rowIndex && r.voteRow);
@@ -130,6 +132,7 @@ const CategoryAccordionItem = memo(function CategoryAccordionItem({
               category={category}
               setExpanded={setExpanded}
               rowIndex={rowIndex}
+              setLocalUserVotes={setLocalUserVotes}
             />
           </Typography>
         )}

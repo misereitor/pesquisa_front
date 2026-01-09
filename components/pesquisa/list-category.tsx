@@ -31,6 +31,7 @@ export default function ListCategoryPesquisa({
   user,
   dictionaryFromService
 }: Props) {
+  const [localUserVotes, setLocalUserVotes] = useState<Vote[]>(userVotes);
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -50,7 +51,7 @@ export default function ListCategoryPesquisa({
   useEffect(() => {
     const voteUser: VoteRow[] = [];
     categories.forEach((e, i) => {
-      const vote = userVotes.filter((el) => el.id_category == e.id);
+      const vote = localUserVotes.filter((el) => el.id_category == e.id);
       if (vote.length === 1) {
         voteUser.push({
           row: i,
@@ -60,7 +61,7 @@ export default function ListCategoryPesquisa({
     });
     setVoteRow(voteUser);
     setPagLoading(false);
-  }, [categories, userVotes]);
+  }, [categories, localUserVotes]);
 
   const handleVote = async () => {
     setLoading(true);
@@ -95,7 +96,9 @@ export default function ListCategoryPesquisa({
             voteRow={voteRow}
             categories={categories}
             companies={companies}
-            userVotes={userVotes}
+            /* Pass localUserVotes instead of userVotes, and the setter */
+            userVotes={localUserVotes}
+            setLocalUserVotes={setLocalUserVotes}
             universalDictionary={universalDictionary}
           />
         </div>

@@ -17,6 +17,7 @@ type Props = {
   setLoading: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
   universalDictionary: Record<string, string[]>;
+  setLocalUserVotes: Dispatch<SetStateAction<Vote[]>>;
 };
 
 export default function AccordionCategoryVote({
@@ -27,7 +28,8 @@ export default function AccordionCategoryVote({
   voteRow,
   loading,
   setLoading,
-  universalDictionary
+  universalDictionary,
+  setLocalUserVotes
 }: Props) {
   const [expanded, setExpanded] = useState<string | false>('');
 
@@ -69,6 +71,7 @@ export default function AccordionCategoryVote({
           handleChange={handleExpand}
           setExpanded={setExpanded}
           rowIndex={rowIndex}
+          setLocalUserVotes={setLocalUserVotes}
         />
       ))}
     </div>

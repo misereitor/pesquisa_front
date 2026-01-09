@@ -22,6 +22,7 @@ type Props = {
     panel: string
     // eslint-disable-next-line no-unused-vars
   ) => (event: React.SyntheticEvent, newExpanded: boolean) => void;
+  setLocalUserVotes: Dispatch<SetStateAction<Vote[]>>;
 };
 export default function ListCompanyVoting({
   companies,
@@ -34,7 +35,8 @@ export default function ListCompanyVoting({
   handleExpand,
   loading,
   setLoading,
-  universalDictionary
+  universalDictionary,
+  setLocalUserVotes
 }: Props) {
   const [companySelected, setCompanySelected] = useState<Company>();
   const [value, setValue] = useState('');
@@ -56,6 +58,22 @@ export default function ListCompanyVoting({
     try {
       setLoading(true);
       await createVoteService(category.id, row.id);
+
+      // Update localUserVotes state
+      const newVote: Vote = {
+        id_user_vote: 0, // Dummy ID, not used for display logic
+        id_category: category.id,
+        id_company: row.id
+      };
+
+      setLocalUserVotes((prevVotes) => {
+        // Remove existing vote for this category if any
+        const filteredVotes = prevVotes.filter(
+          (v) => v.id_category !== category.id
+        );
+        return [...filteredVotes, newVote];
+      });
+
       const isVote = voteRow.find((r) => r.row === rowIndex);
       setExpanded((rowIndex + 1).toString() as any);
       handleExpand((rowIndex + 1).toString())(
