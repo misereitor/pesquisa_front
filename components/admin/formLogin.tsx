@@ -57,68 +57,93 @@ export default function FormLogin() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div>
-        <div className="flex justify-center mb-7">
-          <Image
-            src={'/melhoresdoano.png'}
-            width={250}
-            height={250}
-            alt="Melhores do Ano"
-            priority
-            style={{ width: 'auto', height: '100px' }}
-          ></Image>
+    <div className="min-h-screen w-full flex items-center justify-center bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-zinc-900 via-black to-black animate-fade-in">
+      <div className="w-full max-w-md p-8 rounded-2xl bg-zinc-900/50 backdrop-blur-md border border-yellow-500/20 shadow-2xl mx-4 relative overflow-hidden">
+        {/* Decorative Gold Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 bg-yellow-500/50 blur-xs"></div>
+
+        <div className="flex flex-col items-center mb-8">
+          <div className="relative w-48 h-24 mb-4 drop-shadow-2xl">
+            <Image
+              src={'/melhoresdoano.png'}
+              fill
+              className="object-contain"
+              alt="Melhores do Ano"
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
+          <h1 className="text-xl font-medium text-white/90 tracking-wide">
+            Área Administrativa
+          </h1>
+          <p className="text-sm text-gray-400 mt-2 text-center">
+            Entre com suas credenciais para continuar
+          </p>
         </div>
+
         <form
           autoComplete="off"
           onSubmit={handleSubmit(handleLogin)}
-          className="w-72 h-96"
+          className="space-y-5"
         >
-          <div>
-            <InputSimple
-              className="rounded-lg w-72 h-7"
-              type="text"
-              autoFocus
-              label="Usuario:"
-              errortext={errors.username?.message}
-              {...register('username')}
-            />
-          </div>
-          <div>
-            <InputSimple
-              className="rounded-lg w-72 h-7"
-              type="password"
-              label="Senha:"
-              errortext={errors.password?.message}
-              {...register('password')}
-            />
-          </div>
-          <div className="h-6">
-            {error && <p className="text-red-600 text-sm">{error}</p>}
+          <div className="space-y-4 text-gray-200">
+            <div>
+              <InputSimple
+                className="w-full px-4 py-3 rounded-lg border border-white/10 bg-black/40 text-white placeholder-gray-500 focus:ring-2 focus:ring-[#ffe45f]/50 focus:border-[#ffe45f] outline-none transition-all"
+                type="text"
+                autoFocus
+                placeholder="Ex: admin"
+                label="Usuário"
+                errortext={errors.username?.message}
+                {...register('username')}
+              />
+            </div>
+            <div>
+              <InputSimple
+                className="w-full px-4 py-3 rounded-lg border border-white/10 bg-black/40 text-white placeholder-gray-500 focus:ring-2 focus:ring-[#ffe45f]/50 focus:border-[#ffe45f] outline-none transition-all"
+                type="password"
+                placeholder="********"
+                label="Senha"
+                errortext={errors.password?.message}
+                {...register('password')}
+              />
+            </div>
           </div>
 
-          <div className="flex justify-end z-0 relative mt-4">
-            <Button
-              data-testid="comecar"
-              size="medium"
-              color="success"
-              type="submit"
-              endIcon={<IoPlayCircleOutline />}
-              loading={loading}
-              loadingPosition="end"
-              variant="contained"
-              sx={{
-                color: '#7f5d00',
-                backgroundColor: '#ffe45f !important',
-                '&.Mui-disabled': {
-                  color: '#7f5d00',
-                  backgroundColor: '#fdf6d0 !important'
-                }
-              }}
-            >
-              <span>Login</span>
-            </Button>
+          <div className="h-6">
+            {error && (
+              <div className="flex items-center gap-2 text-red-300 text-sm bg-red-900/20 p-2 rounded border border-red-500/20">
+                <span>⚠️</span>
+                {error}
+              </div>
+            )}
           </div>
+
+          <Button
+            data-testid="comecar"
+            size="large"
+            type="submit"
+            loading={loading}
+            loadingPosition="end"
+            endIcon={<IoPlayCircleOutline />}
+            variant="contained"
+            fullWidth
+            sx={{
+              backgroundColor: '#ffe45f', // Gold/Yellow from original
+              '&:hover': {
+                backgroundColor: '#e6cd55' // Slightly darker gold
+              },
+              color: '#3f2e00', // Dark text for contrast on gold
+              textTransform: 'none',
+              borderRadius: '0.5rem',
+              padding: '10px',
+              fontSize: '1rem',
+              fontWeight: 700,
+              boxShadow: '0 4px 15px -3px rgba(255, 228, 95, 0.3)'
+            }}
+          >
+            Acessar Sistema
+          </Button>
         </form>
       </div>
     </div>
