@@ -7,7 +7,7 @@ import InputSimple from '../input/input';
 import { regexCNPJ } from '@/src/util/dataProcessing';
 import { updateCompanyService } from '@/src/service/company-service';
 import { RxUpdate } from 'react-icons/rx';
-import { Button } from '@mui/material'
+import { Button } from '@mui/material';
 
 type Props = {
   companies: Company[];
@@ -97,34 +97,36 @@ export default function ModalEditCompany({
     }
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit(handleEdit)}>
+    <div className="p-6">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        Editar Empresa
+      </h2>
+      <form onSubmit={handleSubmit(handleEdit)} className="space-y-4">
         <div>
           <InputSimple
-            className="rounded-lg w-72 h-7"
+            className="w-full h-11 px-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
             type="text"
             autoFocus
-            label="Nome Fantasia:"
+            label="Nome Fantasia"
             errortext={errors.trade_name?.message}
             {...register('trade_name')}
           />
         </div>
         <div>
           <InputSimple
-            className="rounded-lg w-72 h-7"
+            className="w-full h-11 px-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
             type="text"
-            autoFocus
-            label="Razão social:"
+            label="Razão Social"
             errortext={errors.company_name?.message}
             {...register('company_name')}
           />
         </div>
         <div>
           <InputSimple
-            className="rounded-lg w-72 h-7"
+            className="w-full h-11 px-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
             type="text"
-            autoFocus
-            label="CNPJ:"
+            label="CNPJ"
+            placeholder="00.000.000/0000-00"
             errortext={errors.cnpj?.message}
             maxLength={18}
             {...register('cnpj', {
@@ -132,45 +134,56 @@ export default function ModalEditCompany({
             })}
           />
         </div>
-        <div>
-          <label htmlFor="associate">Associada: </label>
+        <div className="flex items-center gap-2">
           <input
             type="checkbox"
             id="associate"
-            autoFocus
+            className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
             {...register('associate')}
           />
+          <label
+            htmlFor="associate"
+            className="text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Associada
+          </label>
         </div>
-        <div className="h6">
-          {error && <span className="text-red-600">{error}</span>}
-        </div>
-        <div className="flex justify-between mt-5">
+
+        {error && (
+          <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg">
+            {error}
+          </div>
+        )}
+
+        <div className="flex justify-end gap-3 mt-6">
           <button
             type="button"
             onClick={() => setOpenModal(false)}
             disabled={loading}
+            className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors font-medium text-sm"
           >
             Cancelar
           </button>
           <Button
             data-testid="comecar"
             size="medium"
-            color="success"
             type="submit"
             endIcon={<RxUpdate />}
             loading={loading}
             loadingPosition="end"
             variant="contained"
             sx={{
-              color: '#7f5d00',
-              backgroundColor: '#ffe45f !important',
-              '&.Mui-disabled': {
-                color: '#7f5d00',
-                backgroundColor: '#fdf6d0 !important'
-              }
+              backgroundColor: '#4f46e5', // indigo-600
+              '&:hover': {
+                backgroundColor: '#4338ca' // indigo-700
+              },
+              textTransform: 'none',
+              borderRadius: '0.5rem', // rounded-lg
+              boxShadow: 'none',
+              fontWeight: 500
             }}
           >
-            <span>Alterar</span>
+            Salvar Alterações
           </Button>
         </div>
       </form>

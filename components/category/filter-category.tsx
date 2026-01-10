@@ -63,7 +63,7 @@ export default function FilterCategory({
   }, [filterCategory, filterCompany, setListCategories]);
 
   return (
-    <div>
+    <div className="mb-6">
       <Modal openModal={openModal} setOpenModal={setOpenModal}>
         <ModalInsertCompany
           categories={categories}
@@ -93,76 +93,83 @@ export default function FilterCategory({
       >
         <ModalProgress progress={progress} />
       </Modal>
+
       {loadingPage ? (
-        <div className="fixed h-52 top-10 left-0 right-0 w-full"></div>
+        <div className="fixed inset-0 flex items-center justify-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm z-50"></div>
       ) : (
-        <div className="bg-neutral-800 p-4 shadow-md mb-0.5">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-[#FFDE5E] text-xl font-bold">Categorias</h1>
-            <div className="flex">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Categorias
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Gerencie as categorias de votação
+              </p>
+            </div>
+            <div className="flex gap-3 w-full md:w-auto">
               <ButtonImport
                 setImportCSV={setImportCSV}
                 setOpenModalInsert={setOpenModalInsert}
               />
               <button
                 onClick={() => setOpenModal(true)}
-                className="px-4 py-2 bg-[#FFDE5E] text-black rounded-md ml-3 hover:bg-yellow-600 transition flex items-center"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-sm font-medium text-sm flex-1 md:flex-none"
               >
-                Adicionar
-                <span className="ml-2 text-sm">&#x2795;</span>{' '}
+                <span>Adicionar</span>
+                <span className="text-lg leading-none">+</span>
               </button>
             </div>
           </div>
 
-          <div>
-            <form className="flex justify-between items-center mb-4">
-              <div className="flex justify-between w-full">
+          <div className="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg border border-gray-100 dark:border-gray-800 mb-4">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="w-full md:w-1/2">
                 <InputSimple
                   value={filterCategory}
-                  placeholder="Buscar"
+                  placeholder="Buscar por nome da categoria..."
                   label="Categoria"
                   sendError={false}
-                  className="w-72 h-10 rounded-md"
+                  className="w-full h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                   onChange={(e) => setFilterCategory(e.target.value)}
                 />
+              </div>
+              <div className="w-full md:w-1/2">
                 <InputSimple
-                  autoComplete="false"
+                  autoComplete="off"
                   value={filterCompany}
-                  placeholder="Buscar"
-                  label="Empresa:"
+                  placeholder="Buscar por empresa vinculada..."
+                  label="Empresa"
                   sendError={false}
                   type="text"
-                  className="w-72 h-10 rounded-md"
+                  className="w-full h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                   onChange={(e) => setFilterCompany(e.target.value)}
                 />
               </div>
-            </form>
+            </div>
           </div>
 
           {/* Paginação */}
-          <div className="flex items-center justify-center">
+          <div className="flex justify-end">
             <Pagination
               count={totalIndex}
               page={currentPage}
               onChange={pagination}
               variant="outlined"
               shape="rounded"
+              color="primary"
               sx={{
-                color: 'rgb(255, 222, 94)',
-                '.MuiPagination-ul button': {
-                  backgroundColor: 'rgb(255, 222, 94)'
-                },
-                '.MuiPagination-ul .Mui-selected': {
-                  backgroundColor: 'rgb(255, 180, 14)'
-                },
-                '.MuiPagination-ul .Mui-selected:hover': {
-                  opacity: '.8'
-                },
-                '.MuiPagination-ul button:hover': {
-                  opacity: '.8'
-                },
-                '.MuiPaginationItem-ellipsis': {
-                  color: 'rgb(255, 222, 94)'
+                '& .MuiPaginationItem-root': {
+                  color: '#6b7280',
+                  borderColor: '#e5e7eb',
+                  '&.Mui-selected': {
+                    backgroundColor: '#4f46e5',
+                    color: 'white',
+                    borderColor: '#4f46e5',
+                    '&:hover': {
+                      backgroundColor: '#4338ca'
+                    }
+                  }
                 }
               }}
             />

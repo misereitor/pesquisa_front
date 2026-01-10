@@ -43,7 +43,7 @@ export default function ListCompany({ companies, setCompaniesList }: Props) {
     }
   };
   return (
-    <div className="w-full bg-black shadow-md overflow-x-auto">
+    <div className="w-full space-y-6">
       <Modal openModal={openModalDelete} setOpenModal={setOpenModalDelete}>
         <ModalDeleteCompany
           companyRemove={companyRemove}
@@ -63,6 +63,7 @@ export default function ListCompany({ companies, setCompaniesList }: Props) {
           companies={companies}
         />
       </Modal>
+
       <FilterCompany
         totalIndex={totalIndex}
         setCurrentPage={setCurrentPage}
@@ -73,99 +74,102 @@ export default function ListCompany({ companies, setCompaniesList }: Props) {
         setLoadingPage={setLoadingPage}
         loadingPage={loadingPage}
       />
+
       {loadingPage ? (
         <></>
       ) : (
-        <table className="w-full border-collapse text-sm text-gray-700">
-          <thead className="bg-neutral-700 text-white text-left border-b-2 border-black">
-            <tr>
-              <th className="py-3 px-4 text-[#FFDE5E]">Empresa</th>
-              <th className="py-3 px-4 text-center text-[#FFDE5E] w-10">
-                Associada
-              </th>
-              <th className="py-3 px-4 text-center text-[#FFDE5E] w-10">
-                Remover
-              </th>
-              <th className="py-3 px-4 text-center text-[#FFDE5E] w-10">
-                Editar
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {companiesFilter
-              ?.slice(startIndex, endIndex)
-              .map((row, rowIndex) => (
-                <tr
-                  key={rowIndex}
-                  className={`${
-                    rowIndex % 2 === 0 ? 'bg-neutral-700' : 'bg-neutral-600'
-                  } hover:bg-gray-500`}
-                >
-                  <td className="py-3 px-4">
-                    <div className="flex flex-col">
-                      <h2 className="text-lg font-semibold text-[#FFDE5E]">
-                        {row.trade_name}
-                      </h2>
-                      <span className="text-sm text-[#ffdf5ed0]">
-                        Razão Social: {row.company_name}
-                      </span>
-                      <span className="text-sm text-[#ffdf5ed0]">
-                        CNPJ: {row.cnpj}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <div className="flex items-center justify-center">
-                      <input
-                        type="checkbox"
-                        checked={row.associate}
-                        disabled={loading}
-                        id={`associate-${rowIndex}`}
-                        onChange={(e) => handleAssociate(e.target.checked, row)}
-                        className="text-[#FFDE5E] rounded focus:ring focus:text-[#FFDE5E]"
-                      />
-                      <label
-                        className="ml-2 text-sm text-[#FFDE5E]"
-                        htmlFor={`associate-${rowIndex}`}
-                      >
-                        {row.associate ? 'Sim' : 'Não'}
-                      </label>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setCompanyRemove(row);
-                        setOpenModalDelete(true);
-                      }}
-                      disabled={loading}
-                    >
-                      <RxTrash
-                        size={24}
-                        className={`${loading && 'text-red-300'} text-red-600 cursor-pointer hover:text-red-800 transition-colors my-auto mx-auto`}
-                      />
-                    </button>
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setOpenModalUpdate(true);
-                        setCompanyEdit(row);
-                      }}
-                      disabled={loading}
-                    >
-                      <MdEditNote
-                        size={28}
-                        className={`${loading && 'text-[#ffdf5e8e]'} text-[#FFDE5E] cursor-pointer hover:text-[#FFDE5E] transition-colors my-auto mx-auto`}
-                      />
-                    </button>
-                  </td>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
+                  <th className="py-4 px-6 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Empresa
+                  </th>
+                  <th className="py-4 px-6 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-32">
+                    Associada
+                  </th>
+                  <th className="py-4 px-6 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-24">
+                    Ações
+                  </th>
                 </tr>
-              ))}
-          </tbody>
-        </table>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                {companiesFilter
+                  ?.slice(startIndex, endIndex)
+                  .map((row, rowIndex) => (
+                    <tr
+                      key={rowIndex}
+                      className="group hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                    >
+                      <td className="py-4 px-6">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                            {row.trade_name}
+                          </span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                            {row.company_name}
+                          </span>
+                          <span className="text-xs text-gray-400 dark:text-gray-500 font-mono mt-0.5">
+                            {row.cnpj}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <label className="inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={row.associate}
+                            disabled={loading}
+                            onChange={(e) =>
+                              handleAssociate(e.target.checked, row)
+                            }
+                            className="sr-only peer"
+                          />
+                          <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+                        </label>
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <div className="flex items-center justify-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setOpenModalUpdate(true);
+                              setCompanyEdit(row);
+                            }}
+                            disabled={loading}
+                            className="p-2 text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"
+                            title="Editar empresa"
+                          >
+                            <MdEditNote size={20} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCompanyRemove(row);
+                              setOpenModalDelete(true);
+                            }}
+                            disabled={loading}
+                            className="p-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                            title="Remover empresa"
+                          >
+                            <RxTrash size={18} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+            {companiesFilter?.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500 dark:text-gray-400">
+                  Nenhuma empresa encontrada.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

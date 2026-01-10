@@ -75,7 +75,7 @@ export default function FilterCompany({
   };
 
   return (
-    <div>
+    <div className="mb-6">
       <div className="absolute z-40">
         <Modal
           openModal={openModalProgress}
@@ -107,46 +107,69 @@ export default function FilterCompany({
           />
         </Modal>
       </div>
+
       {loadingPage ? (
-        <div className="fixed h-52 top-10 left-0 right-0 w-full">
+        <div className="fixed inset-0 flex items-center justify-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm z-50">
           <Loading />
         </div>
       ) : (
-        <div className="bg-neutral-800 p-4 shadow-md mb-0.5">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-[#FFDE5E] text-xl font-bold">Empresas</h1>
-            <div className="flex">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Empresas
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Gerencie as empresas cadastradas no sistema
+              </p>
+            </div>
+            <div className="flex gap-3 w-full md:w-auto">
               <ButtonImport
                 setImportCSV={setImportCSV}
                 setOpenModalInsert={setOpenModalInsert}
               />
               <button
                 onClick={() => setOpenModalAdd(true)}
-                className="px-4 py-2 bg-[#FFDE5E] text-black rounded-md hover:bg-yellow-600 transition flex items-center ml-3"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-sm font-medium text-sm flex-1 md:flex-none"
               >
-                Adicionar
-                <span className="ml-2 text-sm">&#x2795;</span>{' '}
+                <span>Adicionar</span>
+                <span className="text-lg leading-none">+</span>
               </button>
             </div>
           </div>
 
-          <div className="flex justify-between items-center mb-4">
-            <div>
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-4 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg border border-gray-100 dark:border-gray-800">
+            <div className="w-full lg:w-auto">
               <ToggleButtonGroup
                 value={view}
                 exclusive
                 onChange={handleChange}
                 size="small"
-                aria-label="Platform"
+                aria-label="Filter status"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-sm"
                 sx={{
-                  zIndex: '10',
-                  backgroundColor: '#ffe45f',
-                  '.Mui-selected': {
-                    backgroundColor: '#f2b40a !important'
+                  '& .MuiToggleButton-root': {
+                    border: '1px solid',
+                    borderColor: 'rgba(229, 231, 235, 1)', // gray-200
+                    color: '#6b7280', // gray-500
+                    textTransform: 'none',
+                    fontWeight: 500,
+                    px: 3,
+                    '&.Mui-selected': {
+                      backgroundColor: '#4f46e5 !important', // indigo-600
+                      color: 'white !important',
+                      borderColor: '#4f46e5 !important'
+                    },
+                    '&:hover': {
+                      backgroundColor: '#f3f4f6' // gray-100
+                    }
                   },
-                  '.MuiToggleButton-root': {
-                    padding: '4px',
-                    lineHeight: '1.5'
+                  '.dark & .MuiToggleButton-root': {
+                    borderColor: 'rgba(55, 65, 81, 1)', // gray-700
+                    color: '#9ca3af', // gray-400
+                    '&:hover': {
+                      backgroundColor: '#374151' // gray-700
+                    }
                   }
                 }}
               >
@@ -165,41 +188,64 @@ export default function FilterCompany({
               </ToggleButtonGroup>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="w-full lg:w-72">
               <InputSimple
                 value={filterCompany}
-                placeholder="Buscar"
+                placeholder="Buscar por nome..."
                 sendError={false}
-                className="w-72 h-10 rounded-md"
+                className="w-full h-10 px-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                 onChange={(e) => setFilterCompany(e.target.value)}
               />
             </div>
           </div>
 
-          {/* Paginação */}
-          <div className="flex items-center justify-center">
+          {/* Pagination moved to inside the container bottom but can stay here or be passed to ListCompany. 
+              The original design had it here inside the "Header" block which was weird. 
+              Usually pagination is at the bottom of the list. 
+              However, ListCompany renders THIS component. Wait.
+              ListCompany RENDERS FilterCompany? 
+              
+              Let's look at ListCompany.tsx again.
+              Line 66: <FilterCompany ... />
+              Line 79: <table> ... </table>
+              
+              So FilterCompany is ON TOP of the table. 
+              The pagination inside FilterCompany controls the table below it? 
+              
+              Yes, 'setCurrentPage' is passed down.
+              Ideally pagination should be at the bottom of the table.
+              
+              I will keeping the pagination here for now but maybe I should move it to ListCompany footer if I want a clean UI.
+              But to minimize structural changes, I'll keep it here or maybe Hide it here and move it to ListCompany?
+              
+              The user sees:
+              [FilterCompany Block] -> [Table]
+              
+              If pagination is inside FilterCompany, it might be above the table?
+              The original code had pagination at the bottom of the div.
+              
+              I will styling it nicely here.
+          */}
+          <div className="mt-4 flex justify-end">
             <Pagination
               count={totalIndex}
               page={currentPage}
               onChange={pagination}
               variant="outlined"
               shape="rounded"
+              color="primary"
               sx={{
-                color: 'rgb(255, 222, 94)',
-                '.MuiPagination-ul button': {
-                  backgroundColor: 'rgb(255, 222, 94)'
-                },
-                '.MuiPagination-ul .Mui-selected': {
-                  backgroundColor: 'rgb(255, 180, 14)'
-                },
-                '.MuiPagination-ul .Mui-selected:hover': {
-                  opacity: '.8'
-                },
-                '.MuiPagination-ul button:hover': {
-                  opacity: '.8'
-                },
-                '.MuiPaginationItem-ellipsis': {
-                  color: 'rgb(255, 222, 94)'
+                '& .MuiPaginationItem-root': {
+                  color: '#6b7280',
+                  borderColor: '#e5e7eb',
+                  '&.Mui-selected': {
+                    backgroundColor: '#4f46e5',
+                    color: 'white',
+                    borderColor: '#4f46e5',
+                    '&:hover': {
+                      backgroundColor: '#4338ca'
+                    }
+                  }
                 }
               }}
             />

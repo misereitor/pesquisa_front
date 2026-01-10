@@ -10,7 +10,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { updatePasswordAdmin } from '@/src/service/user-admin-service';
-import { Button } from '@mui/material'
+import { Button } from '@mui/material';
 import { RxUpdate } from 'react-icons/rx';
 
 type Props = {
@@ -61,54 +61,91 @@ export default function AlterPassword({ setAlterPassword, userAdmin }: Props) {
     }
   };
   return (
-    <div className="flex items-center justify-center">
-      <form
-        autoComplete="off"
-        className="w-80 flex flex-col items-center justify-center p-5 rounded-lg mt-10 bg-zinc-950"
-        onSubmit={handleSubmit(alterPassword)}
-      >
-        <InputSimple
-          className="rounded-lg w-72 h-7"
-          type="password"
-          label="Nova senha:"
-          errortext={errors.password?.message}
-          data-testid="password"
-          {...register('password')}
-        />
-        <InputSimple
-          className="rounded-lg w-72 h-7"
-          type="password"
-          label="Confirme a senha:"
-          errortext={errors.confirmpassword?.message}
-          data-testid="confirmpassword"
-          {...register('confirmpassword')}
-        />
-        <div>{sucess && <p>{sucess}</p>}</div>
-        <div>{error && <p className="text-red-800">{error}</p>}</div>
-        <div className="flex justify-between mt-7 w-full">
-          <button onClick={() => setAlterPassword(false)}>Cancelar</button>
-          <Button
-            data-testid="comecar"
-            size="medium"
-            color="success"
-            type="submit"
-            endIcon={<RxUpdate />}
-            loading={loading}
-            loadingPosition="end"
-            variant="contained"
-            sx={{
-              color: '#7f5d00',
-              backgroundColor: '#ffe45f !important',
-              '&.Mui-disabled': {
-                color: '#7f5d00',
-                backgroundColor: '#fdf6d0 !important'
-              }
-            }}
-          >
-            <span>Alterar</span>
-          </Button>
+    <div className="w-full max-w-lg mx-auto animate-fade-in">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="px-8 py-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            Alterar Senha
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            Defina uma nova senha para sua conta
+          </p>
         </div>
-      </form>
+
+        <form
+          autoComplete="off"
+          className="p-8 space-y-6"
+          onSubmit={handleSubmit(alterPassword)}
+        >
+          <div className="space-y-4">
+            <div>
+              <InputSimple
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                type="password"
+                label="Nova senha"
+                placeholder="********"
+                errortext={errors.password?.message}
+                data-testid="password"
+                {...register('password')}
+              />
+            </div>
+            <div>
+              <InputSimple
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                type="password"
+                label="Confirme a senha"
+                placeholder="********"
+                errortext={errors.confirmpassword?.message}
+                data-testid="confirmpassword"
+                {...register('confirmpassword')}
+              />
+            </div>
+          </div>
+
+          {(sucess || error) && (
+            <div
+              className={`p-4 rounded-lg text-sm ${
+                sucess
+                  ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                  : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+              }`}
+            >
+              {sucess || error}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700 mt-6">
+            <button
+              type="button"
+              onClick={() => setAlterPassword(false)}
+              className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              Cancelar
+            </button>
+            <Button
+              data-testid="comecar"
+              size="medium"
+              type="submit"
+              loading={loading}
+              loadingPosition="end"
+              variant="contained"
+              sx={{
+                backgroundColor: '#4f46e5', // indigo-600
+                '&:hover': {
+                  backgroundColor: '#4338ca' // indigo-700
+                },
+                textTransform: 'none',
+                borderRadius: '0.5rem',
+                boxShadow: 'none',
+                fontWeight: 600,
+                padding: '8px 24px'
+              }}
+            >
+              Atualizar Senha
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

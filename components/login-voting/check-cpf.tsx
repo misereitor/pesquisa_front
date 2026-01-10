@@ -44,6 +44,7 @@ export default function ChackCPF({ setStage, setUser, setLastPage }: Props) {
       setLoading(true);
       const cpf = getValues('cpf').replaceAll(/\D/g, '');
       const data = await checkCpfExist(cpf);
+      console.log(data);
       if ('success' in data && !data.success) {
         setError('cpf', {
           type: 'validate',

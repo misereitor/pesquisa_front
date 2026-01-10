@@ -8,28 +8,47 @@ import { Company } from '@/src/model/company';
 import { createAssociationCategoryService } from '@/src/service/category-service';
 
 const autoCOmpleteSX = {
-  width: 400,
-  backgroundColor: '#FFEF5E', // Fundo do Autocomplete
-  color: '#FFEF5E', // Cor do texto
-  border: '1px solid #434343',
-  borderRadius: '4px',
+  width: '100%',
+  '& .MuiOutlinedInput-root': {
+    padding: '4px',
+    borderRadius: '0.5rem',
+    backgroundColor: 'transparent',
+    '& fieldset': {
+      borderColor: 'rgba(209, 213, 219, 1)' // gray-300
+    },
+    '&:hover fieldset': {
+      borderColor: 'rgba(156, 163, 175, 1)' // gray-400
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#4f46e5', // indigo-600
+      borderWidth: '2px'
+    },
+    '.dark & fieldset': {
+      borderColor: 'rgba(75, 85, 99, 1)' // gray-600
+    },
+    '.dark &:hover fieldset': {
+      borderColor: 'rgba(107, 114, 128, 1)' // gray-500
+    }
+  },
   '& .MuiAutocomplete-tag': {
-    backgroundColor: 'rgba(255,255,255,0.08)',
-    border: '1px solid #303030',
-    color: '#FFEF5E',
-    borderRadius: '2px'
+    backgroundColor: 'rgba(79, 70, 229, 0.1)', // indigo-500/10
+    border: '1px solid rgba(79, 70, 229, 0.2)',
+    color: '#4f46e5',
+    borderRadius: '0.25rem',
+    '.dark &': {
+      backgroundColor: 'rgba(79, 70, 229, 0.2)',
+      color: '#818cf8',
+      border: '1px solid rgba(79, 70, 229, 0.3)'
+    }
   },
-  '& .MuiAutocomplete-tag svg': {
-    color: '#FFEF5E'
+  '& .MuiInputElement-root': {
+    color: 'inherit'
   },
-  '& .MuiFormLabel-root': {
-    color: '#FFEF5E'
-  },
-  '& .MuiInputBase-input': {
-    color: '#FFEF5E'
-  },
-  '& .MuiAutocomplete-endAdornment svg': {
-    color: '#FFEF5E'
+  '& .MuiSvgIcon-root': {
+    color: 'rgba(107, 114, 128, 1)', // gray-500
+    '.dark &': {
+      color: 'rgba(156, 163, 175, 1)' // gray-400
+    }
   }
 };
 
@@ -77,8 +96,16 @@ export default function ModalInsertCompanyFromCategory({
   };
 
   return (
-    <div>
-      <div className="w-[400px]">
+    <div className="p-6 w-full md:w-[500px]">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+        Vincular Empresas
+      </h2>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        Selecione as empresas que farão parte da categoria{' '}
+        <span className="font-semibold">{category.name}</span>.
+      </p>
+
+      <div className="w-full">
         <Autocomplete
           value={value}
           multiple
@@ -103,33 +130,40 @@ export default function ModalInsertCompanyFromCategory({
             <TextField
               {...params}
               autoFocus
-              name={category.name}
-              sx={{ color: '#FFEF5E', backgroundColor: '#333' }}
+              placeholder="Selecione empresas..."
+              InputProps={{
+                ...params.InputProps,
+                className: 'text-gray-900 dark:text-white bg-transparent'
+              }}
             />
           )}
           renderOption={(props, option) => (
             <li
               {...props}
-              hidden
+              className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-900 dark:text-gray-200"
               key={option.id}
-              style={{
-                backgroundColor: 'rgb(25, 25, 25)',
-                color: 'rgb(255, 222, 94)'
-              }}
             >
               {option.trade_name}
             </li>
           )}
+          ListboxProps={{
+            className:
+              'bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 rounded-lg p-1'
+          }}
         />
       </div>
-      <div className="mt-10 flex justify-between items-center">
-        <button onClick={() => setOpenModal(false)} type="button">
+
+      <div className="flex justify-end gap-3 mt-8">
+        <button
+          onClick={() => setOpenModal(false)}
+          type="button"
+          className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors font-medium text-sm"
+        >
           Cancelar
         </button>
         <Button
           data-testid="comecar"
           size="medium"
-          color="success"
           type="button"
           endIcon={<CiCirclePlus />}
           loading={loadingButton}
@@ -137,15 +171,17 @@ export default function ModalInsertCompanyFromCategory({
           loadingPosition="end"
           variant="contained"
           sx={{
-            color: '#7f5d00',
-            backgroundColor: '#ffe45f !important',
-            '&.Mui-disabled': {
-              color: '#7f5d00',
-              backgroundColor: '#fdf6d0 !important'
-            }
+            backgroundColor: '#4f46e5', // indigo-600
+            '&:hover': {
+              backgroundColor: '#4338ca' // indigo-700
+            },
+            textTransform: 'none',
+            borderRadius: '0.5rem',
+            boxShadow: 'none',
+            fontWeight: 500
           }}
         >
-          <span>Atualizar</span>
+          Salvar Vínculos
         </Button>
       </div>
     </div>

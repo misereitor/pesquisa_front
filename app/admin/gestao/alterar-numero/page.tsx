@@ -5,7 +5,7 @@ import InputSimple from '@/components/input/input';
 import { UserVote } from '@/src/model/user-voting';
 import { getUserVoteByCpf } from '@/src/service/user-voting-service';
 import { regexCPF } from '@/src/util/dataProcessing';
-import { Button } from '@mui/material'
+import { Button } from '@mui/material';
 import { useState } from 'react';
 
 export default function AlterarNumero() {
@@ -39,53 +39,62 @@ export default function AlterarNumero() {
     setLoading(false);
   };
   return (
-    <div>
-      <div>
-        <div className="bg-neutral-800 px-4 shadow-md mb-0.5">
-          <div className="flex justify-between items-center mb-2">
-            <h1 className="text-[#FFDE5E] text-xl font-bold">Buscar Por CPF</h1>
+    <div className="container mx-auto max-w-4xl">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Buscar Usuário
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            Pesquise por CPF para gerenciar as informações de contato do usuário
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-end gap-4">
+          <div className="w-full sm:w-64">
+            <InputSimple
+              className="w-full h-11 px-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+              type="text"
+              value={cpf}
+              maxLength={14}
+              errortext={error}
+              label="CPF"
+              placeholder="000.000.000-00"
+              data-testid="cpf"
+              onChange={(e) =>
+                setCpf((e.target.value = regexCPF(e.target.value)))
+              }
+            />
           </div>
-          <div className="flex items-center">
-            <div className="w-52">
-              <InputSimple
-                className="rounded-lg h-7 capitalize w-52"
-                type="text"
-                value={cpf}
-                maxLength={14}
-                errortext={error}
-                label="CPF:"
-                data-testid="cpf"
-                onChange={(e) =>
-                  setCpf((e.target.value = regexCPF(e.target.value)))
-                }
-              />
-            </div>
-            <div className="w-52 ml-5">
-              <Button
-                data-testid="comecar"
-                size="medium"
-                color="success"
-                type="button"
-                loading={loading}
-                onClick={getUser}
-                loadingPosition="end"
-                variant="contained"
-                sx={{
-                  color: '#7f5d00',
-                  backgroundColor: '#ffe45f !important',
-                  '&.Mui-disabled': {
-                    color: '#7f5d00',
-                    backgroundColor: '#fdf6d0 !important'
-                  }
-                }}
-              >
-                <span>Buscar</span>
-              </Button>
-            </div>
+          <div className="flex-1 pb-1">
+            <Button
+              data-testid="comecar"
+              size="medium"
+              type="button"
+              loading={loading}
+              onClick={getUser}
+              loadingPosition="end"
+              variant="contained"
+              sx={{
+                height: '44px',
+                backgroundColor: '#4f46e5', // indigo-600
+                '&:hover': {
+                  backgroundColor: '#4338ca' // indigo-700
+                },
+                textTransform: 'none',
+                borderRadius: '0.5rem',
+                boxShadow: 'none',
+                fontWeight: 500,
+                minWidth: '120px'
+              }}
+            >
+              Buscar
+            </Button>
           </div>
         </div>
       </div>
-      <div>
+
+      <div className="transition-all duration-300 ease-in-out">
         {user && (
           <ListUser
             setUser={setUser}

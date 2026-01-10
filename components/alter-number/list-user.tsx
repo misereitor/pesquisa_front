@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button } from '@mui/material';
 import { Dispatch, SetStateAction, useState } from 'react';
 import InputSimple from '../input/input';
 import { UserVote } from '@/src/model/user-voting';
@@ -52,77 +52,143 @@ export default function ListUser({
     setLoading(false);
   };
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="w-full animate-fade-in">
       {user && (
-        <div className="w-80 flex flex-col items-start justify-center p-5 rounded-lg mt-5 bg-zinc-950">
-          <div className="border-b w-full">
-            <h2 className="font-bold">Nome:</h2>
-            <p>{user.name}</p>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Detalhes do Usuário
+            </h2>
           </div>
-          <div className="border-b w-full">
-            <h2 className="font-bold">CPF:</h2>
-            <p>{user.cpf}</p>
-          </div>
-          <div className="border-b w-full">
-            <h2 className="font-bold">Confirmou telefone</h2>
-            <p>{user.confirmed_phone ? 'sim' : 'não'}</p>
-          </div>
-          <div className="border-b w-full">
-            <h2 className="font-bold">Confirmou Voto</h2>
-            <p>{user.confirmed_vote ? 'sim' : 'não'}</p>
-          </div>
-          <div className="border-b w-full">
-            <h2 className="font-bold">Telefone</h2>
-            {editPhone ? (
-              <div className="flex justify-between items-center">
-                <InputSimple
-                  className="rounded-lg h-7 capitalize w-48"
-                  type="text"
-                  value={phone}
-                  maxLength={15}
-                  errortext={error}
-                  data-testid="phone"
-                  onChange={(e) =>
-                    setPhone((e.target.value = regexPhone(e.target.value)))
-                  }
-                />
-                <button
-                  className="-mt-2"
-                  type="button"
-                  onClick={() => setEditPhone(false)}
+
+          <div className="divide-y divide-gray-100 dark:divide-gray-700">
+            {/* Nome */}
+            <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Nome
+              </span>
+              <span className="text-sm text-gray-900 dark:text-white sm:col-span-2 font-medium">
+                {user.name}
+              </span>
+            </div>
+
+            {/* CPF */}
+            <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                CPF
+              </span>
+              <span className="text-sm text-gray-900 dark:text-white sm:col-span-2 font-mono">
+                {user.cpf}
+              </span>
+            </div>
+
+            {/* Status Telefone */}
+            <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Telefone Confirmado?
+              </span>
+              <div className="sm:col-span-2">
+                <span
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    user.confirmed_phone
+                      ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                      : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+                  }`}
                 >
-                  Cancelar
-                </button>
+                  {user.confirmed_phone ? 'Sim' : 'Não'}
+                </span>
               </div>
-            ) : (
-              <div className="flex justify-between">
-                <p>{user.phone}</p>
-                <button type="button" onClick={() => setEditPhone(true)}>
-                  Alterar
-                </button>
+            </div>
+
+            {/* Status Voto */}
+            <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Voto Confirmado?
+              </span>
+              <div className="sm:col-span-2">
+                <span
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    user.confirmed_vote
+                      ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                      : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                  }`}
+                >
+                  {user.confirmed_vote ? 'Sim' : 'Não'}
+                </span>
               </div>
-            )}
+            </div>
+
+            {/* Telefone Editável */}
+            <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center bg-indigo-50/50 dark:bg-indigo-900/10">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Telefone
+              </span>
+              <div className="sm:col-span-2">
+                {editPhone ? (
+                  <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                    <div className="w-full sm:w-auto">
+                      <InputSimple
+                        className="w-full sm:w-48 h-10 px-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                        type="text"
+                        value={phone}
+                        maxLength={15}
+                        errortext={error}
+                        data-testid="phone"
+                        onChange={(e) =>
+                          setPhone(
+                            (e.target.value = regexPhone(e.target.value))
+                          )
+                        }
+                      />
+                    </div>
+                    <button
+                      className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white underline decoration-dotted underline-offset-2"
+                      type="button"
+                      onClick={() => setEditPhone(false)}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm text-gray-900 dark:text-white font-mono">
+                      {user.phone}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setEditPhone(true)}
+                      className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium hover:underline"
+                    >
+                      Alterar
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="ml-auto mt-5">
+
+          <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700 flex justify-end">
             <Button
               data-testid="comecar"
               size="medium"
-              color="success"
               type="button"
               loading={loading}
               onClick={updateUser}
               loadingPosition="end"
               variant="contained"
+              disabled={!editPhone && user.phone === phone}
               sx={{
-                color: '#7f5d00',
-                backgroundColor: '#ffe45f !important',
-                '&.Mui-disabled': {
-                  color: '#7f5d00',
-                  backgroundColor: '#fdf6d0 !important'
-                }
+                backgroundColor: '#4f46e5', // indigo-600
+                '&:hover': {
+                  backgroundColor: '#4338ca' // indigo-700
+                },
+                textTransform: 'none',
+                borderRadius: '0.5rem',
+                boxShadow: 'none',
+                fontWeight: 500
               }}
             >
-              <span>Atualizar</span>
+              Salvar Alterações
             </Button>
           </div>
         </div>

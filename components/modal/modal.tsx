@@ -5,6 +5,7 @@ type ModalProps = {
   outClick?: boolean;
   className?: string;
 };
+
 export default function Modal({
   children,
   openModal,
@@ -12,23 +13,23 @@ export default function Modal({
   outClick = true,
   className = ''
 }: ModalProps) {
+  if (!openModal) return null;
+
   return (
-    <div className={className}>
-      {openModal && (
-        <div className="fixed w-screen h-screen top-0 flex justify-center items-start bottom-0 overflow-auto bg-black/80 z-40">
-          <div className="opacity-100 z-40 mt-28 mb-28 rounded-lg bg-stone-950 inset-0 overflow-y-auto">
-            <div className="m-6 overflow-y-visible">{children}</div>
-          </div>
-          {openModal && outClick ? (
-            <div
-              className="fixed w-screen h-screen bg-black opacity-40 z-30"
-              onClick={() => setOpenModal(false)}
-            ></div>
-          ) : (
-            <div className="fixed w-screen h-screen bg-black opacity-40 z-30"></div>
-          )}
-        </div>
-      )}
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 ${className}`}
+    >
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity"
+        onClick={() => outClick && setOpenModal(false)}
+        aria-hidden="true"
+      />
+
+      {/* Modal Dialog */}
+      <div className="relative w-full max-w-lg transform overflow-hidden rounded-xl bg-white dark:bg-gray-800 text-left shadow-xl transition-all border border-gray-200 dark:border-gray-700 max-h-[90vh] flex flex-col">
+        <div className="overflow-y-auto p-0">{children}</div>
+      </div>
     </div>
   );
 }

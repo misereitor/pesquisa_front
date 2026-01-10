@@ -49,9 +49,12 @@ export default function LayoutAdmin({
     [key: number]: HTMLElement | null;
   }>({});
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   if (!userCookies) return <Loading />;
+
   const user = JSON.parse(userCookies) as UserAdmin;
   const open = Boolean(anchorEl);
+
   const handleClickProfile = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -77,103 +80,143 @@ export default function LayoutAdmin({
     }));
   };
 
-  return (
-    <div>
-      <div className="w-full layout-page">
-        <div className="h-12 border-b-2 border-collapse border-slate-800">
-          <div className="w-full flex items-center justify-between">
-            <div className="w-full flex items-center justify-start">
-              {navigation.admin.map((menu, index) => (
-                <div key={index} className="mx-2">
-                  {menu.type === 'route' && (
-                    <Link href={menu.path}>{menu.title}</Link>
-                  )}
-                  {menu.type === 'menu' && (
-                    <div>
-                      <div
-                        className="flex cursor-pointer items-center"
-                        onClick={(e) => handleClick(e, index)}
-                      >
-                        <span>{menu.title}</span>
-                        <RxCaretDown size={22} className="ml-1" />
-                      </div>
+  // Shared Menu Styling Props
+  const menuSlotProps = {
+    paper: {
+      elevation: 0,
+      sx: {
+        overflow: 'visible',
+        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+        mt: 1.5,
+        backgroundColor: '#1f2937', // gray-800
+        color: '#f3f4f6', // gray-100
+        border: '1px solid #374151', // gray-700
+        '& .MuiMenuItem-root': {
+          fontSize: '0.875rem',
+          '&:hover': {
+            backgroundColor: '#374151' // gray-700
+          }
+        }
+      }
+    }
+  };
 
-                      <Menu
-                        id={`menu-${index}`}
-                        MenuListProps={{
-                          'aria-labelledby': `menu-button-${index}`
-                        }}
-                        anchorEl={menuState[index]}
-                        open={Boolean(menuState[index])}
-                        onClose={() => handleClose(index)}
-                        disablePortal
-                        disableScrollLock
-                        slotProps={{
-                          paper: {
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4,
-                              width: '14ch',
-                              backgroundColor: '#181818',
-                              color: '#ffde5e'
-                            }
-                          }
-                        }}
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            {/* Left Side: Navigation */}
+            <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
+              {/* Optional: Add Logo here if needed */}
+              <nav className="flex items-center gap-1">
+                {navigation.admin.map((menu, index) => (
+                  <div key={index} className="relative">
+                    {menu.type === 'route' && (
+                      <Link
+                        href={menu.path}
+                        className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
                       >
-                        {menu.submenu?.map((option) => (
-                          <MenuItem
-                            key={option.title}
-                            onClick={() => {
-                              pushRouter(option.path);
-                              handleClose(index);
-                            }}
-                            sx={{
-                              '&:hover': {
-                                backgroundColor: '#ffde5e', // Cor de fundo no hover
-                                color: '#181818' // Cor do texto no hover
-                              }
-                            }}
-                          >
-                            {option.title}
-                          </MenuItem>
-                        ))}
-                      </Menu>
-                    </div>
-                  )}
-                </div>
-              ))}
+                        {menu.title}
+                      </Link>
+                    )}
+                    {menu.type === 'menu' && (
+                      <>
+                        <button
+                          onClick={(e) => handleClick(e, index)}
+                          className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                            Boolean(menuState[index])
+                              ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                              : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+                          }`}
+                        >
+                          {menu.title}
+                          <RxCaretDown
+                            size={16}
+                            className={`transition-transform duration-200 ${
+                              Boolean(menuState[index]) ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+                        <Menu
+                          id={`menu-${index}`}
+                          anchorEl={menuState[index]}
+                          open={Boolean(menuState[index])}
+                          onClose={() => handleClose(index)}
+                          disableScrollLock
+                          transformOrigin={{
+                            horizontal: 'left',
+                            vertical: 'top'
+                          }}
+                          anchorOrigin={{
+                            horizontal: 'left',
+                            vertical: 'bottom'
+                          }}
+                          slotProps={menuSlotProps}
+                        >
+                          {menu.submenu?.map((option) => (
+                            <MenuItem
+                              key={option.title}
+                              onClick={() => {
+                                pushRouter(option.path);
+                                handleClose(index);
+                              }}
+                            >
+                              {option.title}
+                            </MenuItem>
+                          ))}
+                        </Menu>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </nav>
             </div>
-            <div className="mr-3">
-              <div>
-                <button className="" onClick={handleClickProfile}>
-                  <Avatar
-                    sx={{
-                      width: 30,
-                      height: 30,
-                      backgroundColor: '#FFEF5E',
-                      color: '#000'
-                    }}
-                  />
-                </button>
+
+            {/* Right Side: Profile */}
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex flex-col items-end mr-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  {user.name || 'Usuário'}
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
+                  {user.role}
+                </span>
               </div>
+              <button
+                onClick={handleClickProfile}
+                className="relative rounded-full ring-2 ring-transparent hover:ring-indigo-500 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-900"
+              >
+                <Avatar
+                  sx={{
+                    width: 36,
+                    height: 36,
+                    bgcolor: '#4F46E5', // Indigo-600
+                    color: '#fff',
+                    fontSize: '0.875rem',
+                    fontWeight: 600
+                  }}
+                >
+                  {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                </Avatar>
+              </button>
               <Menu
                 anchorEl={anchorEl}
                 id="account-menu"
                 open={open}
                 onClose={handleCloseProfile}
                 onClick={handleCloseProfile}
-                slotProps={{
-                  paper: {
-                    style: {
-                      maxHeight: ITEM_HEIGHT * 3,
-                      width: '12ch',
-                      backgroundColor: '#181818',
-                      color: '#ffde5e'
-                    }
-                  }
-                }}
+                disableScrollLock
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                slotProps={menuSlotProps}
               >
+                <div className="px-4 py-2 border-b border-gray-700 md:hidden">
+                  <p className="text-sm font-medium text-white">{user.name}</p>
+                  <p className="text-xs text-gray-400 capitalize">
+                    {user.role}
+                  </p>
+                </div>
                 <MenuItem
                   onClick={() => {
                     handleCloseProfile();
@@ -192,12 +235,13 @@ export default function LayoutAdmin({
                     Superadmin
                   </MenuItem>
                 )}
-                <Divider />
+                <Divider sx={{ borderColor: '#374151' }} />
                 <MenuItem
                   onClick={() => {
                     handleCloseProfile();
                     pushRouter('/admin');
                   }}
+                  sx={{ color: '#F87171' }} // Red-400 for logout
                 >
                   Sair
                 </MenuItem>
@@ -205,8 +249,11 @@ export default function LayoutAdmin({
             </div>
           </div>
         </div>
-      </div>
-      <div>{children}</div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        {children}
+      </main>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import InputSimple from '../input/input';
 import { FiDelete } from 'react-icons/fi';
-import { Button } from '@mui/material'
+import { Button } from '@mui/material';
 import { Category } from '@/src/model/category';
 import { removeCompanyFromCategory } from '@/src/service/category-service';
 import { checkMasterPassword } from '@/src/service/login-user-admin';
@@ -73,24 +73,43 @@ export default function ModalRemoveCompanyAssociation({
   };
 
   return (
-    <div>
-      <div>Digite sua senha para remover a categoria!</div>
-      <div className="flex justify-between mt-5">
+    <div className="p-6">
+      <div className="text-center mb-6">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          Remover Empresa da Categoria
+        </h2>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          Você está prestes a desvincular uma empresa desta categoria.
+        </p>
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Digite sua senha mestre para confirmar
+        </label>
         <InputSimple
           type="password"
-          className="rounded-lg w-80 h-7"
+          className="w-full h-11 px-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 outline-none transition-all"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Senha"
         />
+        {error && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>
+        )}
       </div>
-      <div className="-mt-6 h-6">
-        {error && <span className="text-red-700">{error}</span>}
-      </div>
-      <div className="flex items-center justify-between mt-3">
+
+      <div className="flex justify-end gap-3 border-t border-gray-100 dark:border-gray-700 pt-4">
+        <button
+          type="button"
+          onClick={() => setOpenModal(false)}
+          className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors font-medium text-sm"
+        >
+          Cancelar
+        </button>
         <Button
           data-testid="comecar"
           size="medium"
-          color="success"
           type="button"
           endIcon={<FiDelete />}
           loading={loading}
@@ -98,26 +117,18 @@ export default function ModalRemoveCompanyAssociation({
           loadingPosition="end"
           variant="contained"
           sx={{
-            color: '#ffffff',
-            backgroundColor: '#c2410c !important',
-            '&.Mui-disabled': {
-              color: '#b91c1c',
-              backgroundColor: '#fdba74 !important'
-            }
+            backgroundColor: '#dc2626', // red-600
+            '&:hover': {
+              backgroundColor: '#b91c1c' // red-700
+            },
+            textTransform: 'none',
+            borderRadius: '0.5rem',
+            boxShadow: 'none',
+            fontWeight: 500
           }}
         >
-          <span>Deletar</span>
+          Remover Vínculo
         </Button>
-
-        <button
-          type="button"
-          className="bg-yellow-500  w-24 h-10 rounded-md text-yellow-950"
-          onClick={() => {
-            setOpenModal(false);
-          }}
-        >
-          Cancelar
-        </button>
       </div>
     </div>
   );
